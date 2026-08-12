@@ -1,0 +1,258 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}
+Edit Profile
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+
+                Edit Profile
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Update your personal information.
+
+            </p>
+
+        </div>
+
+        <a href="{% url 'profile' %}" class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-2"></i>
+
+            Back to Profile
+
+        </a>
+
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm rounded-4">
+
+                <div class="card-body p-4">
+
+                    <form
+                        method="POST"
+                        enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+
+                        <div class="alert alert-danger">
+
+                            {{ form.non_field_errors }}
+
+                        </div>
+
+                        {% endif %}
+
+                        <div class="text-center mb-4">
+
+                            {% if request.user.profile_picture %}
+
+                            <img
+                                src="{{ request.user.profile_picture.url }}"
+                                class="rounded-circle shadow border mb-3"
+                                width="140"
+                                height="140"
+                                style="object-fit:cover;">
+
+                            {% else %}
+
+                            <div
+                                class="rounded-circle bg-light border d-flex align-items-center justify-content-center mx-auto mb-3"
+                                style="width:140px;height:140px;">
+
+                                <i class="bi bi-person-fill display-3 text-secondary"></i>
+
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    First Name
+
+                                </label>
+
+                                {{ form.first_name }}
+
+                                {% if form.first_name.errors %}
+
+                                <div class="text-danger small">
+
+                                    {{ form.first_name.errors }}
+
+                                </div>
+
+                                {% endif %}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Last Name
+
+                                </label>
+
+                                {{ form.last_name }}
+
+                                {% if form.last_name.errors %}
+
+                                <div class="text-danger small">
+
+                                    {{ form.last_name.errors }}
+
+                                </div>
+
+                                {% endif %}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Email
+
+                                </label>
+
+                                {{ form.email }}
+
+                                {% if form.email.errors %}
+
+                                <div class="text-danger small">
+
+                                    {{ form.email.errors }}
+
+                                </div>
+
+                                {% endif %}
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label">
+
+                                    Phone Number
+
+                                </label>
+
+                                {{ form.phone_number }}
+
+                                {% if form.phone_number.errors %}
+
+                                <div class="text-danger small">
+
+                                    {{ form.phone_number.errors }}
+
+                                </div>
+
+                                {% endif %}
+
+                            </div>
+
+                            <div class="col-12 mb-3">
+
+                                <label class="form-label">
+
+                                    Profile Picture
+
+                                </label>
+
+                                {{ form.profile_picture }}
+
+                                {% if form.profile_picture.errors %}
+
+                                <div class="text-danger small">
+
+                                    {{ form.profile_picture.errors }}
+
+                                </div>
+
+                                {% endif %}
+
+                            </div>
+
+                            <div class="col-12 mb-4">
+
+                                <label class="form-label">
+
+                                    Bio
+
+                                </label>
+
+                                {{ form.bio }}
+
+                                {% if form.bio.errors %}
+
+                                <div class="text-danger small">
+
+                                    {{ form.bio.errors }}
+
+                                </div>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                        <div class="d-flex gap-2">
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary">
+
+                                <i class="bi bi-check-circle me-2"></i>
+
+                                Save Changes
+
+                            </button>
+
+                            <a
+                                href="{% url 'profile' %}"
+                                class="btn btn-outline-secondary">
+
+                                Cancel
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

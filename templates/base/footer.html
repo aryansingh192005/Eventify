@@ -1,0 +1,387 @@
+<footer class="mt-5 bg-dark text-light">
+
+
+<div class="container py-5">
+
+
+<div class="row g-4">
+
+
+
+
+
+<!-- Brand -->
+
+<div class="col-lg-5">
+
+
+<div class="d-flex align-items-center mb-3">
+
+
+<div class="brand-icon">
+
+<i class="bi bi-calendar-event-fill"></i>
+
+</div>
+
+
+
+<div class="ms-3">
+
+
+<h4 class="mb-1 fw-bold">
+
+Eventify
+
+</h4>
+
+
+<small class="text-secondary">
+
+Smart Event Management Platform
+
+</small>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<p class="text-secondary">
+
+Create, manage and participate in events
+through a modern digital event platform.
+
+</p>
+
+
+
+
+
+
+
+<div class="d-flex gap-3">
+
+
+<a href="#"
+   class="text-light fs-5">
+
+
+<i class="bi bi-github"></i>
+
+
+</a>
+
+
+
+
+<a href="#"
+   class="text-light fs-5">
+
+
+<i class="bi bi-linkedin"></i>
+
+
+</a>
+
+
+
+
+
+<a href="#"
+   class="text-light fs-5">
+
+
+<i class="bi bi-instagram"></i>
+
+
+</a>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Platform -->
+
+
+<div class="col-lg-2 col-md-4">
+
+
+<h5 class="fw-bold">
+
+Platform
+
+</h5>
+
+
+<ul class="list-unstyled mt-3">
+
+
+<li class="mb-2">
+
+<a href="{% url 'home' %}"
+class="text-secondary text-decoration-none">
+
+Home
+
+</a>
+
+</li>
+
+
+
+
+<li class="mb-2">
+
+<a href="{% url 'event_list' %}"
+class="text-secondary text-decoration-none">
+
+Events
+
+</a>
+
+</li>
+
+
+
+
+
+<li class="mb-2">
+
+<a href="{% url 'calendar_view' %}"
+class="text-secondary text-decoration-none">
+
+Calendar
+
+</a>
+
+</li>
+
+
+</ul>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Account -->
+
+
+<div class="col-lg-2 col-md-4">
+
+
+<h5 class="fw-bold">
+
+Account
+
+</h5>
+
+
+
+<ul class="list-unstyled mt-3">
+
+
+{% if user.is_authenticated %}
+
+
+<li class="mb-2">
+
+<a href="{% url 'dashboard_home' %}"
+class="text-secondary text-decoration-none">
+
+Dashboard
+
+</a>
+
+</li>
+
+
+
+<li class="mb-2">
+
+<a href="{% url 'profile' %}"
+class="text-secondary text-decoration-none">
+
+Profile
+
+</a>
+
+</li>
+
+
+
+{% else %}
+
+
+<li class="mb-2">
+
+<a href="{% url 'login' %}"
+class="text-secondary text-decoration-none">
+
+Login
+
+</a>
+
+</li>
+
+
+
+<li class="mb-2">
+
+<a href="{% url 'register' %}"
+class="text-secondary text-decoration-none">
+
+Register
+
+</a>
+
+</li>
+
+
+
+{% endif %}
+
+
+</ul>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- Connect -->
+
+
+<div class="col-lg-3">
+
+
+<h5 class="fw-bold">
+
+Connect
+
+</h5>
+
+
+
+<p class="text-secondary mt-3">
+
+<i class="bi bi-envelope me-2"></i>
+
+hello@eventify.app
+
+</p>
+
+
+
+
+<p class="text-secondary">
+
+<i class="bi bi-code-slash me-2"></i>
+
+Built with Django
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<hr class="border-secondary my-4">
+
+
+
+
+
+
+
+<div class="d-flex justify-content-between flex-wrap gap-3">
+
+
+<div class="text-secondary">
+
+© {% now "Y" %}
+
+<strong class="text-light">
+
+Eventify
+
+</strong>
+
+All Rights Reserved.
+
+</div>
+
+
+
+
+
+<div class="text-secondary">
+
+
+Built with
+
+<i class="bi bi-heart-fill text-danger"></i>
+
+Django + Bootstrap
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</footer>

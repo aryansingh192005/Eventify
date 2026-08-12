@@ -1,0 +1,699 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block title %}
+{{ event.title }}
+{% endblock %}
+
+{% block dashboard_content %}
+
+<!-- =====================================================
+PAGE HEADER
+===================================================== -->
+
+<div class="page-header d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+    <div>
+
+        <nav aria-label="breadcrumb">
+
+            <ol class="breadcrumb mb-2">
+
+                <li class="breadcrumb-item">
+                    <a href="{% url 'dashboard_home' %}">
+                        Dashboard
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item">
+                    <a href="{% url 'event_list' %}">
+                        Events
+                    </a>
+                </li>
+
+                <li class="breadcrumb-item active">
+                    {{ event.title }}
+                </li>
+
+            </ol>
+
+        </nav>
+
+        <h2 class="fw-bold mb-2">
+
+            {{ event.title }}
+
+        </h2>
+
+        <div class="d-flex flex-wrap gap-2">
+
+            <span class="badge bg-primary">
+
+                {{ event.category }}
+
+            </span>
+
+            <span class="badge
+                {% if event.status == 'PUBLISHED' %}
+                    bg-success
+                {% elif event.status == 'DRAFT' %}
+                    bg-warning text-dark
+                {% else %}
+                    bg-secondary
+                {% endif %}
+            ">
+
+                {{ event.status }}
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="mt-3 mt-md-0">
+
+        <a href="{% url 'event_list' %}"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left"></i>
+
+            Back
+
+        </a>
+
+        {% if request.user == event.organizer or request.user.role == "ADMIN" %}
+
+        <a href="{% url 'event_update' event.slug %}"
+           class="btn btn-warning">
+
+            <i class="bi bi-pencil-square"></i>
+
+            Edit
+
+        </a>
+
+        <a href="{% url 'event_delete' event.slug %}"
+           class="btn btn-danger">
+
+            <i class="bi bi-trash"></i>
+
+            Delete
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+HERO IMAGE
+===================================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 overflow-hidden mb-4">
+
+    {% if event.image %}
+
+        <img src="{{ event.image.url }}"
+             class="img-fluid"
+             style="height:350px;object-fit:cover;">
+
+    {% else %}
+
+        <div class="bg-primary text-white text-center py-5">
+
+            <i class="bi bi-calendar-event display-1 mb-3"></i>
+
+            <h2>
+
+                {{ event.title }}
+
+            </h2>
+
+            <p class="mb-0">
+
+                {{ event.description|truncatewords:30 }}
+
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+<!-- =====================================================
+EVENT DETAILS + QUICK STATS
+===================================================== -->
+
+<div class="row g-4 mb-4">
+
+    <!-- Event Information -->
+
+    <div class="col-lg-8">
+
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-info-circle me-2 text-primary"></i>
+
+                    Event Information
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-4">
+
+                        <h6 class="text-muted">
+                            Description
+                        </h6>
+
+                        <p>
+
+                            {{ event.description|default:"No description available." }}
+
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <h6 class="text-muted">
+                            Category
+                        </h6>
+
+                        <p>
+
+                            {{ event.category }}
+
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <h6 class="text-muted">
+                            Date
+                        </h6>
+
+                        <p>
+
+                            <i class="bi bi-calendar-event me-2 text-primary"></i>
+
+                            {{ event.event_date }}
+
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <h6 class="text-muted">
+                            Time
+                        </h6>
+
+                        <p>
+
+                            <i class="bi bi-clock me-2 text-primary"></i>
+
+                            {{ event.event_time }}
+
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <h6 class="text-muted">
+                            Venue
+                        </h6>
+
+                        <p>
+
+                            <i class="bi bi-geo-alt me-2 text-danger"></i>
+
+                            {{ event.venue }}
+
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <h6 class="text-muted">
+                            Organizer
+                        </h6>
+
+                        <p>
+
+                            <i class="bi bi-person me-2 text-success"></i>
+
+                            {{ event.organizer.get_full_name|default:event.organizer.username }}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Quick Stats -->
+
+    <div class="col-lg-4">
+
+        <div class="card shadow-sm border-0 rounded-4 mb-3">
+
+            <div class="card-body text-center">
+
+                <i class="bi bi-currency-rupee text-success display-6"></i>
+
+                <h6 class="mt-2 text-muted">
+
+                    Ticket Price
+
+                </h6>
+
+                <h3>
+
+                    ₹{{ event.price }}
+
+                </h3>
+
+            </div>
+
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4 mb-3">
+
+            <div class="card-body text-center">
+
+                <i class="bi bi-people-fill text-primary display-6"></i>
+
+                <h6 class="mt-2 text-muted">
+
+                    Registered
+
+                </h6>
+
+                <h3>
+
+                    {{ registration_count }}
+
+                </h3>
+
+            </div>
+
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4 mb-3">
+
+            <div class="card-body text-center">
+
+                <i class="bi bi-ticket-perforated text-warning display-6"></i>
+
+                <h6 class="mt-2 text-muted">
+
+                    Seats Left
+
+                </h6>
+
+                <h3>
+
+                    {{ event.available_seats }}
+
+                </h3>
+
+            </div>
+
+        </div>
+
+        <div class="card shadow-sm border-0 rounded-4">
+
+            <div class="card-body text-center">
+
+                <i class="bi bi-check-circle-fill text-success display-6"></i>
+
+                <h6 class="mt-2 text-muted">
+
+                    Status
+
+                </h6>
+
+                <span class="badge bg-success fs-6">
+
+                    {{ event.status }}
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+ORGANIZER & ACTION PANEL
+===================================================== -->
+
+<div class="row g-4 mb-4">
+
+    <!-- Organizer -->
+
+    <div class="col-lg-6">
+
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-person-badge me-2 text-primary"></i>
+
+                    Organizer
+
+                </h5>
+
+            </div>
+
+            <div class="card-body text-center">
+
+                <div class="mb-3">
+
+                    <div class="rounded-circle bg-primary text-white d-inline-flex
+                                align-items-center justify-content-center"
+                         style="width:80px;height:80px;font-size:32px;">
+
+                        {{ event.organizer.first_name|default:event.organizer.username|slice:":1"|upper }}
+
+                    </div>
+
+                </div>
+
+                <h4>
+
+                    {{ event.organizer.get_full_name|default:event.organizer.username }}
+
+                </h4>
+
+                <p class="text-muted mb-3">
+
+                    {{ event.organizer.role }}
+
+                </p>
+
+                <span class="badge bg-info">
+
+                    Event Organizer
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <!-- Actions -->
+
+    <div class="col-lg-6">
+
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-lightning-charge me-2 text-warning"></i>
+
+                    Actions
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                {% if request.user.role == "ATTENDEE" %}
+
+                    <div class="d-grid">
+
+                        <a href="{% url 'register_event' event.slug %}"
+                           class="btn btn-success btn-lg">
+
+                            <i class="bi bi-ticket-perforated me-2"></i>
+
+                            Register Now
+
+                        </a>
+
+                    </div>
+
+                {% elif request.user.role == "ORGANIZER" %}
+
+    {% if request.user == event.organizer %}
+
+        <div class="d-grid gap-2">
+
+
+            <!-- QR CHECK-IN -->
+
+            <a href="{% url 'qr_checkin' event.slug %}"
+               class="btn btn-success btn-lg">
+
+                <i class="bi bi-qr-code-scan me-2"></i>
+
+                Scan Attendee QR
+
+            </a>
+
+
+            <!-- EDIT -->
+
+            <a href="{% url 'event_update' event.slug %}"
+               class="btn btn-warning">
+
+                <i class="bi bi-pencil-square me-2"></i>
+
+                Edit Event
+
+            </a>
+
+
+            <!-- DELETE -->
+
+            <a href="{% url 'event_delete' event.slug %}"
+               class="btn btn-danger">
+
+                <i class="bi bi-trash me-2"></i>
+
+                Delete Event
+
+            </a>
+
+        </div>
+
+    {% else %}
+
+        <div class="alert alert-info mb-0">
+
+            You are not the organizer of this event.
+
+        </div>
+
+    
+                    {% endif %}
+
+                {% else %}
+
+                    
+
+    <div class="d-grid gap-2">
+
+
+        <!-- QR CHECK-IN -->
+
+        <a href="{% url 'qr_checkin' event.slug %}"
+           class="btn btn-success btn-lg">
+
+            <i class="bi bi-qr-code-scan me-2"></i>
+
+            Scan Attendee QR
+
+        </a>
+
+
+        <!-- EDIT -->
+
+        <a href="{% url 'event_update' event.slug %}"
+           class="btn btn-warning">
+
+            <i class="bi bi-pencil-square me-2"></i>
+
+            Edit Event
+
+        </a>
+
+
+        <!-- DELETE -->
+
+        <a href="{% url 'event_delete' event.slug %}"
+           class="btn btn-danger">
+
+            <i class="bi bi-trash me-2"></i>
+
+            Delete Event
+
+        </a>
+
+    </div>
+
+{% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+RELATED EVENTS
+===================================================== -->
+
+{% if related_events %}
+
+<div class="card shadow-sm border-0 rounded-4 mb-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-calendar2-week me-2 text-primary"></i>
+
+            Related Events
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            {% for item in related_events %}
+
+            <div class="col-md-4 mb-3">
+
+                <div class="card h-100 border">
+
+                    {% if item.image %}
+                        <img src="{{ item.image.url }}"
+                             class="card-img-top"
+                             style="height:180px;object-fit:cover;">
+                    {% endif %}
+
+                    <div class="card-body">
+
+                        <h6>
+
+                            {{ item.title }}
+
+                        </h6>
+
+                        <p class="text-muted small">
+
+                            {{ item.event_date }}
+
+                        </p>
+
+                        <a href="{% url 'event_detail' item.slug %}"
+                           class="btn btn-sm btn-outline-primary">
+
+                            View Details
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+
+
+<!-- =====================================================
+BOTTOM ACTIONS
+===================================================== -->
+
+<div class="d-flex justify-content-between align-items-center mb-5">
+
+    <a href="{% url 'event_list' %}"
+       class="btn btn-outline-secondary">
+
+        <i class="bi bi-arrow-left me-2"></i>
+
+        Back to Events
+
+    </a>
+
+    <div>
+
+        {% if request.user == event.organizer or request.user.role == "ADMIN" %}
+
+        <a href="{% url 'event_update' event.slug %}"
+           class="btn btn-warning me-2">
+
+            <i class="bi bi-pencil-square me-2"></i>
+
+            Edit
+
+        </a>
+
+        <a href="{% url 'event_delete' event.slug %}"
+           class="btn btn-danger">
+
+            <i class="bi bi-trash me-2"></i>
+
+            Delete
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

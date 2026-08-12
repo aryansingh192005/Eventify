@@ -1,0 +1,471 @@
+{% extends "base/base.html" %}
+
+{% load static %}
+
+
+{% block title %}
+Home | Event Management System
+{% endblock %}
+
+
+
+{% block css %}
+
+<link rel="stylesheet"
+      href="{% static 'css/home.css' %}">
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+
+<!-- ==========================
+     HERO SECTION
+========================== -->
+
+
+<section class="home-hero">
+
+
+<div class="hero-container">
+
+
+
+    <!-- LEFT CONTENT -->
+
+    <div class="hero-content">
+
+
+        <span class="hero-badge">
+
+            <i class="bi bi-stars"></i>
+
+            Smart Event Platform
+
+        </span>
+
+
+
+
+        <h1>
+
+            Create.
+            <br>
+
+            Manage.
+            <br>
+
+            Experience.
+
+            <span>
+                Amazing Events.
+            </span>
+
+        </h1>
+
+
+
+
+
+        <p>
+
+            Eventify helps organizers create memorable experiences
+            and attendees discover events effortlessly through a
+            modern digital platform.
+
+        </p>
+
+
+
+
+
+
+        <div class="hero-buttons">
+
+
+            <a href="{% url 'event_list' %}"
+               class="btn btn-primary btn-lg">
+
+
+                <i class="bi bi-search me-2"></i>
+
+                Explore Events
+
+
+            </a>
+
+
+
+
+
+
+            <a href="{% url 'register' %}"
+               class="btn btn-outline-primary btn-lg">
+
+
+                <i class="bi bi-person-plus me-2"></i>
+
+                Create Account
+
+
+            </a>
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+        <!-- STATS -->
+
+
+        <div class="hero-stats">
+
+
+            <div>
+
+                <strong>
+                    500+
+                </strong>
+
+                <span>
+                    Events
+                </span>
+
+
+            </div>
+
+
+
+
+
+
+            <div>
+
+                <strong>
+                    10K+
+                </strong>
+
+                <span>
+                    Attendees
+                </span>
+
+
+            </div>
+
+
+
+
+
+
+
+            <div>
+
+                <strong>
+                    24/7
+                </strong>
+
+                <span>
+                    Support
+                </span>
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- RIGHT VISUAL -->
+
+
+    <div class="hero-visual">
+
+
+
+
+
+        <div class="floating-card card-one">
+
+
+            <i class="bi bi-calendar-event"></i>
+
+
+            <h5>
+                Upcoming Event
+            </h5>
+
+
+            <p>
+                Technology Summit
+            </p>
+
+
+
+        </div>
+
+
+
+
+
+
+
+        <div class="main-circle">
+
+
+            <i class="bi bi-calendar2-event"></i>
+
+
+        </div>
+
+
+
+
+
+
+
+
+        <div class="floating-card card-two">
+
+
+            <i class="bi bi-ticket-perforated"></i>
+
+
+            <h5>
+                Easy Tickets
+            </h5>
+
+
+            <p>
+                Instant Registration
+            </p>
+
+
+
+        </div>
+
+
+
+
+
+    </div>
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ==========================
+     FEATURES SECTION
+========================== -->
+
+
+<section class="features-section">
+
+
+
+<div class="container">
+
+
+
+
+
+<div class="section-heading">
+
+
+<h2>
+
+Everything you need to manage events
+
+</h2>
+
+
+
+<p>
+
+Powerful tools for organizers and attendees.
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="row g-4">
+
+
+
+
+
+<div class="col-md-4">
+
+
+<div class="feature-card">
+
+
+
+<i class="bi bi-calendar-check"></i>
+
+
+
+<h4>
+Event Management
+</h4>
+
+
+
+<p>
+
+Create, update and manage events easily.
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="col-md-4">
+
+
+<div class="feature-card">
+
+
+
+<i class="bi bi-qr-code-scan"></i>
+
+
+
+<h4>
+Digital Tickets
+</h4>
+
+
+
+<p>
+
+QR based registration system.
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="col-md-4">
+
+
+<div class="feature-card">
+
+
+
+<i class="bi bi-bar-chart"></i>
+
+
+
+<h4>
+Analytics
+</h4>
+
+
+
+<p>
+
+Track registrations and performance.
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+{% endblock %}

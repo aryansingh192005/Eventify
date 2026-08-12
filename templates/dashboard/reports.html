@@ -1,0 +1,2090 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}
+Reports Dashboard
+{% endblock %}
+
+{% block dashboard_content %}
+
+<!-- ==========================================
+PAGE HEADER
+========================================== -->
+
+<div class="page-header d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+    <div>
+
+        <h2 class="fw-bold">
+
+            <i class="bi bi-bar-chart-line-fill text-primary me-2"></i>
+
+            Reports Dashboard
+
+        </h2>
+
+        <p class="text-muted mb-0">
+
+            Analyze your Event Management System with real-time reports and analytics.
+
+        </p>
+
+    </div>
+
+    <div class="d-flex gap-2 flex-wrap">
+
+        <a href="{% url 'dashboard_home' %}"
+           class="btn btn-outline-primary">
+
+            <i class="bi bi-speedometer2 me-2"></i>
+
+            Dashboard
+
+        </a>
+
+        <a href="{% url 'calendar_view' %}"
+           class="btn btn-outline-success">
+
+            <i class="bi bi-calendar3 me-2"></i>
+
+            Calendar
+
+        </a>
+
+        <button
+            onclick="window.print()"
+            class="btn btn-primary">
+
+            <i class="bi bi-printer-fill me-2"></i>
+
+            Print Report
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+REPORT SUMMARY
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mb-5">
+
+    <div class="card-body">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-8">
+
+                <span class="badge bg-primary mb-3">
+
+                    <i class="bi bi-graph-up-arrow me-2"></i>
+
+                    Analytics Center
+
+                </span>
+
+                <h3 class="fw-bold">
+
+                    Business Intelligence Dashboard
+
+                </h3>
+
+                <p class="text-muted mb-0">
+
+                    Monitor events, registrations, users, revenue, and export professional reports from a single dashboard.
+
+                </p>
+
+            </div>
+
+            <div class="col-lg-4 text-center mt-4 mt-lg-0">
+
+                <div class="display-2 text-primary">
+
+                    <i class="bi bi-file-earmark-bar-graph-fill"></i>
+
+                </div>
+
+                <div class="mt-3">
+
+                    <span class="badge bg-success">
+
+                        Live Analytics
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+KPI CARDS
+========================================== -->
+
+<div class="row g-4 mb-5">
+
+    <!-- Total Events -->
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card h-100">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-calendar-event-fill"></i>
+
+            </div>
+
+            <div>
+
+                <small class="text-muted">
+
+                    Total Events
+
+                </small>
+
+                <h2>
+
+                    {{ total_events }}
+
+                </h2>
+
+                <span class="badge bg-primary">
+
+                    Live
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Total Users -->
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card h-100">
+
+            <div class="stat-icon bg-success-gradient">
+
+                <i class="bi bi-people-fill"></i>
+
+            </div>
+
+            <div>
+
+                <small class="text-muted">
+
+                    Total Users
+
+                </small>
+
+                <h2>
+
+                    {{ total_users }}
+
+                </h2>
+
+                <span class="badge bg-success">
+
+                    Registered
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Registrations -->
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card h-100">
+
+            <div class="stat-icon bg-warning-gradient">
+
+                <i class="bi bi-ticket-perforated-fill"></i>
+
+            </div>
+
+            <div>
+
+                <small class="text-muted">
+
+                    Registrations
+
+                </small>
+
+                <h2>
+
+                    {{ total_registrations }}
+
+                </h2>
+
+                <span class="badge bg-warning text-dark">
+
+                    Active
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Revenue -->
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stat-card h-100">
+
+            <div class="stat-icon bg-danger-gradient">
+
+                <i class="bi bi-currency-rupee"></i>
+
+            </div>
+
+            <div>
+
+                <small class="text-muted">
+
+                    Revenue
+
+                </small>
+
+                <h2>
+
+                    ₹{{ total_revenue }}
+
+                </h2>
+
+                <span class="badge bg-danger">
+
+                    Earnings
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+PLATFORM OVERVIEW
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mb-5">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-activity text-primary me-2"></i>
+
+            Platform Overview
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row text-center">
+
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+
+                <div class="display-5 text-primary mb-2">
+
+                    <i class="bi bi-calendar-check-fill"></i>
+
+                </div>
+
+                <h4>
+
+                    {{ published_events|default:0 }}
+
+                </h4>
+
+                <p class="text-muted mb-0">
+
+                    Published Events
+
+                </p>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+
+                <div class="display-5 text-warning mb-2">
+
+                    <i class="bi bi-pencil-square"></i>
+
+                </div>
+
+                <h4>
+
+                    {{ pending_events|default:0 }}
+
+                </h4>
+
+                <p class="text-muted mb-0">
+
+                    Draft Events
+
+                </p>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+
+                <div class="display-5 text-success mb-2">
+
+                    <i class="bi bi-person-workspace"></i>
+
+                </div>
+
+                <h4>
+
+                    {{ total_organizers|default:0 }}
+
+                </h4>
+
+                <p class="text-muted mb-0">
+
+                    Organizers
+
+                </p>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="display-5 text-danger mb-2">
+
+                    <i class="bi bi-bar-chart-line-fill"></i>
+
+                </div>
+
+                <h4>
+
+                    100%
+
+                </h4>
+
+                <p class="text-muted mb-0">
+
+                    System Ready
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+ANALYTICS CHARTS
+========================================== -->
+
+<div class="row g-4 mb-5">
+
+    <!-- Events Chart -->
+
+    <div class="col-lg-6">
+
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-bar-chart-fill text-primary me-2"></i>
+
+                    Monthly Events
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <canvas id="eventsChart" height="120"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Registrations Chart -->
+
+    <div class="col-lg-6">
+
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-graph-up-arrow text-success me-2"></i>
+
+                    Monthly Registrations
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <canvas id="registrationsChart" height="120"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+SUMMARY CHARTS
+========================================== -->
+
+<div class="row g-4 mb-5">
+
+    <!-- Events Status -->
+
+    <div class="col-lg-6">
+
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-pie-chart-fill text-warning me-2"></i>
+
+                    Event Status
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <canvas id="statusChart" height="220"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Revenue -->
+
+    <div class="col-lg-6">
+
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-currency-rupee text-danger me-2"></i>
+
+                    Revenue Overview
+
+                </h5>
+
+            </div>
+
+            <div class="card-body d-flex align-items-center justify-content-center">
+
+                <div class="text-center">
+
+                    <div class="display-3 text-success mb-3">
+
+                        ₹{{ total_revenue }}
+
+                    </div>
+
+                    <h5>
+
+                        Total Revenue Generated
+
+                    </h5>
+
+                    <p class="text-muted mb-0">
+
+                        Calculated from all successful registrations.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+SYSTEM INSIGHTS
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mb-5">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-lightbulb-fill text-warning me-2"></i>
+
+            System Insights
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+
+                <div class="text-center">
+
+                    <div class="display-5 text-primary mb-3">
+
+                        <i class="bi bi-calendar-event-fill"></i>
+
+                    </div>
+
+                    <h5>
+
+                        {{ total_events }}
+
+                    </h5>
+
+                    <p class="text-muted">
+
+                        Events created across the platform.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="col-md-4">
+
+                <div class="text-center">
+
+                    <div class="display-5 text-success mb-3">
+
+                        <i class="bi bi-ticket-perforated-fill"></i>
+
+                    </div>
+
+                    <h5>
+
+                        {{ total_registrations }}
+
+                    </h5>
+
+                    <p class="text-muted">
+
+                        Successful event registrations.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="col-md-4">
+
+                <div class="text-center">
+
+                    <div class="display-5 text-danger mb-3">
+
+                        <i class="bi bi-cash-stack"></i>
+
+                    </div>
+
+                    <h5>
+
+                        ₹{{ total_revenue }}
+
+                    </h5>
+
+                    <p class="text-muted">
+
+                        Total revenue generated.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+RECENT EVENTS
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mb-5">
+
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-calendar-event-fill text-primary me-2"></i>
+
+            Recent Events
+
+        </h5>
+
+        <a href="{% url 'event_list' %}"
+           class="btn btn-sm btn-outline-primary">
+
+            View All
+
+        </a>
+
+    </div>
+
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>Title</th>
+
+                        <th>Category</th>
+
+                        <th>Organizer</th>
+
+                        <th>Date</th>
+
+                        <th>Venue</th>
+
+                        <th>Status</th>
+
+                        <th class="text-center">
+
+                            Action
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for event in recent_events %}
+
+                    <tr>
+
+                        <td>
+
+                            <strong>
+
+                                {{ event.title }}
+
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            {{ event.category.name }}
+
+                        </td>
+
+                        <td>
+
+                            {{ event.organizer.get_full_name|default:event.organizer.username }}
+
+                        </td>
+
+                        <td>
+
+                            {{ event.event_date }}
+
+                        </td>
+
+                        <td>
+
+                            {{ event.venue }}
+
+                        </td>
+
+                        <td>
+
+                            {% if event.status == "PUBLISHED" %}
+
+                                <span class="badge bg-success">
+
+                                    Published
+
+                                </span>
+
+                            {% elif event.status == "DRAFT" %}
+
+                                <span class="badge bg-warning text-dark">
+
+                                    Draft
+
+                                </span>
+
+                            {% elif event.status == "CANCELLED" %}
+
+                                <span class="badge bg-danger">
+
+                                    Cancelled
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+
+                                    {{ event.status }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td class="text-center">
+
+                            <a href="{% url 'event_detail' event.slug %}"
+
+                               class="btn btn-sm btn-primary">
+
+                                <i class="bi bi-eye"></i>
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="7" class="text-center py-5">
+
+                            <i class="bi bi-calendar-x display-5 text-muted"></i>
+
+                            <p class="mt-3 mb-0 text-muted">
+
+                                No events available.
+
+                            </p>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+EVENT SUMMARY
+========================================== -->
+
+<div class="row g-4 mb-5">
+
+    <div class="col-lg-4">
+
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+
+            <div class="card-body text-center">
+
+                <div class="display-5 text-success mb-3">
+
+                    <i class="bi bi-check-circle-fill"></i>
+
+                </div>
+
+                <h3>
+
+                    {{ published_events|default:0 }}
+
+                </h3>
+
+                <p class="text-muted mb-0">
+
+                    Published Events
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="col-lg-4">
+
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+
+            <div class="card-body text-center">
+
+                <div class="display-5 text-warning mb-3">
+
+                    <i class="bi bi-pencil-square"></i>
+
+                </div>
+
+                <h3>
+
+                    {{ pending_events|default:0 }}
+
+                </h3>
+
+                <p class="text-muted mb-0">
+
+                    Draft Events
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="col-lg-4">
+
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+
+            <div class="card-body text-center">
+
+                <div class="display-5 text-primary mb-3">
+
+                    <i class="bi bi-calendar2-check-fill"></i>
+
+                </div>
+
+                <h3>
+
+                    {{ total_events }}
+
+                </h3>
+
+                <p class="text-muted mb-0">
+
+                    Total Events
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+RECENT REGISTRATIONS
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mb-5">
+
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-ticket-perforated-fill text-success me-2"></i>
+
+            Recent Registrations
+
+        </h5>
+
+        <a href="{% url 'export_registrations_csv' %}"
+           class="btn btn-sm btn-outline-success">
+
+            View Report
+
+        </a>
+
+    </div>
+
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-light">
+
+                    <tr>
+
+                        <th>Attendee</th>
+
+                        <th>Event</th>
+
+                        <th>Date</th>
+
+                        <th>Status</th>
+
+                        <th class="text-center">
+
+                            Ticket
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for registration in recent_registrations %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="fw-semibold">
+
+                                {{ registration.attendee.get_full_name|default:registration.attendee.username }}
+
+                            </div>
+
+                            <small class="text-muted">
+
+                                {{ registration.attendee.email }}
+
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            <strong>
+
+                                {{ registration.event.title }}
+
+                            </strong>
+
+                            <br>
+
+                            <small class="text-muted">
+
+                                {{ registration.event.event_date }}
+
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            {{ registration.registration_date|date:"d M Y" }}
+
+                            <br>
+
+                            <small class="text-muted">
+
+                                {{ registration.registration_date|time:"h:i A" }}
+
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            {% if registration.status == "REGISTERED" %}
+
+                                <span class="badge bg-success">
+
+                                    Registered
+
+                                </span>
+
+                            {% elif registration.status == "CANCELLED" %}
+
+                                <span class="badge bg-danger">
+
+                                    Cancelled
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+
+                                    {{ registration.status }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td class="text-center">
+
+                            {% if registration.ticket_qr %}
+
+                            <a href="{{ registration.ticket_qr.url }}"
+                               target="_blank"
+                               class="btn btn-outline-primary btn-sm">
+
+                                <i class="bi bi-qr-code"></i>
+
+                            </a>
+
+                            {% else %}
+
+                            <span class="text-muted">
+
+                                —
+
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="5" class="text-center py-5">
+
+                            <i class="bi bi-ticket-perforated display-5 text-muted"></i>
+
+                            <p class="mt-3 mb-0 text-muted">
+
+                                No registrations found.
+
+                            </p>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+REGISTRATION OVERVIEW
+========================================== -->
+
+<div class="row g-4 mb-5">
+
+    <div class="col-lg-4">
+
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+
+            <div class="card-body text-center">
+
+                <div class="display-5 text-success mb-3">
+
+                    <i class="bi bi-ticket-perforated-fill"></i>
+
+                </div>
+
+                <h3>
+
+                    {{ total_registrations }}
+
+                </h3>
+
+                <p class="text-muted mb-0">
+
+                    Total Registrations
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="col-lg-4">
+
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+
+            <div class="card-body text-center">
+
+                <div class="display-5 text-primary mb-3">
+
+                    <i class="bi bi-people-fill"></i>
+
+                </div>
+
+                <h3>
+
+                    {{ total_users|default:"-" }}
+
+                </h3>
+
+                <p class="text-muted mb-0">
+
+                    Registered Users
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="col-lg-4">
+
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+
+            <div class="card-body text-center">
+
+                <div class="display-5 text-warning mb-3">
+
+                    <i class="bi bi-currency-rupee"></i>
+
+                </div>
+
+                <h3>
+
+                    ₹{{ total_revenue }}
+
+                </h3>
+
+                <p class="text-muted mb-0">
+
+                    Revenue Generated
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+EXPORT CENTER
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mb-5">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-download text-primary me-2"></i>
+
+            Export Center
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row g-4">
+
+            <!-- Events Report -->
+
+            <div class="col-lg-4 col-md-6">
+
+                <div class="card border rounded-4 h-100">
+
+                    <div class="card-body text-center">
+
+                        <div class="display-5 text-primary mb-3">
+
+                            <i class="bi bi-calendar-event-fill"></i>
+
+                        </div>
+
+                        <h5>
+
+                            Events Report
+
+                        </h5>
+
+                        <p class="text-muted">
+
+                            Export all events as CSV.
+
+                        </p>
+
+                        <a href="{% url 'export_events_csv' %}"
+
+                           class="btn btn-primary">
+
+                            <i class="bi bi-download me-2"></i>
+
+                            Download
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Registrations Report -->
+
+            <div class="col-lg-4 col-md-6">
+
+                <div class="card border rounded-4 h-100">
+
+                    <div class="card-body text-center">
+
+                        <div class="display-5 text-success mb-3">
+
+                            <i class="bi bi-ticket-perforated-fill"></i>
+
+                        </div>
+
+                        <h5>
+
+                            Registration Report
+
+                        </h5>
+
+                        <p class="text-muted">
+
+                            Export registration records.
+
+                        </p>
+
+                        <a href="{% url 'export_registrations_csv' %}"
+
+                           class="btn btn-success">
+
+                            <i class="bi bi-download me-2"></i>
+
+                            Download
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Users Report -->
+
+            <div class="col-lg-4 col-md-6">
+
+                <div class="card border rounded-4 h-100">
+
+                    <div class="card-body text-center">
+
+                        <div class="display-5 text-warning mb-3">
+
+                            <i class="bi bi-people-fill"></i>
+
+                        </div>
+
+                        <h5>
+
+                            Users Report
+
+                        </h5>
+
+                        <p class="text-muted">
+
+                            Export all users.
+
+                        </p>
+
+                        <a href="{% url 'export_users_csv' %}"
+
+                           class="btn btn-warning">
+
+                            <i class="bi bi-download me-2"></i>
+
+                            Download
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+REPORT SUMMARY
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mb-5">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-file-earmark-text-fill text-primary me-2"></i>
+
+            Report Summary
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row text-center">
+
+            <div class="col-md-3">
+
+                <div class="display-6 text-primary">
+
+                    <i class="bi bi-calendar-event"></i>
+
+                </div>
+
+                <h3 class="mt-2">
+
+                    {{ total_events }}
+
+                </h3>
+
+                <p class="text-muted">
+
+                    Events
+
+                </p>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="display-6 text-success">
+
+                    <i class="bi bi-ticket-perforated"></i>
+
+                </div>
+
+                <h3 class="mt-2">
+
+                    {{ total_registrations }}
+
+                </h3>
+
+                <p class="text-muted">
+
+                    Registrations
+
+                </p>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="display-6 text-warning">
+
+                    <i class="bi bi-people"></i>
+
+                </div>
+
+                <h3 class="mt-2">
+
+                    {{ total_users|default:"-" }}
+
+                </h3>
+
+                <p class="text-muted">
+
+                    Users
+
+                </p>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="display-6 text-danger">
+
+                    <i class="bi bi-cash-stack"></i>
+
+                </div>
+
+                <h3 class="mt-2">
+
+                    ₹{{ total_revenue }}
+
+                </h3>
+
+                <p class="text-muted">
+
+                    Revenue
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+REPORT ACTIONS
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mb-5">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-lightning-charge-fill text-primary me-2"></i>
+
+            Quick Actions
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row g-4">
+
+            <div class="col-lg-3 col-md-6">
+
+                <a href="{% url 'dashboard_home' %}"
+                   class="btn btn-primary w-100 py-3">
+
+                    <i class="bi bi-speedometer2 me-2"></i>
+
+                    Dashboard
+
+                </a>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <a href="{% url 'event_list' %}"
+                   class="btn btn-success w-100 py-3">
+
+                    <i class="bi bi-calendar-event me-2"></i>
+
+                    Events
+
+                </a>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <a href="{% url 'calendar_view' %}"
+                   class="btn btn-warning w-100 py-3">
+
+                    <i class="bi bi-calendar3 me-2"></i>
+
+                    Calendar
+
+                </a>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <button
+                    onclick="location.reload()"
+                    class="btn btn-info text-white w-100 py-3">
+
+                    <i class="bi bi-arrow-clockwise me-2"></i>
+
+                    Refresh
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+SYSTEM HEALTH
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mb-5">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-heart-pulse-fill text-danger me-2"></i>
+
+            System Health
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row g-4">
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="text-center">
+
+                    <div class="display-5 text-success">
+
+                        <i class="bi bi-check-circle-fill"></i>
+
+                    </div>
+
+                    <h4 class="mt-3">
+
+                        Online
+
+                    </h4>
+
+                    <p class="text-muted mb-0">
+
+                        Application Status
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="text-center">
+
+                    <div class="display-5 text-primary">
+
+                        <i class="bi bi-database-fill"></i>
+
+                    </div>
+
+                    <h4 class="mt-3">
+
+                        Active
+
+                    </h4>
+
+                    <p class="text-muted mb-0">
+
+                        Database
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="text-center">
+
+                    <div class="display-5 text-warning">
+
+                        <i class="bi bi-shield-check"></i>
+
+                    </div>
+
+                    <h4 class="mt-3">
+
+                        Protected
+
+                    </h4>
+
+                    <p class="text-muted mb-0">
+
+                        Security
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="text-center">
+
+                    <div class="display-5 text-info">
+
+                        <i class="bi bi-lightning-charge-fill"></i>
+
+                    </div>
+
+                    <h4 class="mt-3">
+
+                        Fast
+
+                    </h4>
+
+                    <p class="text-muted mb-0">
+
+                        Performance
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+LIVE STATUS
+========================================== -->
+
+<div class="card border-0 shadow-sm rounded-4 mb-5">
+
+    <div class="card-body">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-8">
+
+                <h4 class="fw-bold">
+
+                    Eventify Analytics Dashboard
+
+                </h4>
+
+                <p class="text-muted mb-0">
+
+                    Reports are generated using live data from your Event Management System. Statistics update automatically as users, events and registrations change.
+
+                </p>
+
+            </div>
+
+            <div class="col-lg-4 text-center mt-4 mt-lg-0">
+
+                <span class="badge bg-success fs-6 px-4 py-3">
+
+                    <i class="bi bi-circle-fill me-2"></i>
+
+                    LIVE DATA
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+SYSTEM STATUS
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mb-5">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-cpu-fill text-success me-2"></i>
+
+            System Status
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row text-center">
+
+            <div class="col-md-3">
+
+                <div class="display-5 text-success">
+
+                    <i class="bi bi-check-circle-fill"></i>
+
+                </div>
+
+                <h5 class="mt-3">
+
+                    Running
+
+                </h5>
+
+                <p class="text-muted">
+
+                    Application
+
+                </p>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="display-5 text-primary">
+
+                    <i class="bi bi-database-fill"></i>
+
+                </div>
+
+                <h5 class="mt-3">
+
+                    Connected
+
+                </h5>
+
+                <p class="text-muted">
+
+                    Database
+
+                </p>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="display-5 text-warning">
+
+                    <i class="bi bi-shield-lock-fill"></i>
+
+                </div>
+
+                <h5 class="mt-3">
+
+                    Secure
+
+                </h5>
+
+                <p class="text-muted">
+
+                    Authentication
+
+                </p>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="display-5 text-danger">
+
+                    <i class="bi bi-speedometer2"></i>
+
+                </div>
+
+                <h5 class="mt-3">
+
+                    Live
+
+                </h5>
+
+                <p class="text-muted">
+
+                    Analytics
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="text-center text-muted mt-5 mb-4">
+
+    Eventify Professional Event Management System
+
+</div>
+
+
+
+<button
+
+id="scrollTop"
+
+class="btn btn-primary rounded-circle shadow"
+
+style="position:fixed;bottom:20px;right:20px;display:none;width:55px;height:55px;z-index:999;">
+
+<i class="bi bi-arrow-up"></i>
+
+</button>
+
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded",function(){
+
+const scrollBtn=document.getElementById("scrollTop");
+
+window.addEventListener("scroll",function(){
+
+scrollBtn.style.display=window.scrollY>250?"block":"none";
+
+});
+
+scrollBtn.onclick=function(){
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+};
+
+
+
+if(typeof Chart!=="undefined"){
+
+const months=JSON.parse('{{ chart_months|escapejs }}');
+
+const events=JSON.parse('{{ event_chart_data|escapejs }}');
+
+const registrations=JSON.parse('{{ registration_chart_data|escapejs }}');
+
+
+
+new Chart(
+
+document.getElementById("eventsChart"),
+
+{
+
+type:"bar",
+
+data:{
+
+labels:months,
+
+datasets:[{
+
+label:"Events",
+
+data:events
+
+}]
+
+},
+
+options:{
+
+responsive:true
+
+}
+
+}
+
+);
+
+
+
+new Chart(
+
+document.getElementById("registrationsChart"),
+
+{
+
+type:"line",
+
+data:{
+
+labels:months,
+
+datasets:[{
+
+label:"Registrations",
+
+data:registrations,
+
+fill:false,
+
+tension:.35
+
+}]
+
+},
+
+options:{
+
+responsive:true
+
+}
+
+}
+
+);
+
+
+
+new Chart(
+
+document.getElementById("statusChart"),
+
+{
+
+type:"doughnut",
+
+data:{
+
+labels:["Published","Draft"],
+
+datasets:[{
+
+data:[
+
+Number('{{ published_events|default:0 }}'),
+
+Number('{{ pending_events|default:0 }}')
+
+]
+
+}]
+
+},
+
+options:{
+
+responsive:true
+
+}
+
+}
+
+);
+
+}
+
+});
+
+</script>
+
+{% endblock %}

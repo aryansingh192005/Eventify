@@ -1,0 +1,220 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+<meta charset="UTF-8">
+
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+
+<meta name="description"
+      content="Eventify - Professional Event Management System">
+
+
+
+<title>
+
+{% block title %}
+Eventify
+{% endblock %}
+
+</title>
+
+
+
+
+
+<!-- Google Fonts -->
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet">
+
+
+
+
+
+<!-- Bootstrap -->
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet">
+
+<link rel="icon" 
+href="{% static 'images/favicon.png' %}">
+
+
+
+<!-- Bootstrap Icons -->
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css"
+      rel="stylesheet">
+
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+
+
+<!-- Dashboard CSS -->
+
+
+
+
+
+{% block css %}
+
+{% endblock %}
+
+
+
+{% block auth_css %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body>
+
+
+
+
+<!-- Page Loader -->
+
+
+
+
+
+
+
+
+<!-- Navbar -->
+
+{% include "base/navbar.html" %}
+
+
+
+
+
+
+<main>
+
+
+{% if messages %}
+
+
+<div class="container mt-4">
+
+
+{% for message in messages %}
+
+
+<div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm"
+     role="alert">
+
+
+{{ message }}
+
+
+
+<button 
+type="button"
+class="btn-close"
+data-bs-dismiss="alert">
+
+</button>
+
+
+
+</div>
+
+
+
+{% endfor %}
+
+
+</div>
+
+
+{% endif %}
+
+
+
+
+
+
+
+{% block content %}
+
+{% endblock %}
+
+
+
+
+</main>
+
+
+
+
+
+
+
+<!-- Footer -->
+
+
+{% include "base/footer.html" %}
+
+
+
+
+
+
+
+<!-- Global Modals -->
+
+
+{% include "base/modals.html" %}
+
+<!-- Bootstrap JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+{% block js %}
+
+{% endblock %}
+
+
+
+</body>
+
+
+</html>

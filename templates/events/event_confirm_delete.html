@@ -1,0 +1,833 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}
+Delete Event
+{% endblock %}
+
+{% block dashboard_content %}
+
+<!-- =====================================================
+DELETE HERO
+===================================================== -->
+
+<div class="hero-banner danger-hero mb-4">
+
+    <div class="row align-items-center">
+
+        <div class="col-lg-8">
+
+            <span class="badge bg-light text-danger px-3 py-2 mb-3">
+
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+                Dangerous Action
+
+            </span>
+
+            <h1 class="fw-bold text-white mb-3">
+
+                Delete Event
+
+            </h1>
+
+            <p class="lead text-white-50 mb-4">
+
+                You are about to permanently delete this event.
+                This action cannot be undone and all associated
+                registrations and records may be lost.
+
+            </p>
+
+            <div class="d-flex flex-wrap gap-3">
+
+                <a href="{% url 'event_detail' event.slug %}"
+                   class="btn btn-light btn-lg">
+
+                    <i class="bi bi-arrow-left me-2"></i>
+
+                    Cancel
+
+                </a>
+
+                <button class="btn btn-outline-light btn-lg"
+                        disabled>
+
+                    <i class="bi bi-trash-fill me-2"></i>
+
+                    Permanent Delete
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4 text-center d-none d-lg-block">
+
+            <div class="position-relative">
+
+                <i class="bi bi-trash-fill"
+                   style="font-size:140px;
+                          opacity:.15;
+                          color:white;">
+
+                </i>
+
+                <div class="position-absolute top-50 start-50 translate-middle">
+
+                    <i class="bi bi-exclamation-octagon-fill"
+                       style="font-size:70px;
+                              color:white;">
+
+                    </i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+WARNING
+===================================================== -->
+
+<div class="alert alert-danger shadow-sm border-0 rounded-4 mb-4">
+
+    <div class="d-flex align-items-start">
+
+        <i class="bi bi-exclamation-circle-fill fs-2 me-3"></i>
+
+        <div>
+
+            <h5 class="fw-bold mb-2">
+
+                Warning
+
+            </h5>
+
+            <p class="mb-0">
+
+                Deleting this event is irreversible.
+                Please review the event information carefully before
+                continuing.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+EVENT PREVIEW
+===================================================== -->
+
+<div class="row g-4 mb-4">
+
+    <div class="col-lg-7">
+
+        <div class="card border-0 shadow-sm h-100">
+
+            {% if event.image %}
+
+            <img src="{{ event.image.url }}"
+                 class="card-img-top"
+                 style="height:300px;object-fit:cover;"
+                 alt="{{ event.title }}">
+
+            {% endif %}
+
+            <div class="card-body">
+
+                <span class="badge bg-primary mb-3">
+
+                    {{ event.category.name }}
+
+                </span>
+
+                <h2 class="fw-bold">
+
+                    {{ event.title }}
+
+                </h2>
+
+                <p class="text-muted">
+
+                    {{ event.description|truncatewords:35 }}
+
+                </p>
+
+                <hr>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>
+
+                            <i class="bi bi-calendar-event text-primary me-2"></i>
+
+                            Event Date
+
+                        </strong>
+
+                        <div class="text-muted">
+
+                            {{ event.event_date }}
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <strong>
+
+                            <i class="bi bi-clock text-success me-2"></i>
+
+                            Time
+
+                        </strong>
+
+                        <div class="text-muted">
+
+                            {{ event.start_time }}
+
+                            -
+
+                            {{ event.end_time }}
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <strong>
+
+                            <i class="bi bi-geo-alt text-danger me-2"></i>
+
+                            Venue
+
+                        </strong>
+
+                        <div class="text-muted">
+
+                            {{ event.venue }}
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <strong>
+
+                            <i class="bi bi-person-fill text-warning me-2"></i>
+
+                            Organizer
+
+                        </strong>
+
+                        <div class="text-muted">
+
+                            {{ event.organizer.get_full_name|default:event.organizer.username }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="col-lg-5">
+
+        <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-header bg-white">
+
+                <h5 class="fw-bold mb-0">
+
+                    <i class="bi bi-bar-chart-fill text-danger me-2"></i>
+
+                    Event Statistics
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="stats-card mb-3">
+
+                    <div class="d-flex justify-content-between">
+
+                        <span>
+
+                            Status
+
+                        </span>
+
+                        <strong>
+
+                            {{ event.status }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="stats-card mb-3">
+
+                    <div class="d-flex justify-content-between">
+
+                        <span>
+
+                            Category
+
+                        </span>
+
+                        <strong>
+
+                            {{ event.category.name }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="stats-card mb-3">
+
+                    <div class="d-flex justify-content-between">
+
+                        <span>
+
+                            Ticket Price
+
+                        </span>
+
+                        <strong>
+
+                            ₹{{ event.price }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="stats-card">
+
+                    <div class="d-flex justify-content-between">
+
+                        <span>
+
+                            Capacity
+
+                        </span>
+
+                        <strong>
+
+                            {{ event.max_capacity }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+DELETION IMPACT
+===================================================== -->
+
+<div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="fw-bold text-danger mb-0">
+
+            <i class="bi bi-shield-exclamation me-2"></i>
+
+            Deletion Impact
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row g-4">
+
+                        <!-- =========================
+            WHAT WILL BE REMOVED
+            ========================== -->
+
+            <div class="col-md-6">
+
+                <div class="border rounded-4 p-4 h-100">
+
+                    <h5 class="fw-bold text-danger mb-4">
+
+                        <i class="bi bi-trash3-fill me-2"></i>
+
+                        The following data will be deleted
+
+                    </h5>
+
+                    <div class="d-flex align-items-center mb-3">
+
+                        <i class="bi bi-check-circle-fill text-danger me-3 fs-5"></i>
+
+                        <span>
+
+                            Event information
+
+                        </span>
+
+                    </div>
+
+                    <div class="d-flex align-items-center mb-3">
+
+                        <i class="bi bi-check-circle-fill text-danger me-3 fs-5"></i>
+
+                        <span>
+
+                            Event banner image
+
+                        </span>
+
+                    </div>
+
+                    <div class="d-flex align-items-center mb-3">
+
+                        <i class="bi bi-check-circle-fill text-danger me-3 fs-5"></i>
+
+                        <span>
+
+                            Ticket information
+
+                        </span>
+
+                    </div>
+
+                    <div class="d-flex align-items-center mb-3">
+
+                        <i class="bi bi-check-circle-fill text-danger me-3 fs-5"></i>
+
+                        <span>
+
+                            Registration records
+
+                        </span>
+
+                    </div>
+
+                    <div class="d-flex align-items-center mb-3">
+
+                        <i class="bi bi-check-circle-fill text-danger me-3 fs-5"></i>
+
+                        <span>
+
+                            Reports & analytics
+
+                        </span>
+
+                    </div>
+
+                    <div class="d-flex align-items-center">
+
+                        <i class="bi bi-check-circle-fill text-danger me-3 fs-5"></i>
+
+                        <span>
+
+                            Notifications related to this event
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================
+            SAFETY INFORMATION
+            ========================== -->
+
+            <div class="col-md-6">
+
+                <div class="border rounded-4 p-4 h-100 bg-light">
+
+                    <h5 class="fw-bold mb-4">
+
+                        <i class="bi bi-shield-exclamation text-warning me-2"></i>
+
+                        Before You Continue
+
+                    </h5>
+
+                    <div class="alert alert-warning">
+
+                        <strong>
+
+                            Permanent Action
+
+                        </strong>
+
+                        <br>
+
+                        Deleted events cannot be recovered later.
+
+                    </div>
+
+                    <div class="alert alert-info">
+
+                        <strong>
+
+                            Registrations
+
+                        </strong>
+
+                        <br>
+
+                        Attendee registrations will also become inaccessible.
+
+                    </div>
+
+                    <div class="alert alert-secondary mb-0">
+
+                        <strong>
+
+                            Recommendation
+
+                        </strong>
+
+                        <br>
+
+                        If this event may be needed later,
+                        consider changing its status to
+                        <strong>Cancelled</strong>
+                        instead of deleting it.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+CONFIRM DELETE
+===================================================== -->
+
+<div class="card border-0 shadow-sm">
+
+    <div class="card-header bg-danger text-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-lock-fill me-2"></i>
+
+            Final Confirmation
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <p class="mb-4">
+
+            To confirm deletion,
+            type
+
+            <strong>
+
+                DELETE
+
+            </strong>
+
+            below.
+
+        </p>
+
+
+
+        <div class="mb-4">
+
+            <input
+
+                id="deleteConfirm"
+
+                type="text"
+
+                class="form-control form-control-lg"
+
+                placeholder="Type DELETE to continue">
+
+        </div>
+
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="d-flex flex-wrap gap-3 justify-content-end">
+
+                <a href="{% url 'event_detail' event.slug %}"
+
+                   class="btn btn-outline-secondary btn-lg">
+
+                    <i class="bi bi-arrow-left me-2"></i>
+
+                    Cancel
+
+                </a>
+
+                <button
+
+                    id="deleteButton"
+
+                    type="submit"
+
+                    class="btn btn-danger btn-lg"
+
+                    disabled>
+
+                    <i class="bi bi-trash-fill me-2"></i>
+
+                    Permanently Delete Event
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* ==========================================
+       DELETE CONFIRMATION
+    ========================================== */
+
+    const input = document.getElementById("deleteConfirm");
+
+    const button = document.getElementById("deleteButton");
+
+    if(input && button){
+
+        input.addEventListener("input", function(){
+
+            const value = input.value.trim();
+
+            if(value === "DELETE"){
+
+                button.disabled = false;
+
+                button.classList.remove("btn-danger");
+
+                button.classList.add("btn-outline-danger");
+
+            }
+
+            else{
+
+                button.disabled = true;
+
+                button.classList.remove("btn-outline-danger");
+
+                button.classList.add("btn-danger");
+
+            }
+
+        });
+
+    }
+
+
+
+    /* ==========================================
+       CARD ENTRANCE ANIMATION
+    ========================================== */
+
+    const cards = document.querySelectorAll(".card");
+
+    cards.forEach(function(card,index){
+
+        card.style.opacity = "0";
+
+        card.style.transform = "translateY(25px)";
+
+        setTimeout(function(){
+
+            card.style.transition = "all .45s ease";
+
+            card.style.opacity = "1";
+
+            card.style.transform = "translateY(0)";
+
+        }, index * 90);
+
+    });
+
+
+
+    /* ==========================================
+       BUTTON PRESS EFFECT
+    ========================================== */
+
+    document.querySelectorAll(".btn").forEach(function(btn){
+
+        btn.addEventListener("mousedown", function(){
+
+            btn.style.transform = "scale(.96)";
+
+        });
+
+        btn.addEventListener("mouseup", function(){
+
+            btn.style.transform = "";
+
+        });
+
+        btn.addEventListener("mouseleave", function(){
+
+            btn.style.transform = "";
+
+        });
+
+    });
+
+
+
+    /* ==========================================
+       CARD HOVER EFFECT
+    ========================================== */
+
+    document.querySelectorAll(".card").forEach(function(card){
+
+        card.addEventListener("mouseenter", function(){
+
+            card.style.transition = ".25s";
+
+            card.style.transform = "translateY(-4px)";
+
+            card.style.boxShadow = "0 18px 45px rgba(0,0,0,.12)";
+
+        });
+
+        card.addEventListener("mouseleave", function(){
+
+            card.style.transform = "translateY(0)";
+
+            card.style.boxShadow = "";
+
+        });
+
+    });
+
+
+
+    /* ==========================================
+       DANGER INPUT BORDER
+    ========================================== */
+
+    if(input){
+
+        input.addEventListener("keyup", function(){
+
+            if(input.value.trim() === "DELETE"){
+
+                input.classList.remove("is-invalid");
+
+                input.classList.add("is-valid");
+
+            }
+
+            else{
+
+                input.classList.remove("is-valid");
+
+                if(input.value.length > 0){
+
+                    input.classList.add("is-invalid");
+
+                }
+
+                else{
+
+                    input.classList.remove("is-invalid");
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+
+    /* ==========================================
+       BOOTSTRAP TOOLTIPS
+    ========================================== */
+
+    if(window.bootstrap){
+
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(el){
+
+            new bootstrap.Tooltip(el);
+
+        });
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

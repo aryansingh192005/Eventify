@@ -1,0 +1,899 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block title %}
+My Events
+{% endblock %}
+
+{% block dashboard_content %}
+
+<!-- ==========================================
+PAGE HEADER
+========================================== -->
+
+<div class="page-header d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+    <div>
+
+        <h2 class="fw-bold">
+
+            <i class="bi bi-calendar-event text-primary me-2"></i>
+
+            My Events
+
+        </h2>
+
+        <p class="text-muted mb-0">
+
+            Manage all your events from one professional workspace.
+
+        </p>
+
+    </div>
+
+    <div>
+
+        <a href="{% url 'event_create' %}"
+
+           class="btn btn-primary">
+
+            <i class="bi bi-plus-circle me-2"></i>
+
+            Create Event
+
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+STATISTICS
+========================================== -->
+
+<div class="row g-4 mb-4">
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-calendar-event-fill"></i>
+
+            </div>
+
+            <h2>
+
+                {{ total_events }}
+
+            </h2>
+
+            <p>
+
+                Total Events
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-people-fill"></i>
+
+            </div>
+
+            <h2>
+
+                {{ total_registrations }}
+
+            </h2>
+
+            <p>
+
+                Registrations
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-check-circle-fill"></i>
+
+            </div>
+
+            <h2>
+
+                {{ active_events }}
+
+            </h2>
+
+            <p>
+
+                Active Events
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-chair-fill"></i>
+
+            </div>
+
+            <h2>
+
+                {{ total_available_seats }}
+
+            </h2>
+
+            <p>
+
+                Seats Available
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+SEARCH & FILTERS
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mb-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-search text-primary me-2"></i>
+
+            Search & Filters
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <form method="GET">
+
+            <div class="row g-3 align-items-end">
+
+                <div class="col-lg-5">
+
+                    <label class="form-label">
+
+                        Search Event
+
+                    </label>
+
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ request.GET.search }}"
+                        class="form-control"
+                        placeholder="Search by event title...">
+
+                </div>
+
+                <div class="col-lg-3">
+
+                    <label class="form-label">
+
+                        Status
+
+                    </label>
+
+                    <select
+                        name="status"
+                        class="form-select">
+
+                        <option value="">
+
+                            All Status
+
+                        </option>
+
+                        <option value="PUBLISHED"
+                        {% if request.GET.status == "PUBLISHED" %}
+                        selected
+                        {% endif %}>
+
+                            Published
+
+                        </option>
+
+                        <option value="DRAFT"
+                        {% if request.GET.status == "DRAFT" %}
+                        selected
+                        {% endif %}>
+
+                            Draft
+
+                        </option>
+
+                        <option value="CANCELLED"
+                        {% if request.GET.status == "CANCELLED" %}
+                        selected
+                        {% endif %}>
+
+                            Cancelled
+
+                        </option>
+
+                        <option value="COMPLETED"
+                        {% if request.GET.status == "COMPLETED" %}
+                        selected
+                        {% endif %}>
+
+                            Completed
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-lg-4">
+
+                    <div class="d-grid">
+
+                        <button
+                            class="btn btn-primary">
+
+                            <i class="bi bi-search me-2"></i>
+
+                            Search Events
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+EVENT TABLE
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4">
+
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-table text-success me-2"></i>
+
+            My Events
+
+        </h5>
+
+        <span class="badge bg-primary">
+
+            {{ total_events }} Events
+
+        </span>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table table-hover align-middle mb-0">
+
+            <thead class="table-light">
+
+                <tr>
+
+                    <th>Event</th>
+
+                    <th>Date</th>
+
+                    <th>Venue</th>
+
+                    <th>Status</th>
+
+                    <th>Seats</th>
+
+                    <th>Price</th>
+
+                    <th class="text-center">
+
+                        Actions
+
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for event in events %}
+
+<tr>
+
+    <!-- Event -->
+
+    <td>
+
+        <div class="d-flex align-items-center">
+
+            {% if event.image %}
+
+                <img src="{{ event.image.url }}"
+                     class="rounded shadow-sm me-3"
+                     style="width:70px;height:70px;object-fit:cover;">
+
+            {% else %}
+
+                <div class="bg-light rounded d-flex align-items-center justify-content-center me-3"
+                     style="width:70px;height:70px;">
+
+                    <i class="bi bi-calendar-event fs-3 text-primary"></i>
+
+                </div>
+
+            {% endif %}
+
+            <div>
+
+                <h6 class="mb-1">
+
+                    {{ event.title }}
+
+                </h6>
+
+                <small class="text-muted">
+
+                    {{ event.category.name }}
+
+                </small>
+
+            </div>
+
+        </div>
+
+    </td>
+
+
+
+    <!-- Date -->
+
+    <td>
+
+        {{ event.event_date }}
+
+        <br>
+
+        <small class="text-muted">
+
+            {{ event.start_time }}
+
+        </small>
+
+    </td>
+
+
+
+    <!-- Venue -->
+
+    <td>
+
+        {{ event.venue }}
+
+    </td>
+
+
+
+    <!-- Status -->
+
+    <td>
+
+        {% if event.status == "PUBLISHED" %}
+
+            <span class="badge bg-success">
+
+                Published
+
+            </span>
+
+        {% elif event.status == "DRAFT" %}
+
+            <span class="badge bg-warning text-dark">
+
+                Draft
+
+            </span>
+
+        {% elif event.status == "COMPLETED" %}
+
+            <span class="badge bg-primary">
+
+                Completed
+
+            </span>
+
+        {% else %}
+
+            <span class="badge bg-danger">
+
+                Cancelled
+
+            </span>
+
+        {% endif %}
+
+    </td>
+
+
+
+    <!-- Seats -->
+
+    <td>
+
+        {{ event.available_seats }}
+
+        /
+
+        {{ event.max_capacity }}
+
+    </td>
+
+
+
+    <!-- Price -->
+
+    <td>
+
+        ₹{{ event.price }}
+
+    </td>
+
+
+
+    <!-- Actions -->
+
+    <td class="text-center">
+
+    <div class="btn-group btn-group-sm">
+
+    {% if event.slug %}
+
+
+        <!-- VIEW -->
+
+        <a href="{% url 'event_detail' event.slug %}"
+           class="btn btn-outline-primary"
+           title="View Event">
+
+            <i class="bi bi-eye"></i>
+
+        </a>
+
+
+
+        <!-- QR CHECK-IN -->
+
+        <a href="{% url 'qr_checkin' event.slug %}"
+           class="btn btn-outline-success"
+           title="Scan Attendee QR">
+
+            <i class="bi bi-qr-code-scan"></i>
+
+        </a>
+
+
+
+        <!-- EDIT -->
+
+        <a href="{% url 'event_update' event.slug %}"
+           class="btn btn-outline-warning"
+           title="Edit Event">
+
+            <i class="bi bi-pencil"></i>
+
+        </a>
+
+
+
+        <!-- DELETE -->
+
+        <form method="POST"
+              action="{% url 'event_delete' event.slug %}"
+              style="display:inline;">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="btn btn-outline-danger"
+                    title="Delete Event"
+                    onclick="return confirm('Delete this event?');">
+
+                <i class="bi bi-trash"></i>
+
+            </button>
+
+        </form>
+
+
+    {% else %}
+
+        <span class="badge bg-danger">
+
+            Missing Slug
+
+        </span>
+
+    {% endif %}
+
+</div>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+    <td colspan="7">
+
+        <div class="text-center py-5">
+
+            <i class="bi bi-calendar-x display-1 text-muted"></i>
+
+            <h4 class="mt-3">
+
+                No Events Found
+
+            </h4>
+
+            <p class="text-muted">
+
+                You haven't created any events yet.
+
+            </p>
+
+            <a href="{% url 'event_create' %}"
+               class="btn btn-primary">
+
+                <i class="bi bi-plus-circle me-2"></i>
+
+                Create First Event
+
+            </a>
+
+        </div>
+
+    </td>
+
+</tr>
+
+{% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+QUICK ACTIONS
+========================================== -->
+
+<div class="row g-4 mt-4">
+
+    <div class="col-lg-3 col-md-6">
+
+        <a href="{% url 'event_create' %}"
+           class="card border-0 shadow-sm rounded-4 text-decoration-none h-100">
+
+            <div class="card-body text-center">
+
+                <div class="display-5 text-success mb-3">
+
+                    <i class="bi bi-plus-circle-fill"></i>
+
+                </div>
+
+                <h5>
+
+                    Create Event
+
+                </h5>
+
+                <p class="text-muted mb-0">
+
+                    Publish a new event.
+
+                </p>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <div class="col-lg-3 col-md-6">
+
+        <a href="{% url 'calendar_view' %}"
+           class="card border-0 shadow-sm rounded-4 text-decoration-none h-100">
+
+            <div class="card-body text-center">
+
+                <div class="display-5 text-primary mb-3">
+
+                    <i class="bi bi-calendar3-fill"></i>
+
+                </div>
+
+                <h5>
+
+                    Calendar
+
+                </h5>
+
+                <p class="text-muted mb-0">
+
+                    View upcoming events.
+
+                </p>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <div class="col-lg-3 col-md-6">
+
+        <a href="{% url 'reports_dashboard' %}"
+           class="card border-0 shadow-sm rounded-4 text-decoration-none h-100">
+
+            <div class="card-body text-center">
+
+                <div class="display-5 text-warning mb-3">
+
+                    <i class="bi bi-bar-chart-fill"></i>
+
+                </div>
+
+                <h5>
+
+                    Reports
+
+                </h5>
+
+                <p class="text-muted mb-0">
+
+                    View analytics.
+
+                </p>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <div class="col-lg-3 col-md-6">
+
+        <a href="{% url 'dashboard_home' %}"
+           class="card border-0 shadow-sm rounded-4 text-decoration-none h-100">
+
+            <div class="card-body text-center">
+
+                <div class="display-5 text-danger mb-3">
+
+                    <i class="bi bi-speedometer2"></i>
+
+                </div>
+
+                <h5>
+
+                    Dashboard
+
+                </h5>
+
+                <p class="text-muted mb-0">
+
+                    Return to dashboard.
+
+                </p>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+ORGANIZER SUMMARY
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mt-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-clipboard-data text-success me-2"></i>
+
+            Organizer Summary
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row text-center">
+
+            <div class="col-md-4">
+
+                <h2 class="text-primary">
+
+                    {{ total_events }}
+
+                </h2>
+
+                <p class="text-muted">
+
+                    Total Events
+
+                </p>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <h2 class="text-success">
+
+                    {{ total_registrations }}
+
+                </h2>
+
+                <p class="text-muted">
+
+                    Registrations
+
+                </p>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <h2 class="text-warning">
+
+                    {{ active_events }}
+
+                </h2>
+
+                <p class="text-muted">
+
+                    Active Events
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+PAGE FOOTER
+========================================== -->
+
+<div class="text-center mt-5 mb-3">
+
+    <small class="text-muted">
+
+        Eventify Organizer Panel • Professional Event Management System
+
+    </small>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Enable Bootstrap Tooltips
+
+    const tooltipTriggerList = [].slice.call(
+
+        document.querySelectorAll('[title]')
+
+    );
+
+    tooltipTriggerList.forEach(function (el) {
+
+        new bootstrap.Tooltip(el);
+
+    });
+
+
+
+    // Client-side search (works together with server-side search)
+
+    const searchInput = document.querySelector('input[name="search"]');
+
+    if (searchInput) {
+
+        searchInput.addEventListener("keyup", function () {
+
+            const value = this.value.toLowerCase();
+
+            document.querySelectorAll("tbody tr").forEach(function (row) {
+
+                const text = row.innerText.toLowerCase();
+
+                row.style.display = text.includes(value) ? "" : "none";
+
+            });
+
+        });
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

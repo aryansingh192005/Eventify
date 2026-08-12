@@ -1,0 +1,1345 @@
+{% load static %}
+
+<link rel="stylesheet"
+      href="{% static 'css/dashboard.css' %}">
+
+<script>
+window.chartMonths = {{ chart_months|default:"[]"|safe }};
+window.eventChartData = {{ event_chart_data|default:"[]"|safe }};
+window.registrationChartData = {{ registration_chart_data|default:"[]"|safe }};
+</script>
+
+
+
+<!-- ======================================================
+HERO SECTION
+====================================================== -->
+
+<div class="hero-banner mb-4">
+
+    <div class="row align-items-center">
+
+        <div class="col-lg-8">
+
+            <span class="badge bg-light text-primary px-3 py-2 mb-3">
+
+                <i class="bi bi-megaphone-fill me-2"></i>
+
+                Organizer Dashboard
+
+            </span>
+
+            <h1 class="fw-bold mb-3">
+
+                Welcome back,
+                {{ request.user.first_name|default:request.user.username }} 👋
+
+            </h1>
+
+            <p class="lead mb-4">
+
+                Create events, manage registrations, monitor attendees,
+                and grow your event community from one professional workspace.
+
+            </p>
+
+            <div class="d-flex flex-wrap gap-3">
+
+                <a href="{% url 'event_create' %}"
+                   class="btn btn-light btn-lg">
+
+                    <i class="bi bi-plus-circle-fill me-2"></i>
+
+                    Create Event
+
+                </a>
+
+                <a href="{% url 'my_events' %}"
+                   class="btn btn-outline-light btn-lg">
+
+                    <i class="bi bi-kanban-fill me-2"></i>
+
+                    My Events
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4 text-center d-none d-lg-block">
+
+            <div class="position-relative">
+
+                <i class="bi bi-megaphone-fill"
+                   style="font-size:130px;color:white;opacity:.15;"></i>
+
+                <div class="position-absolute top-50 start-50 translate-middle">
+
+                    <i class="bi bi-calendar2-event-fill"
+                       style="font-size:60px;color:white;"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ======================================================
+STATISTICS
+====================================================== -->
+
+<div class="row g-4 mb-4">
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stats-card h-100">
+
+            <div class="d-flex justify-content-between">
+
+                <div>
+
+                    <div class="stats-title">
+
+                        Total Events
+
+                    </div>
+
+                    <div class="stats-number">
+
+                        {{ total_events|default:0 }}
+
+                    </div>
+
+                    <div class="stats-footer">
+
+                        Created Events
+
+                    </div>
+
+                </div>
+
+                <div class="stats-icon stats-primary">
+
+                    <i class="bi bi-calendar-event-fill"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stats-card h-100">
+
+            <div class="d-flex justify-content-between">
+
+                <div>
+
+                    <div class="stats-title">
+
+                        Registrations
+
+                    </div>
+
+                    <div class="stats-number">
+
+                        {{ total_registrations|default:0 }}
+
+                    </div>
+
+                    <div class="stats-footer">
+
+                        Total Attendees
+
+                    </div>
+
+                </div>
+
+                <div class="stats-icon stats-success">
+
+                    <i class="bi bi-people-fill"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stats-card h-100">
+
+            <div class="d-flex justify-content-between">
+
+                <div>
+
+                    <div class="stats-title">
+
+                        Upcoming Events
+
+                    </div>
+
+                    <div class="stats-number">
+
+                        {{ upcoming_events|default:0 }}
+
+                    </div>
+
+                    <div class="stats-footer">
+
+                        Scheduled
+
+                    </div>
+
+                </div>
+
+                <div class="stats-icon stats-warning">
+
+                    <i class="bi bi-calendar-check-fill"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="col-xl-3 col-md-6">
+
+        <div class="stats-card h-100">
+
+            <div class="d-flex justify-content-between">
+
+                <div>
+
+                    <div class="stats-title">
+
+                        Revenue
+
+                    </div>
+
+                    <div class="stats-number">
+
+                        ₹{{ total_revenue|default:0 }}
+
+                    </div>
+
+                    <div class="stats-footer">
+
+                        Total Earnings
+
+                    </div>
+
+                </div>
+
+                <div class="stats-icon stats-danger">
+
+                    <i class="bi bi-currency-rupee"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ======================================================
+ANALYTICS
+====================================================== -->
+
+<div class="row g-4 mb-4">
+
+    <div class="col-xl-6">
+
+        <div class="card h-100">
+
+            <div class="card-header d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h5 class="mb-1">
+
+                        <i class="bi bi-bar-chart-line-fill text-primary me-2"></i>
+
+                        Event Analytics
+
+                    </h5>
+
+                    <small class="text-muted">
+
+                        Monthly Event Overview
+
+                    </small>
+
+                </div>
+
+                <span class="badge bg-primary">
+
+                    Monthly
+
+                </span>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="chart-container"
+                     style="height:320px;">
+
+                    <canvas id="eventsChart"></canvas>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white">
+
+                <div class="row text-center">
+
+                    <div class="col">
+
+                        <h6 class="fw-bold">
+
+                            {{ total_events|default:0 }}
+
+                        </h6>
+
+                        <small class="text-muted">
+
+                            Events
+
+                        </small>
+
+                    </div>
+
+                    <div class="col">
+
+                        <h6 class="fw-bold text-primary">
+
+                            {{ upcoming_events|default:0 }}
+
+                        </h6>
+
+                        <small class="text-muted">
+
+                            Upcoming
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="col-xl-6">
+
+        <div class="card h-100">
+
+            <div class="card-header d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h5 class="mb-1">
+
+                        <i class="bi bi-graph-up-arrow text-success me-2"></i>
+
+                        Registration Analytics
+
+                    </h5>
+
+                    <small class="text-muted">
+
+                        Monthly Registration Growth
+
+                    </small>
+
+                </div>
+
+                <span class="badge bg-success">
+
+                    Growth
+
+                </span>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="chart-container"
+                     style="height:320px;">
+
+                    <canvas id="registrationsChart"></canvas>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white">
+
+                <div class="row text-center">
+
+                    <div class="col">
+
+                        <h6 class="fw-bold">
+
+                            {{ total_registrations|default:0 }}
+
+                        </h6>
+
+                        <small class="text-muted">
+
+                            Registrations
+
+                        </small>
+
+                    </div>
+
+                    <div class="col">
+
+                        <h6 class="fw-bold text-success">
+
+                            ₹{{ total_revenue|default:0 }}
+
+                        </h6>
+
+                        <small class="text-muted">
+
+                            Revenue
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ======================================================
+RECENT EVENTS
+====================================================== -->
+
+<div class="row g-4 mb-4">
+
+         <!-- ======================================================
+    RECENT EVENTS
+    ====================================================== -->
+
+    <div class="col-xl-6">
+
+        <div class="card h-100">
+
+            <div class="card-header d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h5 class="mb-1">
+
+                        <i class="bi bi-calendar-event-fill text-primary me-2"></i>
+
+                        Recent Events
+
+                    </h5>
+
+                    <small class="text-muted">
+
+                        Recently created and managed events
+
+                    </small>
+
+                </div>
+
+                <a href="{% url 'my_events' %}"
+                   class="btn btn-outline-primary btn-sm">
+
+                    <i class="bi bi-arrow-right-circle me-1"></i>
+
+                    View All
+
+                </a>
+
+            </div>
+
+            <div class="card-body">
+
+                {% for event in recent_events %}
+
+                <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="avatar me-3">
+
+                            {{ event.title|slice:":1"|upper }}
+
+                        </div>
+
+                        <div>
+
+                            <h6 class="mb-1">
+
+                                {{ event.title }}
+
+                            </h6>
+
+                            <small class="text-muted">
+
+                                <i class="bi bi-calendar3 me-1"></i>
+
+                                {{ event.event_date }}
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        {% if event.status == "Published" %}
+
+                            <span class="badge bg-success">
+
+                                {{ event.status }}
+
+                            </span>
+
+                        {% elif event.status == "Draft" %}
+
+                            <span class="badge bg-warning text-dark">
+
+                                {{ event.status }}
+
+                            </span>
+
+                        {% elif event.status == "Cancelled" %}
+
+                            <span class="badge bg-danger">
+
+                                {{ event.status }}
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-primary">
+
+                                {{ event.status }}
+
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <div class="text-center py-5">
+
+                    <i class="bi bi-calendar-x display-4 text-muted"></i>
+
+                    <h5 class="mt-3">
+
+                        No Events Created
+
+                    </h5>
+
+                    <p class="text-muted mb-4">
+
+                        Create your first event to get started.
+
+                    </p>
+
+                    <a href="{% url 'event_create' %}"
+                       class="btn btn-primary">
+
+                        <i class="bi bi-plus-circle me-2"></i>
+
+                        Create Event
+
+                    </a>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================================================
+    RECENT REGISTRATIONS
+    ====================================================== -->
+
+    <div class="col-xl-6">
+
+        <div class="card h-100">
+
+            <div class="card-header">
+
+                <h5 class="mb-1">
+
+                    <i class="bi bi-person-check-fill text-success me-2"></i>
+
+                    Recent Registrations
+
+                </h5>
+
+                <small class="text-muted">
+
+                    Latest attendee registrations
+
+                </small>
+
+            </div>
+
+            <div class="card-body">
+
+                {% for registration in recent_registrations %}
+
+                <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="avatar me-3">
+
+                            {{ registration.attendee.username|slice:":1"|upper }}
+
+                        </div>
+
+                        <div>
+
+                            <h6 class="mb-1">
+
+                                {{ registration.attendee.get_full_name|default:registration.attendee.username }}
+
+                            </h6>
+
+                            <small class="text-muted">
+
+                                {{ registration.event.title }}
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <span class="badge bg-success">
+
+                        {{ registration.status }}
+
+                    </span>
+
+                </div>
+
+                {% empty %}
+
+                <div class="text-center py-5">
+
+                    <i class="bi bi-person-x display-4 text-muted"></i>
+
+                    <h5 class="mt-3">
+
+                        No Registrations Yet
+
+                    </h5>
+
+                    <p class="text-muted">
+
+                        Registrations will appear here.
+
+                    </p>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ======================================================
+UPCOMING EVENTS
+====================================================== -->
+
+<div class="card mb-4">
+
+    <div class="card-header d-flex justify-content-between align-items-center">
+
+        <div>
+
+            <h5 class="mb-1">
+
+                <i class="bi bi-calendar-check-fill text-primary me-2"></i>
+
+                Upcoming Events
+
+            </h5>
+
+            <small class="text-muted">
+
+                Scheduled events
+
+            </small>
+
+        </div>
+
+        <a href="{% url 'my_events' %}"
+           class="btn btn-outline-primary btn-sm">
+
+            Manage Events
+
+        </a>
+
+    </div>
+
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Event</th>
+
+                        <th>Date</th>
+
+                        <th>Seats</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for event in upcoming_event_list %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="d-flex align-items-center">
+
+                                <div class="avatar me-3">
+
+                                    {{ event.title|slice:":1"|upper }}
+
+                                </div>
+
+                                <div>
+
+                                    <h6 class="mb-1">
+
+                                        {{ event.title }}
+
+                                    </h6>
+
+                                    <small class="text-muted">
+
+                                        {{ event.category }}
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            {{ event.event_date }}
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-info">
+
+                                {{ event.available_seats }}
+
+                            </span>
+
+                            <small class="text-muted">
+
+                                / {{ event.max_capacity }}
+
+                            </small>
+
+                        </td>
+
+                        <td>
+
+                            {% if event.status == "Published" %}
+
+                                <span class="badge bg-success">
+
+                                    {{ event.status }}
+
+                                </span>
+
+                            {% elif event.status == "Draft" %}
+
+                                <span class="badge bg-warning text-dark">
+
+                                    {{ event.status }}
+
+                                </span>
+
+                            {% elif event.status == "Cancelled" %}
+
+                                <span class="badge bg-danger">
+
+                                    {{ event.status }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-primary">
+
+                                    {{ event.status }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="4"
+                            class="text-center py-5 text-muted">
+
+                            No upcoming events.
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ======================================================
+ORGANIZER ACTION CENTER
+====================================================== -->
+
+<div class="card">
+
+    <div class="card-header">
+
+        <h5 class="mb-1">
+
+            <i class="bi bi-lightning-charge-fill text-warning me-2"></i>
+
+            Organizer Action Center
+
+        </h5>
+
+        <small class="text-muted">
+
+            Frequently used actions
+
+        </small>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row g-4">
+
+            <div class="col-lg-4">
+
+                <a href="{% url 'event_create' %}"
+                   class="text-decoration-none">
+
+                    <div class="stats-card text-center h-100">
+
+                        <div class="stats-icon stats-primary mx-auto">
+
+                            <i class="bi bi-plus-circle-fill"></i>
+
+                        </div>
+
+                        <h5>
+
+                            Create Event
+
+                        </h5>
+
+                        <p class="mb-0">
+
+                            Publish a new event
+
+                        </p>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <a href="{% url 'my_events' %}"
+                   class="text-decoration-none">
+
+                    <div class="stats-card text-center h-100">
+
+                        <div class="stats-icon stats-success mx-auto">
+
+                            <i class="bi bi-kanban-fill"></i>
+
+                        </div>
+
+                        <h5>
+
+                            My Events
+
+                        </h5>
+
+                        <p class="mb-0">
+
+                            Manage existing events
+
+                        </p>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <a href="{% url 'reports_dashboard' %}"
+                   class="text-decoration-none">
+
+                    <div class="stats-card text-center h-100">
+
+                        <div class="stats-icon stats-warning mx-auto">
+
+                            <i class="bi bi-bar-chart-line-fill"></i>
+
+                        </div>
+
+                        <h5>
+
+                            Reports
+
+                        </h5>
+
+                        <p class="mb-0">
+
+                            View performance reports
+
+                        </p>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================================
+       COMMON CHART OPTIONS
+    ===================================================== */
+
+    const commonOptions = {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+
+                display: true,
+
+                position: "top",
+
+                labels: {
+
+                    usePointStyle: true,
+
+                    boxWidth: 10,
+
+                    padding: 20,
+
+                    font: {
+
+                        family: "Poppins",
+
+                        size: 12
+
+                    }
+
+                }
+
+            }
+
+        },
+
+        scales: {
+
+            x: {
+
+                grid: {
+
+                    display: false
+
+                },
+
+                ticks: {
+
+                    font: {
+
+                        family: "Poppins"
+
+                    }
+
+                }
+
+            },
+
+            y: {
+
+                beginAtZero: true,
+
+                grid: {
+
+                    color: "#EEF2F7"
+
+                },
+
+                ticks: {
+
+                    font: {
+
+                        family: "Poppins"
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    };
+
+
+
+    /* =====================================================
+       EVENTS CHART
+    ===================================================== */
+
+    const eventsCanvas = document.getElementById("eventsChart");
+
+    if (eventsCanvas) {
+
+        const ctx = eventsCanvas.getContext("2d");
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+
+        gradient.addColorStop(0, "rgba(79,70,229,.45)");
+        gradient.addColorStop(1, "rgba(79,70,229,.05)");
+
+        new Chart(ctx, {
+
+            type: "bar",
+
+            data: {
+
+                labels: window.chartMonths,
+
+                datasets: [{
+
+                    label: "Events",
+
+                    data: window.eventChartData,
+
+                    backgroundColor: gradient,
+
+                    borderColor: "#4F46E5",
+
+                    borderWidth: 2,
+
+                    borderRadius: 8,
+
+                    hoverBorderWidth: 3
+
+                }]
+
+            },
+
+            options: commonOptions
+
+        });
+
+    }
+
+
+
+    /* =====================================================
+       REGISTRATION CHART
+    ===================================================== */
+
+    const registrationsCanvas = document.getElementById("registrationsChart");
+
+    if (registrationsCanvas) {
+
+        const ctx = registrationsCanvas.getContext("2d");
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+
+        gradient.addColorStop(0, "rgba(22,163,74,.40)");
+        gradient.addColorStop(1, "rgba(22,163,74,.05)");
+
+        new Chart(ctx, {
+
+            type: "line",
+
+            data: {
+
+                labels: window.chartMonths,
+
+                datasets: [{
+
+                    label: "Registrations",
+
+                    data: window.registrationChartData,
+
+                    borderColor: "#16A34A",
+
+                    backgroundColor: gradient,
+
+                    fill: true,
+
+                    tension: .4,
+
+                    pointRadius: 5,
+
+                    pointHoverRadius: 8,
+
+                    pointBackgroundColor: "#16A34A"
+
+                }]
+
+            },
+
+            options: commonOptions
+
+        });
+
+    }
+
+
+
+    /* =====================================================
+       COUNT ANIMATION
+    ===================================================== */
+
+    document.querySelectorAll(".stats-number").forEach(function(counter){
+
+        const original = counter.innerText.trim();
+
+        const currency = original.includes("₹");
+
+        const target = parseInt(original.replace(/[^\d]/g,"")) || 0;
+
+        if(target === 0) return;
+
+        let current = 0;
+
+        const duration = 1200;
+
+        const increment = Math.max(1, Math.ceil(target / (duration / 16)));
+
+        function animate(){
+
+            current += increment;
+
+            if(current >= target){
+
+                current = target;
+
+            }
+
+            counter.innerText = currency
+                ? "₹" + current.toLocaleString()
+                : current.toLocaleString();
+
+            if(current < target){
+
+                requestAnimationFrame(animate);
+
+            }
+
+        }
+
+        animate();
+
+    });
+
+
+
+    /* =====================================================
+       CARD ENTRANCE
+    ===================================================== */
+
+    const cards = document.querySelectorAll(".card,.stats-card");
+
+    cards.forEach(function(card,index){
+
+        card.style.opacity="0";
+
+        card.style.transform="translateY(20px)";
+
+        setTimeout(function(){
+
+            card.style.transition="all .45s ease";
+
+            card.style.opacity="1";
+
+            card.style.transform="translateY(0)";
+
+        },index*70);
+
+    });
+
+
+
+    /* =====================================================
+       STATS HOVER
+    ===================================================== */
+
+    document.querySelectorAll(".stats-card").forEach(function(card){
+
+        card.addEventListener("mouseenter",function(){
+
+            card.style.transform="translateY(-6px)";
+
+        });
+
+        card.addEventListener("mouseleave",function(){
+
+            card.style.transform="translateY(0)";
+
+        });
+
+    });
+
+
+
+    /* =====================================================
+       TABLE ROW EFFECT
+    ===================================================== */
+
+    document.querySelectorAll("tbody tr").forEach(function(row){
+
+        row.style.transition=".25s";
+
+    });
+
+
+
+    /* =====================================================
+       BOOTSTRAP TOOLTIPS
+    ===================================================== */
+
+    if(window.bootstrap){
+
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(el){
+
+            new bootstrap.Tooltip(el);
+
+        });
+
+    }
+
+});
+
+</script>

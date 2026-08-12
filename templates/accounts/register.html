@@ -1,0 +1,116 @@
+{% extends "base/base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+Create Account | Eventify
+{% endblock %}
+
+
+
+{% block auth_css %}
+
+<link rel="stylesheet"
+      href="{% static 'css/auth.css' %}">
+
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+
+<section class="auth-page">
+
+
+<div class="auth-container">
+
+
+
+<div class="auth-card">
+
+
+
+<div class="auth-brand">
+
+<div class="auth-logo">
+
+<i class="bi bi-calendar-event-fill"></i>
+
+</div>
+
+
+<h2>
+Create Account
+</h2>
+
+
+<p>
+Join Eventify and start managing amazing events.
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<form method="POST">
+
+{% csrf_token %}
+
+
+{{ form|crispy }}
+
+
+
+<button class="auth-btn">
+
+<i class="bi bi-person-plus me-2"></i>
+
+Create Account
+
+</button>
+
+
+</form>
+
+
+
+
+
+<div class="auth-footer">
+
+
+Already have an account?
+
+
+<a href="{% url 'login' %}">
+Login here
+</a>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+{% endblock %}

@@ -1,0 +1,1008 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}
+My Registrations
+{% endblock %}
+{% block css %}
+
+<style>
+
+.dashboard-hero{
+
+    background:linear-gradient(135deg,#4f46e5,#2563eb);
+
+    border-radius:28px;
+
+    padding:50px;
+
+    box-shadow:0 25px 60px rgba(79,70,229,.22);
+
+    overflow:hidden;
+
+    position:relative;
+
+}
+
+.dashboard-hero::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:320px;
+
+    height:320px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.08);
+
+    top:-120px;
+
+    right:-80px;
+
+}
+
+.glass-card{
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(16px);
+
+    border:1px solid rgba(255,255,255,.15);
+
+}
+
+.stat-card{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    transition:.3s;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+    height:100%;
+
+}
+
+.stat-card:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.stat-icon{
+
+    width:65px;
+
+    height:65px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:linear-gradient(135deg,#4f46e5,#2563eb);
+
+    color:#fff;
+
+    font-size:1.4rem;
+
+}
+
+.bg-success-gradient{
+
+    background:linear-gradient(135deg,#22c55e,#16a34a);
+
+}
+
+.bg-warning-gradient{
+
+    background:linear-gradient(135deg,#f59e0b,#ea580c);
+
+}
+
+.bg-danger-gradient{
+
+    background:linear-gradient(135deg,#ef4444,#dc2626);
+
+}
+
+.stat-card h2{
+
+    margin:0;
+
+    font-size:2rem;
+
+    font-weight:700;
+
+}
+
+.stat-card small{
+
+    color:#6b7280;
+
+}
+
+.dashboard-widget{
+
+    background:#fff;
+
+    border-radius:22px;
+
+    padding:30px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+
+.card{
+
+    transition:.35s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 25px 50px rgba(0,0,0,.12);
+
+}
+
+.card-img-top{
+
+    transition:.4s;
+
+}
+
+.card:hover .card-img-top{
+
+    transform:scale(1.04);
+
+}
+
+.badge{
+
+    font-weight:600;
+
+    padding:8px 14px;
+
+    border-radius:30px;
+
+}
+
+.btn{
+
+    border-radius:12px;
+
+    font-weight:600;
+
+}
+
+.btn-primary{
+
+    background:#4f46e5;
+
+    border:none;
+
+}
+
+.btn-primary:hover{
+
+    background:#4338ca;
+
+}
+
+.bg-light{
+
+    background:#f8fafc!important;
+
+}
+
+.input-group-text{
+
+    background:#fff;
+
+    border-right:none;
+
+}
+
+.form-control{
+
+    border-left:none;
+
+}
+
+.form-control:focus{
+
+    box-shadow:none;
+
+    border-color:#dee2e6;
+
+}
+
+.form-select:focus{
+
+    box-shadow:none;
+
+}
+
+.card-body{
+
+    padding:28px;
+
+}
+
+.card hr{
+
+    opacity:.1;
+
+}
+
+.card strong{
+
+    color:#111827;
+
+}
+
+.card small{
+
+    color:#6b7280;
+
+}
+
+@media(max-width:991px){
+
+.dashboard-hero{
+
+padding:35px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.dashboard-hero{
+
+padding:28px;
+
+}
+
+.stat-card{
+
+padding:20px;
+
+}
+
+}
+
+</style>
+
+{% endblock %}
+{% block dashboard_content %}
+
+<!-- ==========================================
+HERO
+========================================== -->
+
+<div class="dashboard-hero mb-4">
+
+    <div class="row align-items-center">
+
+        <div class="col-lg-8">
+
+            <span class="badge bg-light text-primary rounded-pill px-3 py-2 mb-3">
+
+                <i class="bi bi-ticket-perforated-fill me-2"></i>
+
+                Eventify Ticket Center
+
+            </span>
+
+            <h1 class="fw-bold text-white mb-3">
+
+                My Registrations
+
+            </h1>
+
+            <p class="text-white-50 mb-4">
+
+                View your registered events, download tickets and manage your event journey from one place.
+
+            </p>
+
+            <div class="d-flex flex-wrap gap-3">
+
+                <a href="{% url 'event_list' %}"
+                   class="btn btn-light">
+
+                    <i class="bi bi-search me-2"></i>
+
+                    Explore Events
+
+                </a>
+
+                <a href="{% url 'calendar_view' %}"
+                   class="btn btn-outline-light">
+
+                    <i class="bi bi-calendar3 me-2"></i>
+
+                    Calendar
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4 mt-4 mt-lg-0">
+
+            <div class="glass-card p-4 rounded-4 text-center">
+
+                <div class="display-4 mb-3">
+
+                    <i class="bi bi-person-check-fill text-white"></i>
+
+                </div>
+
+                <h5 class="text-white mb-1">
+
+                    {{ request.user.get_full_name|default:request.user.username }}
+
+                </h5>
+
+                <small class="text-white-50">
+
+                    Registered Attendee
+
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+STATISTICS
+========================================== -->
+
+<div class="row g-4 mb-4">
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="stat-card h-100">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-ticket-perforated-fill"></i>
+
+            </div>
+
+            <div>
+
+                <small>Total Registrations</small>
+
+                <h2>{{ total_registrations }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="stat-card h-100">
+
+            <div class="stat-icon bg-success-gradient">
+
+                <i class="bi bi-check-circle-fill"></i>
+
+            </div>
+
+            <div>
+
+                <small>Active Tickets</small>
+
+                <h2>{{ active_registrations }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="stat-card h-100">
+
+            <div class="stat-icon bg-warning-gradient">
+
+                <i class="bi bi-calendar-event-fill"></i>
+
+            </div>
+
+            <div>
+
+                <small>Upcoming Events</small>
+
+                <h2>{{ upcoming_registrations }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="stat-card h-100">
+
+            <div class="stat-icon bg-danger-gradient">
+
+                <i class="bi bi-x-circle-fill"></i>
+
+            </div>
+
+            <div>
+
+                <small>Cancelled</small>
+
+                <h2>{{ cancelled_registrations }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+SEARCH & FILTER
+========================================== -->
+
+<div class="dashboard-widget mb-5">
+
+    <form method="GET">
+
+        <div class="row g-3 align-items-end">
+
+            <div class="col-lg-5">
+
+                <label class="form-label fw-semibold">
+
+                    Search
+
+                </label>
+
+                <div class="input-group">
+
+                    <span class="input-group-text">
+
+                        <i class="bi bi-search"></i>
+
+                    </span>
+
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ search }}"
+                        class="form-control"
+                        placeholder="Search events...">
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3">
+
+                <label class="form-label fw-semibold">
+
+                    Status
+
+                </label>
+
+                <select
+                    class="form-select"
+                    name="status">
+
+                    <option value="REGISTERED"
+                        {% if current_status == "REGISTERED" %}selected{% endif %}>
+                        Registered
+                    </option>
+
+                    <option value="CANCELLED"
+                        {% if current_status == "CANCELLED" %}selected{% endif %}>
+                        Cancelled
+                    </option>
+
+                    <option value="ATTENDED"
+                        {% if current_status == "ATTENDED" %}selected{% endif %}>
+                        Attended
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="col-lg-2">
+
+                <label class="form-label fw-semibold">
+
+                    Sort
+
+                </label>
+
+                <select
+                    class="form-select"
+                    name="sort">
+
+                    <option value="latest"
+                        {% if sort == "latest" %}selected{% endif %}>
+                        Latest
+                    </option>
+
+                    <option value="oldest"
+                        {% if sort == "oldest" %}selected{% endif %}>
+                        Oldest
+                    </option>
+
+                    <option value="event"
+                        {% if sort == "event" %}selected{% endif %}>
+                        Event Name
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="col-lg-2 d-grid">
+
+                <button class="btn btn-primary">
+
+                    <i class="bi bi-search me-2"></i>
+
+                    Search
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+<!-- ==========================================
+REGISTRATION LIST
+========================================== -->
+
+{% if registrations %}
+
+<div class="row g-4">
+
+    {% for registration in registrations %}
+
+<div class="col-xl-6 col-lg-6">
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+
+        <!-- Event Image -->
+
+        {% if registration.event.image %}
+
+<img src="{{ registration.event.image.url }}"
+     class="card-img-top"
+     style="height:220px;object-fit:cover;">
+
+{% else %}
+
+<img src="https://placehold.co/900x450?text=Eventify"
+     class="card-img-top"
+     style="height:220px;object-fit:cover;">
+
+{% endif %}
+        <div class="card-body p-4">
+
+            <!-- Header -->
+
+            <div class="d-flex justify-content-between align-items-start mb-3">
+
+                <div>
+
+                    <h4 class="fw-bold mb-1">
+
+                        {{ registration.event.title }}
+
+                    </h4>
+
+                    <span class="badge bg-primary">
+
+                        {{ registration.event.category.name }}
+
+                    </span>
+
+                </div>
+
+                {% if registration.status == "REGISTERED" %}
+
+                <span class="badge bg-success fs-6">
+
+                    <i class="bi bi-check-circle-fill me-1"></i>
+
+                    Registered
+
+                </span>
+
+                {% elif registration.status == "CANCELLED" %}
+
+                <span class="badge bg-danger fs-6">
+
+                    <i class="bi bi-x-circle-fill me-1"></i>
+
+                    Cancelled
+
+                </span>
+
+                {% elif registration.status == "ATTENDED" %}
+
+                <span class="badge bg-warning text-dark fs-6">
+
+                    <i class="bi bi-star-fill me-1"></i>
+
+                    Attended
+
+                </span>
+
+                {% endif %}
+
+            </div>
+
+            <hr>
+
+            <!-- Event Details -->
+
+            <div class="row g-3 mb-4">
+
+                <div class="col-6">
+
+                    <small class="text-muted d-block">
+
+                        <i class="bi bi-calendar-event me-1"></i>
+
+                        Date
+
+                    </small>
+
+                    <strong>
+
+                        {{ registration.event.event_date }}
+
+                    </strong>
+
+                </div>
+
+                <div class="col-6">
+
+                    <small class="text-muted d-block">
+
+                        <i class="bi bi-clock me-1"></i>
+
+                        Time
+
+                    </small>
+
+                    <strong>
+
+                        {{ registration.event.start_time }} - {{ registration.event.end_time }}
+
+                    </strong>
+
+                </div>
+
+                <div class="col-6">
+
+                    <small class="text-muted d-block">
+
+                        <i class="bi bi-geo-alt me-1"></i>
+
+                        Venue
+
+                    </small>
+
+                    <strong>
+
+                        {{ registration.event.venue }}
+
+                    </strong>
+
+                </div>
+
+                <div class="col-6">
+
+                    <small class="text-muted d-block">
+
+                        <i class="bi bi-person me-1"></i>
+
+                        Organizer
+
+                    </small>
+
+                    <strong>
+
+                        {{ registration.event.organizer.get_full_name|default:registration.event.organizer.username }}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <!-- Ticket -->
+
+            <div class="bg-light rounded-4 p-3 mb-4">
+
+                <div class="row align-items-center">
+
+                    <div class="col-8">
+
+                        <h6 class="fw-bold mb-3">
+
+                            Ticket Details
+
+                        </h6>
+
+                        <p class="mb-2">
+
+                            <strong>Ticket ID :</strong>
+
+                            {{ registration.ticket_id }}
+
+                        </p>
+
+                        <p class="mb-2">
+
+                            <strong>Registered :</strong>
+
+                            {{ registration.registration_date|date:"d M Y" }}
+
+                        </p>
+
+                        <p class="mb-0">
+
+                            <strong>Status :</strong>
+
+                            {{ registration.get_status_display }}
+
+                        </p>
+
+                    </div>
+
+                    <div class="col-4 text-center">
+
+                        {% if registration.ticket_qr %}
+
+                        <img src="{{ registration.ticket_qr.url }}"
+                             class="img-fluid rounded shadow-sm"
+                             style="max-width:120px;">
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+
+            <div class="d-grid gap-2">
+
+                <a href="{% url 'event_detail' registration.event.slug %}"
+                   class="btn btn-primary">
+
+                    <i class="bi bi-eye-fill me-2"></i>
+
+                    View Event
+
+                </a>
+
+                {% if registration.ticket_qr %}
+
+                <a href="{{ registration.ticket_qr.url }}"
+                   download
+                   class="btn btn-outline-success">
+
+                    <i class="bi bi-download me-2"></i>
+
+                    Download QR Ticket
+
+                </a>
+
+                {% endif %}
+
+                {% if registration.status == "REGISTERED" %}
+
+                <a href="{% url 'cancel_registration' registration.id %}"
+                   class="btn btn-outline-danger"
+                   onclick="return confirm('Cancel this registration?');">
+
+                    <i class="bi bi-x-circle me-2"></i>
+
+                    Cancel Registration
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="card border-0 shadow-sm rounded-4">
+
+    <div class="card-body text-center py-5">
+
+        <i class="bi bi-ticket-perforated display-1 text-primary mb-4"></i>
+
+        <h3 class="fw-bold">
+
+            No registrations found
+
+        </h3>
+
+        <p class="text-muted">
+
+            Register for an event to see your tickets here.
+
+        </p>
+
+        <a href="{% url 'event_list' %}"
+           class="btn btn-primary">
+
+            <i class="bi bi-search me-2"></i>
+
+            Explore Events
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% block js %}
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // ==========================================
+    // Card Animation
+    // ==========================================
+
+    const cards = document.querySelectorAll(".card");
+
+    cards.forEach((card, index) => {
+
+        card.style.opacity = "0";
+        card.style.transform = "translateY(30px)";
+
+        setTimeout(() => {
+
+            card.style.transition = "all .45s ease";
+
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
+
+        }, index * 80);
+
+    });
+
+    // ==========================================
+    // Search Loading
+    // ==========================================
+
+    const form = document.querySelector("form");
+
+    if(form){
+
+        form.addEventListener("submit",function(){
+
+            const btn=this.querySelector("button");
+
+            if(btn){
+
+                btn.disabled=true;
+
+                btn.innerHTML=`
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Searching...
+                `;
+
+            }
+
+        });
+
+    }
+
+    // ==========================================
+    // Image Fade
+    // ==========================================
+
+    document.querySelectorAll("img").forEach(img => {
+
+    img.loading = "lazy";
+
+    img.style.transition = ".35s";
+
+    if (img.complete) {
+
+        img.style.opacity = "1";
+
+    } else {
+
+        img.style.opacity = "0";
+
+        img.addEventListener("load", () => {
+
+            img.style.opacity = "1";
+
+        });
+
+    }
+
+});
+
+    // ==========================================
+    // Tooltips
+    // ==========================================
+
+    if(window.bootstrap){
+
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el=>{
+
+            new bootstrap.Tooltip(el);
+
+        });
+
+    }
+
+});
+
+</script>
+
+{% endblock %}
+
+{% endblock %}

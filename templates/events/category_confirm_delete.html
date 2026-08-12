@@ -1,0 +1,132 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}
+Delete Category
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="container">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow">
+
+                <div class="card-header bg-danger text-white">
+
+                    <h3 class="mb-0">
+
+                        <i class="bi bi-trash3-fill me-2"></i>
+
+                        Delete Category
+
+                    </h3>
+
+                </div>
+
+                <div class="card-body text-center py-5">
+
+                    <div class="mb-4">
+
+                        <i class="bi bi-exclamation-triangle-fill text-danger"
+                           style="font-size: 4rem;"></i>
+
+                    </div>
+
+                    <h4 class="fw-bold">
+
+                        Are you sure?
+
+                    </h4>
+
+                    <p class="text-muted mt-3">
+
+                        You are about to permanently delete the category
+
+                    </p>
+
+                    <h3 class="text-primary">
+
+                        "{{ category.name }}"
+
+                    </h3>
+
+                    {% if category.description %}
+
+                        <p class="text-muted">
+
+                            {{ category.description }}
+
+                        </p>
+
+                    {% endif %}
+
+                    {% if category.event_count %}
+
+                        <div class="alert alert-warning mt-4">
+
+                            <i class="bi bi-exclamation-circle me-2"></i>
+
+                            This category is currently associated with
+
+                            <strong>
+
+                                {{ category.event_count }}
+
+                            </strong>
+
+                            event{{ category.event_count|pluralize }}.
+
+                        </div>
+
+                    {% endif %}
+
+                    <p class="text-danger">
+
+                        <strong>
+
+                            This action cannot be undone.
+
+                        </strong>
+
+                    </p>
+
+                    <form method="POST" class="mt-4">
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="btn btn-danger btn-lg">
+
+                            <i class="bi bi-trash-fill me-2"></i>
+
+                            Yes, Delete Category
+
+                        </button>
+
+                        <a
+                            href="{% url 'category_list' %}"
+                            class="btn btn-secondary btn-lg ms-2">
+
+                            <i class="bi bi-arrow-left me-2"></i>
+
+                            Cancel
+
+                        </a>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

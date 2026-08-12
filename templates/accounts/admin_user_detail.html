@@ -1,0 +1,276 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}
+User Details | Eventify
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<div class="container-fluid px-0">
+
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                User Details
+            </h2>
+
+            <p class="text-muted mb-0">
+                View account and platform activity.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'admin_user_list' %}"
+            class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-2"></i>
+
+            Back to Users
+
+        </a>
+
+    </div>
+
+
+
+    <div class="row g-4">
+
+
+        <!-- PROFILE -->
+
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm rounded-4">
+
+                <div class="card-body text-center p-4">
+
+
+                    {% if user_obj.profile_picture %}
+
+                        <img
+                            src="{{ user_obj.profile_picture.url }}"
+                            width="110"
+                            height="110"
+                            class="rounded-circle object-fit-cover mb-3">
+
+                    {% else %}
+
+                        <div
+                            class="rounded-circle bg-primary text-white
+                                   d-flex align-items-center justify-content-center
+                                   mx-auto mb-3"
+                            style="width:110px;height:110px;font-size:40px;">
+
+                            {{ user_obj.first_name|default:user_obj.username|slice:":1"|upper }}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <h4 class="fw-bold mb-1">
+
+                        {{ user_obj.get_full_name|default:user_obj.username }}
+
+                    </h4>
+
+
+                    <p class="text-muted mb-3">
+
+                        @{{ user_obj.username }}
+
+                    </p>
+
+
+                    {% if user_obj.role == "ORGANIZER" %}
+
+                        <span class="badge bg-primary">
+                            Organizer
+                        </span>
+
+                    {% elif user_obj.role == "ATTENDEE" %}
+
+                        <span class="badge bg-secondary">
+                            Attendee
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge bg-dark">
+                            Admin
+                        </span>
+
+                    {% endif %}
+
+
+                    <hr>
+
+
+                    <div class="text-start">
+
+                        <p class="mb-2">
+
+                            <strong>Email:</strong><br>
+
+                            {{ user_obj.email|default:"Not provided" }}
+
+                        </p>
+
+
+                        <p class="mb-2">
+
+                            <strong>Phone:</strong><br>
+
+                            {{ user_obj.phone_number|default:"Not provided" }}
+
+                        </p>
+
+
+                        <p class="mb-0">
+
+                            <strong>Status:</strong><br>
+
+                            {% if user_obj.is_active %}
+
+                                <span class="text-success">
+                                    Active
+                                </span>
+
+                            {% else %}
+
+                                <span class="text-danger">
+                                    Inactive
+                                </span>
+
+                            {% endif %}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ACTIVITY -->
+
+        <div class="col-lg-8">
+
+            <div class="row g-4">
+
+
+                <div class="col-md-6">
+
+                    <div class="stats-card h-100">
+
+                        <div class="stats-title">
+                            Events Created
+                        </div>
+
+                        <div class="stats-number">
+                            {{ events_created }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <div class="stats-card h-100">
+
+                        <div class="stats-title">
+                            Total Registrations
+                        </div>
+
+                        <div class="stats-number">
+                            {{ total_registrations }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="card border-0 shadow-sm rounded-4">
+
+                        <div class="card-body">
+
+                            <small class="text-muted">
+                                Active
+                            </small>
+
+                            <h3 class="fw-bold text-success">
+                                {{ active_registrations }}
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="card border-0 shadow-sm rounded-4">
+
+                        <div class="card-body">
+
+                            <small class="text-muted">
+                                Cancelled
+                            </small>
+
+                            <h3 class="fw-bold text-danger">
+                                {{ cancelled_registrations }}
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="card border-0 shadow-sm rounded-4">
+
+                        <div class="card-body">
+
+                            <small class="text-muted">
+                                Attended
+                            </small>
+
+                            <h3 class="fw-bold text-primary">
+                                {{ attended_registrations }}
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

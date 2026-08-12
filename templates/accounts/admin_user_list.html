@@ -1,0 +1,620 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}
+User Management | Eventify
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<div class="container-fluid px-0">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="d-flex flex-wrap justify-content-between
+                align-items-center gap-3 mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+
+                <i class="bi bi-people-fill text-primary me-2"></i>
+
+                User Management
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Manage organizers and attendees across Eventify.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         STATISTICS
+    ====================================================== -->
+
+    <div class="row g-4 mb-4">
+
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="stats-card h-100">
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+
+                        <div class="stats-title">
+                            Total Users
+                        </div>
+
+                        <div class="stats-number">
+                            {{ total_users }}
+                        </div>
+
+                    </div>
+
+                    <div class="stats-icon stats-primary">
+
+                        <i class="bi bi-people-fill"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="stats-card h-100">
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+
+                        <div class="stats-title">
+                            Organizers
+                        </div>
+
+                        <div class="stats-number">
+                            {{ total_organizers }}
+                        </div>
+
+                    </div>
+
+                    <div class="stats-icon stats-success">
+
+                        <i class="bi bi-person-workspace"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="stats-card h-100">
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+
+                        <div class="stats-title">
+                            Attendees
+                        </div>
+
+                        <div class="stats-number">
+                            {{ total_attendees }}
+                        </div>
+
+                    </div>
+
+                    <div class="stats-icon stats-warning">
+
+                        <i class="bi bi-person-fill"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="stats-card h-100">
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+
+                        <div class="stats-title">
+                            Active Users
+                        </div>
+
+                        <div class="stats-number">
+                            {{ active_users }}
+                        </div>
+
+                    </div>
+
+                    <div class="stats-icon stats-danger">
+
+                        <i class="bi bi-person-check-fill"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         FILTERS
+    ====================================================== -->
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+
+        <div class="card-body">
+
+            <form method="GET">
+
+                <div class="row g-3">
+
+
+                    <div class="col-lg-5">
+
+                        <label class="form-label fw-semibold">
+                            Search
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text bg-white">
+
+                                <i class="bi bi-search"></i>
+
+                            </span>
+
+                            <input
+                                type="text"
+                                name="search"
+                                class="form-control"
+                                placeholder="Name, username or email..."
+                                value="{{ search }}"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-lg-3">
+
+                        <label class="form-label fw-semibold">
+                            Role
+                        </label>
+
+                        <select
+                            name="role"
+                            class="form-select">
+
+                            <option value="">
+                                All Roles
+                            </option>
+
+                            <option
+                                value="ORGANIZER"
+                                {% if selected_role == "ORGANIZER" %}selected{% endif %}
+                            >
+                                Organizer
+                            </option>
+
+                            <option
+                                value="ATTENDEE"
+                                {% if selected_role == "ATTENDEE" %}selected{% endif %}
+                            >
+                                Attendee
+                            </option>
+
+                            <option
+                                value="ADMIN"
+                                {% if selected_role == "ADMIN" %}selected{% endif %}
+                            >
+                                Admin
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="col-lg-2">
+
+                        <label class="form-label fw-semibold">
+                            Status
+                        </label>
+
+                        <select
+                            name="status"
+                            class="form-select">
+
+                            <option value="">
+                                All
+                            </option>
+
+                            <option
+                                value="active"
+                                {% if selected_status == "active" %}selected{% endif %}
+                            >
+                                Active
+                            </option>
+
+                            <option
+                                value="inactive"
+                                {% if selected_status == "inactive" %}selected{% endif %}
+                            >
+                                Inactive
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="col-lg-2 d-flex align-items-end">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100">
+
+                            <i class="bi bi-funnel me-2"></i>
+
+                            Filter
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         USER TABLE
+    ====================================================== -->
+
+    <div class="card border-0 shadow-sm rounded-4">
+
+        <div class="card-header bg-white py-3">
+
+            <div class="d-flex justify-content-between">
+
+                <div>
+
+                    <h5 class="mb-1">
+                        All Users
+                    </h5>
+
+                    <small class="text-muted">
+                        {{ users|length }} users found
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th class="ps-4">
+                                User
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Role
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Joined
+                            </th>
+
+                            <th class="text-end pe-4">
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for user_obj in users %}
+
+                        <tr>
+
+
+                            <!-- USER -->
+
+                            <td class="ps-4">
+
+                                <div class="d-flex align-items-center gap-3">
+
+                                    {% if user_obj.profile_picture %}
+
+                                        <img
+                                            src="{{ user_obj.profile_picture.url }}"
+                                            width="44"
+                                            height="44"
+                                            class="rounded-circle object-fit-cover"
+                                            alt="{{ user_obj.username }}">
+
+                                    {% else %}
+
+                                        <div
+                                            class="rounded-circle bg-primary text-white
+                                                   d-flex align-items-center justify-content-center"
+                                            style="width:44px;height:44px;">
+
+                                            {{ user_obj.first_name|default:user_obj.username|slice:":1"|upper }}
+
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    <div>
+
+                                        <div class="fw-semibold">
+
+                                            {{ user_obj.get_full_name|default:user_obj.username }}
+
+                                        </div>
+
+                                        <small class="text-muted">
+
+                                            @{{ user_obj.username }}
+
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- EMAIL -->
+
+                            <td>
+
+                                {{ user_obj.email|default:"Not provided" }}
+
+                            </td>
+
+
+                            <!-- ROLE -->
+
+                            <td>
+
+                                {% if user_obj.role == "ADMIN" %}
+
+                                    <span class="badge bg-dark">
+                                        Admin
+                                    </span>
+
+                                {% elif user_obj.role == "ORGANIZER" %}
+
+                                    <span class="badge bg-primary">
+                                        Organizer
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-secondary">
+                                        Attendee
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+                                {% if user_obj.is_active %}
+
+                                    <span class="badge bg-success-subtle text-success">
+
+                                        <i class="bi bi-check-circle me-1"></i>
+
+                                        Active
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-danger-subtle text-danger">
+
+                                        <i class="bi bi-slash-circle me-1"></i>
+
+                                        Inactive
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- JOINED -->
+
+                            <td>
+
+                                <small>
+
+                                    {{ user_obj.created_at|date:"d M Y" }}
+
+                                </small>
+
+                            </td>
+
+
+                            <!-- ACTIONS -->
+
+                            <td class="text-end pe-4">
+
+                                <div class="btn-group btn-group-sm">
+
+
+                                    <a
+                                        href="{% url 'admin_user_detail' user_obj.id %}"
+                                        class="btn btn-outline-primary"
+                                        title="View">
+
+                                        <i class="bi bi-eye"></i>
+
+                                    </a>
+
+
+                                    {% if user_obj.id != request.user.id %}
+
+
+                                        <form
+                                            method="POST"
+                                            action="{% url 'admin_user_toggle_status' user_obj.id %}"
+                                            class="d-inline">
+
+                                            {% csrf_token %}
+
+                                            <input
+                                                type="hidden"
+                                                name="next"
+                                                value="admin_user_list">
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-outline-warning"
+                                                title="{% if user_obj.is_active %}Deactivate{% else %}Activate{% endif %}">
+
+                                                {% if user_obj.is_active %}
+
+                                                    <i class="bi bi-person-dash"></i>
+
+                                                {% else %}
+
+                                                    <i class="bi bi-person-check"></i>
+
+                                                {% endif %}
+
+                                            </button>
+
+                                        </form>
+
+
+                                        <a
+                                            href="{% url 'admin_user_delete' user_obj.id %}"
+                                            class="btn btn-outline-danger"
+                                            title="Delete">
+
+                                            <i class="bi bi-trash"></i>
+
+                                        </a>
+
+
+                                    {% endif %}
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    {% empty %}
+
+                        <tr>
+
+                            <td
+                                colspan="6"
+                                class="text-center py-5">
+
+                                <i class="bi bi-people display-5 text-muted"></i>
+
+                                <h5 class="mt-3">
+                                    No users found
+                                </h5>
+
+                                <p class="text-muted mb-0">
+                                    Try changing your search or filters.
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

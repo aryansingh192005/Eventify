@@ -1,0 +1,1100 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}
+Notifications
+{% endblock %}
+
+{% block dashboard_content %}
+
+<!-- ==========================================
+PAGE HEADER
+========================================== -->
+
+<div class="page-header d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+    <div>
+
+        <h2 class="fw-bold">
+
+            <i class="bi bi-bell-fill text-primary me-2"></i>
+
+            Notification Center
+
+        </h2>
+
+        <p class="text-muted mb-0">
+
+            Stay updated with your events, registrations and account activity.
+
+        </p>
+
+    </div>
+
+    <form method="POST"
+          action="{% url 'mark_all_notifications_read' %}">
+
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="btn btn-primary">
+
+            <i class="bi bi-check2-all me-2"></i>
+
+            Mark All Read
+
+        </button>
+
+    </form>
+
+</div>
+
+
+
+<!-- ==========================================
+STATISTICS
+========================================== -->
+
+<div class="row g-4 mb-4">
+
+    <div class="col-lg-4 col-md-6">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-bell-fill"></i>
+
+            </div>
+
+            <h2>
+
+                {{ notifications|length }}
+
+            </h2>
+
+            <p>
+
+                Total Notifications
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="col-lg-4 col-md-6">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-envelope-fill"></i>
+
+            </div>
+
+            <h2>
+
+                {{ unread_notification_count }}
+
+            </h2>
+
+            <p>
+
+                Unread
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="col-lg-4 col-md-12">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-person-circle"></i>
+
+            </div>
+
+            <h5 class="mb-2">
+
+                {{ request.user.get_full_name|default:request.user.username }}
+
+            </h5>
+
+            <small class="text-muted">
+
+                Logged In User
+
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+SEARCH
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mb-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-search text-primary me-2"></i>
+
+            Search Notifications
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <form method="GET">
+
+            <div class="row g-3">
+
+                <div class="col-lg-9">
+
+                    <input
+                        type="text"
+                        name="q"
+                        value="{{ request.GET.q }}"
+                        class="form-control"
+                        placeholder="Search notifications...">
+
+                </div>
+
+                <div class="col-lg-3 d-grid">
+
+                    <button
+                        class="btn btn-primary">
+
+                        <i class="bi bi-search me-2"></i>
+
+                        Search
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+NOTIFICATIONS
+========================================== -->
+
+<div class="row g-4">
+
+    {% for notification in notifications %}
+
+<div class="col-12">
+
+    <div class="card border-0 shadow-sm rounded-4
+
+        {% if not notification.is_read %}
+            border-start border-4 border-{{ notification.color }}
+        {% endif %}
+
+    ">
+
+        <div class="card-body">
+
+            <div class="d-flex">
+
+                <!-- ICON -->
+
+                <div class="me-4">
+
+                    <div class="rounded-circle bg-{{ notification.color }}-subtle p-3">
+
+                        <i class="bi {{ notification.icon }} text-{{ notification.color }} fs-3"></i>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CONTENT -->
+
+                <div class="flex-grow-1">
+
+                    <div class="d-flex justify-content-between align-items-start flex-wrap">
+
+                        <div>
+
+                            <h5 class="mb-1">
+
+                                {{ notification.title }}
+
+                                {% if not notification.is_read %}
+
+                                    <span class="badge bg-primary ms-2">
+
+                                        New
+
+                                    </span>
+
+                                {% endif %}
+
+                            </h5>
+
+                            <small class="text-muted">
+
+                                {{ notification.created_at|timesince }} ago
+
+                            </small>
+
+                        </div>
+
+
+
+                        <span class="badge bg-{{ notification.color }}">
+
+                            {{ notification.get_notification_type_display }}
+
+                        </span>
+
+                    </div>
+
+
+
+                    <p class="text-muted mt-3 mb-4">
+
+                        {{ notification.message }}
+
+                    </p>
+
+
+
+                    <div class="d-flex flex-wrap gap-2">
+
+                        {% if not notification.is_read %}
+
+                        <form
+                            method="POST"
+                            action="{% url 'mark_notification_read' notification.id %}">
+
+                            {% csrf_token %}
+
+                            <button
+                                class="btn btn-primary btn-sm">
+
+                                <i class="bi bi-check-circle me-1"></i>
+
+                                Mark Read
+
+                            </button>
+
+                        </form>
+
+                        {% endif %}
+
+
+
+                        {% if notification.url %}
+
+                        <a
+                            href="{{ notification.url }}"
+                            class="btn btn-outline-primary btn-sm">
+
+                            <i class="bi bi-box-arrow-up-right me-1"></i>
+
+                            Open
+
+                        </a>
+
+                        {% endif %}
+
+
+
+                        {% if notification.is_read %}
+
+                        <span class="badge bg-success align-self-center">
+
+                            <i class="bi bi-check-circle-fill me-1"></i>
+
+                            Read
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge bg-warning text-dark align-self-center">
+
+                            <i class="bi bi-circle-fill me-1"></i>
+
+                            Unread
+
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% empty %}
+
+<div class="col-12">
+
+    <div class="card border-0 shadow-sm rounded-4">
+
+        <div class="card-body text-center py-5">
+
+            <i class="bi bi-bell-slash display-1 text-muted"></i>
+
+            <h3 class="mt-3">
+
+                No Notifications
+
+            </h3>
+
+            <p class="text-muted">
+
+                You're all caught up. New notifications will appear here.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<!-- ==========================================
+RECENT ACTIVITY
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mt-5">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-clock-history text-primary me-2"></i>
+
+            Recent Activity
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        {% for notification in notifications|slice:":5" %}
+
+        <div class="d-flex align-items-start mb-4">
+
+            <div class="me-3">
+
+                <div class="rounded-circle bg-{{ notification.color }}-subtle p-3">
+
+                    <i class="bi {{ notification.icon }} text-{{ notification.color }}"></i>
+
+                </div>
+
+            </div>
+
+            <div class="flex-grow-1">
+
+                <div class="d-flex justify-content-between flex-wrap">
+
+                    <strong>
+
+                        {{ notification.title }}
+
+                    </strong>
+
+                    <small class="text-muted">
+
+                        {{ notification.created_at|timesince }} ago
+
+                    </small>
+
+                </div>
+
+                <p class="text-muted mb-0 mt-1">
+
+                    {{ notification.message|truncatechars:120 }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="text-center py-5">
+
+            <i class="bi bi-clock-history display-4 text-muted"></i>
+
+            <h5 class="mt-3">
+
+                No Recent Activity
+
+            </h5>
+
+            <p class="text-muted">
+
+                Activity will appear here once notifications are generated.
+
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+QUICK ACTIONS
+========================================== -->
+
+<div class="row g-4 mt-4">
+
+    <div class="col-lg-3 col-md-6">
+
+        <a href="{% url 'dashboard_home' %}"
+
+           class="card border-0 shadow-sm rounded-4 text-decoration-none h-100">
+
+            <div class="card-body text-center">
+
+                <div class="display-5 text-primary mb-3">
+
+                    <i class="bi bi-speedometer2"></i>
+
+                </div>
+
+                <h5>
+
+                    Dashboard
+
+                </h5>
+
+                <p class="text-muted mb-0">
+
+                    Return to dashboard.
+
+                </p>
+
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <div class="col-lg-3 col-md-6">
+
+        <button
+
+            onclick="location.reload()"
+
+            class="card border-0 shadow-sm rounded-4 w-100 h-100 bg-white">
+
+            <div class="card-body text-center">
+
+                <div class="display-5 text-success mb-3">
+
+                    <i class="bi bi-arrow-clockwise"></i>
+
+                </div>
+
+                <h5>
+
+                    Refresh
+
+                </h5>
+
+                <p class="text-muted mb-0">
+
+                    Reload notifications.
+
+                </p>
+
+            </div>
+
+        </button>
+
+    </div>
+
+
+
+    <div class="col-lg-3 col-md-6">
+
+        <form
+
+            method="POST"
+
+            action="{% url 'mark_all_notifications_read' %}"
+
+            class="h-100">
+
+            {% csrf_token %}
+
+            <button
+
+                class="card border-0 shadow-sm rounded-4 w-100 h-100 bg-white">
+
+                <div class="card-body text-center">
+
+                    <div class="display-5 text-warning mb-3">
+
+                        <i class="bi bi-check2-all"></i>
+
+                    </div>
+
+                    <h5>
+
+                        Mark All Read
+
+                    </h5>
+
+                    <p class="text-muted mb-0">
+
+                        Clear unread notifications.
+
+                    </p>
+
+                </div>
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+
+    <div class="col-lg-3 col-md-6">
+
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+
+            <div class="card-body text-center">
+
+                <div class="display-5 text-danger mb-3">
+
+                    <i class="bi bi-shield-check"></i>
+
+                </div>
+
+                <h5>
+
+                    System Status
+
+                </h5>
+
+                <p class="text-success fw-semibold mb-0">
+
+                    Active
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+NOTIFICATION TIMELINE
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mt-5">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-clock-fill text-primary me-2"></i>
+
+            Notification Timeline
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        {% for notification in notifications|slice:":8" %}
+
+        <div class="d-flex mb-4">
+
+            <div class="me-3 text-center">
+
+                <div class="rounded-circle bg-{{ notification.color }} p-3 text-white">
+
+                    <i class="bi {{ notification.icon }}"></i>
+
+                </div>
+
+                {% if not forloop.last %}
+
+                <div class="border-start mx-auto mt-2"
+
+                     style="height:40px;width:2px;"></div>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <div class="flex-grow-1">
+
+                <div class="card border-0 bg-light rounded-4">
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between flex-wrap">
+
+                            <h6 class="fw-bold mb-1">
+
+                                {{ notification.title }}
+
+                            </h6>
+
+                            <small class="text-muted">
+
+                                {{ notification.created_at|timesince }} ago
+
+                            </small>
+
+                        </div>
+
+                        <p class="text-muted mb-3">
+
+                            {{ notification.message }}
+
+                        </p>
+
+                        <div class="d-flex align-items-center gap-2">
+
+                            <span class="badge bg-{{ notification.color }}">
+
+                                {{ notification.get_notification_type_display }}
+
+                            </span>
+
+                            {% if notification.is_read %}
+
+                            <span class="badge bg-success">
+
+                                Read
+
+                            </span>
+
+                            {% else %}
+
+                            <span class="badge bg-warning text-dark">
+
+                                Unread
+
+                            </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="text-center py-5">
+
+            <i class="bi bi-clock-history display-4 text-muted"></i>
+
+            <h4>
+
+                No Timeline Available
+
+            </h4>
+
+            <p class="text-muted">
+
+                Notification history will appear here.
+
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+NOTIFICATION INSIGHTS
+========================================== -->
+
+<div class="card shadow-sm border-0 rounded-4 mt-5">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-lightbulb-fill text-warning me-2"></i>
+
+            Notification Insights
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+
+                <div class="text-center">
+
+                    <div class="display-5 text-primary mb-3">
+
+                        <i class="bi bi-bell-fill"></i>
+
+                    </div>
+
+                    <h6>
+
+                        Stay Updated
+
+                    </h6>
+
+                    <p class="text-muted mb-0">
+
+                        Check notifications regularly so you never miss important event updates.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="col-md-4">
+
+                <div class="text-center">
+
+                    <div class="display-5 text-success mb-3">
+
+                        <i class="bi bi-calendar-event-fill"></i>
+
+                    </div>
+
+                    <h6>
+
+                        Event Activity
+
+                    </h6>
+
+                    <p class="text-muted mb-0">
+
+                        New events, registrations and cancellations are shown instantly.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="col-md-4">
+
+                <div class="text-center">
+
+                    <div class="display-5 text-danger mb-3">
+
+                        <i class="bi bi-shield-check"></i>
+
+                    </div>
+
+                    <h6>
+
+                        Account Alerts
+
+                    </h6>
+
+                    <p class="text-muted mb-0">
+
+                        Keep track of important account activity from one place.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+FOOTER
+========================================== -->
+
+<div class="text-center mt-5 mb-4">
+
+    <small class="text-muted">
+
+        Eventify Notification Center • Professional Event Management System
+
+    </small>
+
+</div>
+
+
+
+<!-- ==========================================
+LIVE CLOCK
+========================================== -->
+
+<div class="row mt-5">
+
+    <div class="col-12">
+
+        <div class="card border-0 shadow-sm rounded-4">
+
+            <div class="card-body text-center">
+
+                <div
+                    id="notificationDate"
+                    class="fw-semibold text-secondary">
+
+                </div>
+
+                <div
+                    id="notificationTime"
+                    class="display-6 fw-bold text-primary mt-2">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+SCROLL TO TOP
+========================================== -->
+
+<button
+    id="scrollTopBtn"
+    type="button"
+    class="btn btn-primary rounded-circle shadow"
+
+    style="
+
+        position:fixed;
+
+        right:25px;
+
+        bottom:25px;
+
+        width:55px;
+
+        height:55px;
+
+        display:none;
+
+        z-index:999;
+
+    ">
+
+    <i class="bi bi-arrow-up"></i>
+
+</button>
+
+
+
+{% block extra_js %}
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+
+
+    /* ===============================
+       LIVE CLOCK
+    =============================== */
+
+    function updateClock(){
+
+        const now = new Date();
+
+        const date = document.getElementById("notificationDate");
+
+        const time = document.getElementById("notificationTime");
+
+        if(date){
+
+            date.innerHTML = now.toLocaleDateString(
+
+                undefined,
+
+                {
+
+                    weekday:"long",
+
+                    year:"numeric",
+
+                    month:"long",
+
+                    day:"numeric"
+
+                }
+
+            );
+
+        }
+
+        if(time){
+
+            time.innerHTML = now.toLocaleTimeString();
+
+        }
+
+    }
+
+    updateClock();
+
+    setInterval(updateClock,1000);
+
+
+
+
+
+    /* ===============================
+       SCROLL BUTTON
+    =============================== */
+
+    const btn = document.getElementById("scrollTopBtn");
+
+
+
+    window.addEventListener("scroll",function(){
+
+        if(window.scrollY>250){
+
+            btn.style.display="block";
+
+        }
+
+        else{
+
+            btn.style.display="none";
+
+        }
+
+    });
+
+
+
+    btn.addEventListener("click",function(){
+
+        window.scrollTo({
+
+            top:0,
+
+            behavior:"smooth"
+
+        });
+
+    });
+
+
+
+
+
+    /* ===============================
+       CARD HOVER EFFECT
+    =============================== */
+
+    document.querySelectorAll(".card").forEach(function(card){
+
+        card.addEventListener("mouseenter",function(){
+
+            card.style.transform="translateY(-4px)";
+
+            card.style.transition="0.25s";
+
+        });
+
+        card.addEventListener("mouseleave",function(){
+
+            card.style.transform="translateY(0)";
+
+        });
+
+    });
+
+});
+
+</script>
+
+{% endblock %}
+
+{% endblock %}

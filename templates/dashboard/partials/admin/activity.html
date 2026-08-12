@@ -1,0 +1,363 @@
+<!-- ==========================
+     ADMIN ACTIVITY
+========================== -->
+
+
+<div class="row g-4 mb-4">
+
+
+
+
+
+
+
+
+<!-- RECENT EVENTS -->
+
+
+<div class="col-lg-6">
+
+
+<div class="dashboard-card">
+
+
+
+
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+
+<h5 class="mb-0">
+
+
+<i class="bi bi-calendar-event-fill text-primary me-2"></i>
+
+
+Recent Events
+
+
+</h5>
+
+
+
+<a href="{% url 'event_list' %}"
+   class="btn btn-sm btn-outline-primary">
+
+
+View All
+
+
+</a>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+{% for event in recent_events %}
+
+
+
+
+<div class="activity-item">
+
+
+
+<div class="d-flex align-items-center gap-3">
+
+
+
+<div class="activity-icon bg-primary-subtle text-primary">
+
+
+<i class="bi bi-calendar-event"></i>
+
+
+</div>
+
+
+
+
+
+<div>
+
+
+<strong>
+
+{{ event.title }}
+
+</strong>
+
+
+
+<small class="d-block text-muted">
+
+
+{{ event.event_date }}
+
+
+</small>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<span class="badge bg-primary-subtle text-primary">
+
+
+Event
+
+
+</span>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+{% empty %}
+
+
+
+
+<div class="empty-state py-4">
+
+
+<i class="bi bi-calendar-x"></i>
+
+
+
+<p class="text-muted mb-0">
+
+
+No recent events available.
+
+
+</p>
+
+
+</div>
+
+
+
+
+
+{% endfor %}
+
+
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- RECENT REGISTRATIONS -->
+
+
+<div class="col-lg-6">
+
+
+<div class="dashboard-card">
+
+
+
+
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+
+<h5 class="mb-0">
+
+
+<i class="bi bi-ticket-perforated-fill text-success me-2"></i>
+
+
+Recent Registrations
+
+
+</h5>
+
+
+
+<a href="{% url 'event_list' %}"
+   class="btn btn-sm btn-outline-success">
+
+
+View Events
+
+
+</a>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+{% for registration in recent_registrations %}
+
+
+
+
+<div class="activity-item">
+
+
+
+<div class="d-flex align-items-center gap-3">
+
+
+
+<div class="activity-icon bg-success-subtle text-success">
+
+
+<i class="bi bi-person-check-fill"></i>
+
+
+</div>
+
+
+
+
+
+<div>
+
+
+<strong>
+
+
+{{ registration.attendee.username }}
+
+
+</strong>
+
+
+
+<small class="d-block text-muted">
+
+
+{{ registration.event.title }}
+
+
+</small>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<span class="badge bg-success-subtle text-success">
+
+
+Registered
+
+
+</span>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+{% empty %}
+
+
+
+
+
+<div class="empty-state py-4">
+
+
+<i class="bi bi-ticket-x"></i>
+
+
+
+<p class="text-muted mb-0">
+
+
+No registrations available.
+
+
+</p>
+
+
+</div>
+
+
+
+
+
+{% endfor %}
+
+
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+</div>

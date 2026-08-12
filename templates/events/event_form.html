@@ -1,0 +1,1738 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+{% if event %}
+Edit Event
+{% else %}
+Create Event
+{% endif %}
+{% endblock %}
+
+{% block dashboard_content %}
+
+<!-- ==========================================
+EVENT HERO
+========================================== -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2 class="fw-bold mb-1">
+
+            {% if event %}
+                Edit Event
+            {% else %}
+                Create Event
+            {% endif %}
+
+        </h2>
+
+        <p class="text-muted mb-0">
+
+            Fill in the details below to publish your event.
+
+        </p>
+
+    </div>
+
+    <div class="d-flex gap-2">
+
+        <a href="{% url 'event_list' %}"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left me-2"></i>
+
+            Back
+
+        </a>
+
+        <button
+            type="submit"
+            form="eventForm"
+            class="btn btn-primary">
+
+            <i class="bi bi-check-circle me-2"></i>
+
+            Save Event
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+EVENT CREATION PROGRESS
+========================================== -->
+
+<div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between mb-2">
+
+            <strong>
+
+                Event Creation Progress
+
+            </strong>
+
+            <span
+                id="progressPercent">
+
+                0%
+
+            </span>
+
+        </div>
+
+        <div
+            class="progress"
+            style="height:12px;">
+
+            <div
+
+                id="eventProgress"
+
+                class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+
+                style="width:0%">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+FORM START
+========================================== -->
+
+<form
+
+    id="eventForm"
+
+    method="POST"
+
+    enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    {% if form.errors %}
+
+    <div class="alert alert-danger shadow-sm">
+
+        <i class="bi bi-exclamation-triangle me-2"></i>
+
+        Please correct the highlighted errors below.
+
+    </div>
+
+    {% endif %}
+
+    <!-- ==========================================
+BASIC INFORMATION
+========================================== -->
+
+<div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-info-circle-fill text-primary me-2"></i>
+
+            Basic Information
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <!-- LEFT -->
+
+            <div class="col-lg-8">
+
+                <!-- Title -->
+
+                <div class="mb-4">
+
+                    <label class="form-label fw-semibold">
+
+                        Event Title
+
+                    </label>
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+
+                            <i class="bi bi-card-heading"></i>
+
+                        </span>
+
+                        {{ form.title }}
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <!-- Category -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+
+                                Category
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+
+                                    <i class="bi bi-tags"></i>
+
+                                </span>
+
+                                {{ form.category }}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <!-- Status -->
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+
+                                Status
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+
+                                    <i class="bi bi-flag"></i>
+
+                                </span>
+
+                                {{ form.status }}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Description -->
+
+                <div class="mb-4">
+
+                    <label class="form-label fw-semibold">
+
+                        Description
+
+                    </label>
+
+                    {{ form.description }}
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RIGHT -->
+
+            <div class="col-lg-4">
+
+                <div class="card bg-light border-0">
+
+                    <div class="card-header bg-transparent">
+
+                        <h6 class="mb-0">
+
+                            <i class="bi bi-eye-fill text-primary me-2"></i>
+
+                            Live Preview
+
+                        </h6>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="text-center">
+
+                            <div
+                                class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center"
+                                style="width:90px;height:90px;">
+
+                                <i
+                                    class="bi bi-calendar2-event text-primary"
+                                    style="font-size:45px;">
+
+                                </i>
+
+                            </div>
+
+                        </div>
+
+                        <hr>
+
+                        <h5
+                            id="previewTitle"
+                            class="fw-bold">
+
+                            Event Title
+
+                        </h5>
+
+                        <p
+                            id="previewDescription"
+                            class="text-muted small">
+
+                            Event description will appear here...
+
+                        </p>
+
+                        <hr>
+
+                        <div class="mb-2">
+
+                            <i class="bi bi-tags text-primary me-2"></i>
+
+                            <span id="previewCategory">
+
+                                Category
+
+                            </span>
+
+                        </div>
+
+                        <div class="mb-2">
+
+                            <i class="bi bi-flag text-success me-2"></i>
+
+                            <span id="previewStatus">
+
+                                Draft
+
+                            </span>
+
+                        </div>
+
+                        <div class="alert alert-info mt-3 mb-0">
+
+                            <i class="bi bi-lightbulb me-2"></i>
+
+                            The preview updates automatically while you type.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+SCHEDULE & VENUE
+========================================== -->
+
+<div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-calendar-week text-success me-2"></i>
+
+            Schedule & Venue
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <!-- LEFT -->
+
+            <div class="col-lg-8">
+
+                <!-- Venue -->
+
+                <div class="mb-4">
+
+                    <label class="form-label fw-semibold">
+
+                        Venue
+
+                    </label>
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+
+                            <i class="bi bi-geo-alt-fill"></i>
+
+                        </span>
+
+                        {{ form.venue }}
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Event Date -->
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+
+                                Event Date
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+
+                                    <i class="bi bi-calendar-date"></i>
+
+                                </span>
+
+                                {{ form.event_date }}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Registration Deadline -->
+
+                    <div class="col-md-6">
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+
+                                Registration Deadline
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+
+                                    <i class="bi bi-clock-history"></i>
+
+                                </span>
+
+                                {{ form.registration_deadline }}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Time -->
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+
+                                Start Time
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+
+                                    <i class="bi bi-play-circle"></i>
+
+                                </span>
+
+                                {{ form.start_time }}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="col-md-6">
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+
+                                End Time
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+
+                                    <i class="bi bi-stop-circle"></i>
+
+                                </span>
+
+                                {{ form.end_time }}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RIGHT -->
+
+            <div class="col-lg-4">
+
+                <div class="card bg-light border-0">
+
+                    <div class="card-header bg-transparent">
+
+                        <h6 class="mb-0">
+
+                            <i class="bi bi-clock-fill text-primary me-2"></i>
+
+                            Schedule Summary
+
+                        </h6>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="mb-3">
+
+                            <small class="text-muted">
+
+                                Venue
+
+                            </small>
+
+                            <div id="previewVenue" class="fw-semibold">
+
+                                —
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="mb-3">
+
+                            <small class="text-muted">
+
+                                Event Date
+
+                            </small>
+
+                            <div id="previewDate" class="fw-semibold">
+
+                                —
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="mb-3">
+
+                            <small class="text-muted">
+
+                                Time
+
+                            </small>
+
+                            <div id="previewTime" class="fw-semibold">
+
+                                —
+
+                            </div>
+
+                        </div>
+
+
+
+                        <hr>
+
+
+
+                        <div class="alert alert-success mb-3">
+
+                            <strong>
+
+                                Duration
+
+                            </strong>
+
+                            <br>
+
+                            <span id="eventDuration">
+
+                                Select start and end time
+
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="alert alert-warning mb-0">
+
+                            <i class="bi bi-lightbulb me-2"></i>
+
+                            Choose a registration deadline before the event date for a better attendee experience.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+TICKETS & CAPACITY
+========================================== -->
+
+<div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-ticket-perforated-fill text-warning me-2"></i>
+
+            Tickets & Capacity
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <!-- LEFT COLUMN -->
+
+            <div class="col-lg-8">
+
+                <div class="row">
+
+                    <!-- Price -->
+
+                    <div class="col-md-6">
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+
+                                Ticket Price
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+
+                                    ₹
+
+                                </span>
+
+                                {{ form.price }}
+
+                            </div>
+
+                            <small class="text-muted">
+
+                                Enter 0 for free events.
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Capacity -->
+
+                    <div class="col-md-6">
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+
+                                Maximum Capacity
+
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+
+                                    <i class="bi bi-people-fill"></i>
+
+                                </span>
+
+                                {{ form.max_capacity }}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Featured -->
+
+                <div class="card border">
+
+                    <div class="card-body">
+
+                        <div class="form-check form-switch">
+
+                            {{ form.is_featured }}
+
+                            <label
+                                class="form-check-label ms-2">
+
+                                <strong>
+
+                                    Featured Event
+
+                                </strong>
+
+                            </label>
+
+                        </div>
+
+                        <small class="text-muted">
+
+                            Featured events appear first on the home page
+                            and dashboard.
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RIGHT COLUMN -->
+
+            <div class="col-lg-4">
+
+                <div class="card bg-light border-0">
+
+                    <div class="card-header bg-transparent">
+
+                        <h6 class="mb-0">
+
+                            <i class="bi bi-graph-up-arrow text-success me-2"></i>
+
+                            Revenue Estimate
+
+                        </h6>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="text-center mb-4">
+
+                            <div class="display-6 fw-bold text-success">
+
+                                ₹
+
+                                <span id="estimatedRevenue">
+
+                                    0
+
+                                </span>
+
+                            </div>
+
+                            <small class="text-muted">
+
+                                Maximum Possible Revenue
+
+                            </small>
+
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between mb-3">
+
+                            <span>
+
+                                Ticket Price
+
+                            </span>
+
+                            <strong id="pricePreview">
+
+                                ₹0
+
+                            </strong>
+
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-3">
+
+                            <span>
+
+                                Capacity
+
+                            </span>
+
+                            <strong id="capacityPreview">
+
+                                0
+
+                            </strong>
+
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+
+                            <span>
+
+                                Featured
+
+                            </span>
+
+                            <span
+                                id="featuredPreview"
+                                class="badge bg-secondary">
+
+                                No
+
+                            </span>
+
+                        </div>
+
+                        <div class="alert alert-info mt-4 mb-0">
+
+                            <i class="bi bi-info-circle me-2"></i>
+
+                            Revenue is automatically calculated from
+                            <strong>
+
+                                Price × Capacity
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+EVENT IMAGE
+========================================== -->
+
+<div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-image-fill text-danger me-2"></i>
+
+            Event Banner
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <!-- LEFT -->
+
+            <div class="col-lg-7">
+
+                <label class="form-label fw-semibold">
+
+                    Upload Event Banner
+
+                </label>
+
+                <div
+                    class="border rounded-4 text-center p-5 bg-light position-relative"
+                    id="uploadArea">
+
+                    <i
+                        class="bi bi-cloud-arrow-up display-3 text-primary">
+
+                    </i>
+
+                    <h5 class="mt-3">
+
+                        Drag & Drop Image Here
+
+                    </h5>
+
+                    <p class="text-muted">
+
+                        or click below to choose an image
+
+                    </p>
+
+                    <div class="mt-3">
+
+                        {{ form.image }}
+
+                    </div>
+
+                </div>
+
+                <div class="alert alert-warning mt-4 mb-0">
+
+                    <i class="bi bi-lightbulb me-2"></i>
+
+                    Recommended size:
+                    <strong>1280 × 720 px</strong>
+
+                    <br>
+
+                    JPG, PNG or WEBP
+
+                    <br>
+
+                    Maximum size:
+                    <strong>5 MB</strong>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <div class="col-lg-5">
+
+                <div class="card bg-light border-0">
+
+                    <div class="card-header bg-transparent">
+
+                        <h6 class="mb-0">
+
+                            <i class="bi bi-eye-fill text-primary me-2"></i>
+
+                            Image Preview
+
+                        </h6>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <img
+
+                            id="imagePreview"
+
+                            src="https://placehold.co/600x350/e9ecef/6c757d?text=Event+Banner"
+
+                            class="img-fluid rounded shadow-sm"
+
+                            alt="Preview">
+
+                        <hr>
+
+                        <div class="small text-muted">
+
+                            ✔ High quality images attract more attendees.
+
+                            <br><br>
+
+                            ✔ Landscape images look best.
+
+                            <br><br>
+
+                            ✔ Avoid blurry or stretched images.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ==========================================
+EVENT DASHBOARD
+========================================== -->
+
+<div class="row">
+
+    <!-- LEFT -->
+
+    <div class="col-lg-8">
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-list-check text-success me-2"></i>
+
+                    Event Checklist
+
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+
+                        <div class="border rounded p-3">
+
+                            <i class="bi bi-card-heading text-primary me-2"></i>
+
+                            Event Title
+
+                            <span
+                                id="checkTitle"
+                                class="float-end badge bg-secondary">
+
+                                Pending
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="border rounded p-3">
+
+                            <i class="bi bi-tags text-success me-2"></i>
+
+                            Category
+
+                            <span
+                                id="checkCategory"
+                                class="float-end badge bg-secondary">
+
+                                Pending
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="border rounded p-3">
+
+                            <i class="bi bi-calendar-event text-danger me-2"></i>
+
+                            Schedule
+
+                            <span
+                                id="checkSchedule"
+                                class="float-end badge bg-secondary">
+
+                                Pending
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="border rounded p-3">
+
+                            <i class="bi bi-geo-alt text-warning me-2"></i>
+
+                            Venue
+
+                            <span
+                                id="checkVenue"
+                                class="float-end badge bg-secondary">
+
+                                Pending
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="border rounded p-3">
+
+                            <i class="bi bi-image text-info me-2"></i>
+
+                            Banner
+
+                            <span
+                                id="checkImage"
+                                class="float-end badge bg-secondary">
+
+                                Pending
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="border rounded p-3">
+
+                            <i class="bi bi-ticket-perforated text-primary me-2"></i>
+
+                            Ticket Details
+
+                            <span
+                                id="checkTicket"
+                                class="float-end badge bg-secondary">
+
+                                Pending
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- RIGHT -->
+
+    <div class="col-lg-4">
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-speedometer2 text-primary me-2"></i>
+
+                    Event Readiness
+
+                </h5>
+
+            </div>
+
+            <div class="card-body text-center">
+
+                <div class="display-4 fw-bold text-primary">
+
+                    <span id="readinessScore">
+
+                        0
+
+                    </span>%
+
+                </div>
+
+                <div class="progress mt-3 mb-4">
+
+                    <div
+
+                        id="readinessBar"
+
+                        class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+
+                        style="width:0%;">
+
+                    </div>
+
+                </div>
+
+                <div class="alert alert-info mb-0">
+
+                    Complete all required fields to reach
+
+                    <strong>
+
+                        100%
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    <i class="bi bi-lightning-charge-fill text-warning me-2"></i>
+
+                    Quick Actions
+
+                </h5>
+
+            </div>
+
+            <div class="card-body d-grid gap-2">
+
+                <button
+
+                    type="submit"
+
+                    class="btn btn-success btn-lg">
+
+                    <i class="bi bi-check-circle me-2"></i>
+
+                    Save Event
+
+                </button>
+
+                <button
+
+                    type="reset"
+
+                    class="btn btn-warning">
+
+                    <i class="bi bi-arrow-clockwise me-2"></i>
+
+                    Reset Form
+
+                </button>
+
+                <a
+
+                    href="{% url 'event_list' %}"
+
+                    class="btn btn-outline-secondary">
+
+                    <i class="bi bi-arrow-left me-2"></i>
+
+                    Cancel
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+</form>
+
+{% block extra_js %}
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const titleField = document.querySelector('[name="title"]');
+    const descriptionField = document.querySelector('[name="description"]');
+    const categoryField = document.querySelector('[name="category"]');
+    const statusField = document.querySelector('[name="status"]');
+    const venueField = document.querySelector('[name="venue"]');
+    const dateField = document.querySelector('[name="event_date"]');
+    const startField = document.querySelector('[name="start_time"]');
+    const endField = document.querySelector('[name="end_time"]');
+    const capacityField = document.querySelector('[name="max_capacity"]');
+    const priceField = document.querySelector('[name="price"]');
+    const featuredField = document.querySelector('[name="is_featured"]');
+    const imageField = document.querySelector('[name="image"]');
+
+
+
+    /*==========================
+      LIVE EVENT PREVIEW
+    ==========================*/
+
+    function updatePreview(){
+
+        document.getElementById("previewTitle").innerHTML =
+            titleField.value || "Event Title";
+
+        document.getElementById("previewDescription").innerHTML =
+            descriptionField.value || "Event description will appear here...";
+
+        if(categoryField.selectedIndex >= 0){
+
+            document.getElementById("previewCategory").innerHTML =
+                categoryField.options[categoryField.selectedIndex].text;
+
+        }
+
+        if(statusField.selectedIndex >= 0){
+
+            document.getElementById("previewStatus").innerHTML =
+                statusField.options[statusField.selectedIndex].text;
+
+        }
+
+        document.getElementById("previewVenue").innerHTML =
+            venueField.value || "—";
+
+        document.getElementById("previewDate").innerHTML =
+            dateField.value || "—";
+
+        if(startField.value && endField.value){
+
+            document.getElementById("previewTime").innerHTML =
+                startField.value + " - " + endField.value;
+
+        }
+
+        else{
+
+            document.getElementById("previewTime").innerHTML = "—";
+
+        }
+
+    }
+
+
+
+    /*==========================
+      REVENUE
+    ==========================*/
+
+    function updateRevenue(){
+
+        const price =
+            parseFloat(priceField.value) || 0;
+
+        const capacity =
+            parseInt(capacityField.value) || 0;
+
+        const revenue = price * capacity;
+
+        document.getElementById("estimatedRevenue").innerHTML =
+            revenue.toLocaleString();
+
+        document.getElementById("pricePreview").innerHTML =
+            "₹" + price;
+
+        document.getElementById("capacityPreview").innerHTML =
+            capacity;
+
+        document.getElementById("featuredPreview").innerHTML =
+            featuredField.checked ? "Yes" : "No";
+
+        document.getElementById("featuredPreview").className =
+            featuredField.checked
+            ? "badge bg-success"
+            : "badge bg-secondary";
+
+    }
+
+
+
+    /*==========================
+      DURATION
+    ==========================*/
+
+    function updateDuration(){
+
+        if(!(startField.value && endField.value)){
+
+            document.getElementById("eventDuration").innerHTML =
+                "Select start and end time";
+
+            return;
+
+        }
+
+        const s = startField.value.split(":");
+        const e = endField.value.split(":");
+
+        const start =
+            Number(s[0]) * 60 + Number(s[1]);
+
+        const end =
+            Number(e[0]) * 60 + Number(e[1]);
+
+        if(end <= start){
+
+            document.getElementById("eventDuration").innerHTML =
+                "Invalid Time";
+
+            return;
+
+        }
+
+        const diff = end - start;
+
+        const h = Math.floor(diff / 60);
+
+        const m = diff % 60;
+
+        document.getElementById("eventDuration").innerHTML =
+            h + " hr " + m + " min";
+
+    }
+
+
+
+    /*==========================
+      IMAGE PREVIEW
+    ==========================*/
+
+    if(imageField){
+
+        imageField.addEventListener("change",function(e){
+
+            const file = e.target.files[0];
+
+            if(!file) return;
+
+            const reader = new FileReader();
+
+            reader.onload = function(ev){
+
+                document.getElementById("imagePreview").src =
+                    ev.target.result;
+
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
+    }
+
+
+
+    /*==========================
+      READINESS
+    ==========================*/
+
+    function updateReadiness(){
+
+        let score = 0;
+
+        if(titleField.value.trim()) score += 15;
+
+        if(descriptionField.value.trim()) score += 15;
+
+        if(venueField.value.trim()) score += 15;
+
+        if(dateField.value) score += 15;
+
+        if(startField.value) score += 10;
+
+        if(endField.value) score += 10;
+
+        if(capacityField.value) score += 10;
+
+        if(priceField.value !== "") score += 5;
+
+        if(categoryField.value) score += 5;
+
+        if(imageField.files.length > 0) score += 10;
+
+        document.getElementById("readinessScore").innerHTML =
+            score;
+
+        document.getElementById("readinessBar").style.width =
+            score + "%";
+
+        document.getElementById("progressPercent").innerHTML =
+            score + "%";
+
+        document.getElementById("eventProgress").style.width =
+            score + "%";
+
+    }
+
+
+
+    /*==========================
+      CHECKLIST
+    ==========================*/
+
+    function badge(id, ok){
+
+        const el = document.getElementById(id);
+
+        if(ok){
+
+            el.innerHTML = "Done";
+
+            el.className = "float-end badge bg-success";
+
+        }
+
+        else{
+
+            el.innerHTML = "Pending";
+
+            el.className = "float-end badge bg-secondary";
+
+        }
+
+    }
+
+    function updateChecklist(){
+
+        badge("checkTitle",titleField.value.trim());
+
+        badge("checkCategory",categoryField.value);
+
+        badge("checkVenue",venueField.value.trim());
+
+        badge("checkSchedule",dateField.value && startField.value && endField.value);
+
+        badge("checkImage",imageField.files.length);
+
+        badge("checkTicket",capacityField.value);
+
+    }
+
+
+
+    document.querySelectorAll("input,textarea,select").forEach(function(el){
+
+        el.addEventListener("input",function(){
+
+            updatePreview();
+
+            updateRevenue();
+
+            updateDuration();
+
+            updateReadiness();
+
+            updateChecklist();
+
+        });
+
+        el.addEventListener("change",function(){
+
+            updatePreview();
+
+            updateRevenue();
+
+            updateDuration();
+
+            updateReadiness();
+
+            updateChecklist();
+
+        });
+
+    });
+
+
+
+    updatePreview();
+    updateRevenue();
+    updateDuration();
+    updateReadiness();
+    updateChecklist();
+
+});
+
+</script>
+
+{% endblock %}
+
+<style>
+
+.card{
+    transition:.25s;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+}
+
+#uploadArea{
+    transition:.25s;
+    cursor:pointer;
+}
+
+#uploadArea:hover{
+
+    border-color:#0d6efd!important;
+
+    background:#f8fbff;
+
+}
+
+.progress{
+
+    border-radius:30px;
+
+}
+
+.progress-bar{
+
+    border-radius:30px;
+
+}
+
+#imagePreview{
+
+    min-height:240px;
+
+    object-fit:cover;
+
+}
+
+.input-group-text{
+
+    min-width:48px;
+
+    justify-content:center;
+
+}
+
+.card-header{
+
+    border-bottom:1px solid rgba(0,0,0,.05);
+
+}
+
+.btn{
+
+    border-radius:10px;
+
+}
+
+.badge{
+
+    border-radius:20px;
+
+}
+
+.form-control,
+.form-select{
+
+    border-radius:10px;
+
+}
+
+textarea{
+
+    min-height:150px;
+
+}
+
+</style>
+
+{% endblock %}

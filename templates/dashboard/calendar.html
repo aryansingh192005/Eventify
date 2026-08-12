@@ -1,0 +1,464 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block title %}
+Calendar
+{% endblock %}
+
+{% block css %}
+
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.css" rel="stylesheet">
+
+<style>
+
+.calendar-hero{
+    background:linear-gradient(135deg,#4f46e5,#2563eb);
+    border-radius:24px;
+    padding:42px;
+    color:#fff;
+    margin-bottom:24px;
+    box-shadow:0 20px 50px rgba(79,70,229,.20);
+}
+
+.calendar-hero h2{
+    font-size:2rem;
+    font-weight:700;
+    margin-bottom:12px;
+}
+
+.calendar-hero p{
+    opacity:.9;
+    font-size:16px;
+}
+
+.calendar-wrapper{
+
+    background:#fff;
+
+    border-radius:24px;
+
+    padding:26px;
+
+    border:1px solid #edf2f7;
+
+    box-shadow:0 15px 45px rgba(15,23,42,.08);
+
+}
+
+#calendar{
+
+    min-height:760px;
+
+}
+
+/* ==================================================
+FULLCALENDAR
+================================================== */
+
+.fc{
+
+    font-family:'Poppins',sans-serif;
+
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th,
+.fc-scrollgrid{
+
+    border-color:#eef2f7 !important;
+
+}
+
+.fc-toolbar{
+
+    margin-bottom:25px !important;
+
+}
+
+.fc-toolbar-title{
+
+    font-size:28px !important;
+
+    font-weight:700 !important;
+
+    color:#111827;
+
+}
+
+.fc-button{
+
+    background:#4f46e5 !important;
+
+    border:none !important;
+
+    border-radius:12px !important;
+
+    padding:10px 16px !important;
+
+    font-weight:600 !important;
+
+    transition:.25s;
+
+}
+
+.fc-button:hover{
+
+    background:#4338ca !important;
+
+    transform:translateY(-2px);
+
+}
+
+.fc-button-active{
+
+    background:#312e81 !important;
+
+}
+
+.fc-daygrid-day{
+
+    transition:.2s;
+
+}
+
+.fc-daygrid-day:hover{
+
+    background:#f8faff;
+
+}
+
+.fc-day-today{
+
+    background:#eef2ff !important;
+
+}
+
+.fc-daygrid-day-number{
+
+    font-weight:600;
+
+    color:#374151;
+
+}
+
+.fc-event{
+
+    background:#4f46e5 !important;
+
+    border:none !important;
+
+    border-radius:8px !important;
+
+    padding:4px 8px !important;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    transition:.2s;
+
+}
+
+.fc-event:hover{
+
+    transform:scale(1.02);
+
+    box-shadow:0 8px 18px rgba(79,70,229,.25);
+
+}
+
+.fc-col-header-cell{
+
+    background:#f8fafc;
+
+    padding:10px 0;
+
+}
+
+.fc-col-header-cell-cushion{
+
+    color:#2563eb;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+}
+
+/* ==================================================
+STATS
+================================================== */
+
+.calendar-stats{
+
+    margin-top:28px;
+
+}
+
+.calendar-stat-card{
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:28px;
+
+    text-align:center;
+
+    border:1px solid #edf2f7;
+
+    box-shadow:0 12px 30px rgba(15,23,42,.08);
+
+    transition:.25s;
+
+}
+
+.calendar-stat-card:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.calendar-stat-card i{
+
+    font-size:34px;
+
+    color:#4f46e5;
+
+    margin-bottom:15px;
+
+}
+
+.calendar-stat-card h3{
+
+    font-size:34px;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+}
+
+</style>
+
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="calendar-hero">
+
+    <div class="row align-items-center">
+
+        <div class="col-lg-8">
+
+            <h2>
+
+                <i class="bi bi-calendar3 me-2"></i>
+
+                Event Calendar
+
+            </h2>
+
+            <p>
+
+                View all upcoming events in one place.
+
+                Click any event to see complete details.
+
+            </p>
+
+        </div>
+
+        <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+
+            {% if dashboard_type == "admin" or dashboard_type == "organizer" %}
+
+            <a href="{% url 'event_create' %}" class="btn btn-light btn-lg">
+
+                <i class="bi bi-plus-circle me-2"></i>
+
+                Create Event
+
+            </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="calendar-wrapper">
+
+    <div id="calendar"></div>
+
+</div>
+
+<div class="row calendar-stats g-4">
+
+    <div class="col-md-4">
+
+        <div class="calendar-stat-card">
+
+            <i class="bi bi-calendar-event-fill"></i>
+
+            <h3>{{ calendar_total }}</h3>
+
+            <small>Total Events</small>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="calendar-stat-card">
+
+            <i class="bi bi-clock-history"></i>
+
+            <h3>Live</h3>
+
+            <small>Calendar Sync</small>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="calendar-stat-card">
+
+            <i class="bi bi-lightning-charge-fill"></i>
+
+            <h3>24×7</h3>
+
+            <small>Always Updated</small>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const calendarElement = document.getElementById("calendar");
+
+    if (!calendarElement) return;
+
+    let events = [];
+
+    try {
+
+        events = {{ calendar_events|safe }};
+
+    } catch (e) {
+
+        console.log("No calendar events found.");
+
+        events = [];
+
+    }
+
+    const calendar = new FullCalendar.Calendar(calendarElement, {
+
+        initialView: "dayGridMonth",
+
+        height: "auto",
+
+        expandRows: true,
+
+        nowIndicator: true,
+
+        editable: false,
+
+        selectable: true,
+
+        dayMaxEvents: true,
+
+        headerToolbar: {
+
+            left: "prev,next today",
+
+            center: "title",
+
+            right: "dayGridMonth,timeGridWeek,timeGridDay"
+
+        },
+
+        buttonText: {
+
+            today: "Today",
+
+            month: "Month",
+
+            week: "Week",
+
+            day: "Day"
+
+        },
+
+        events: events.map(function(event){
+
+            return {
+
+                title: event.title,
+
+                start: event.start,
+
+                extendedProps: {
+
+                    description: event.description || ""
+
+                },
+
+                backgroundColor: "#4f46e5",
+
+                borderColor: "#4f46e5",
+
+                textColor: "#ffffff"
+
+            };
+
+        }),
+
+        eventClick: function(info){
+
+            info.jsEvent.preventDefault();
+
+            const title = info.event.title;
+
+            const date = info.event.start.toLocaleDateString();
+
+            const venue = info.event.extendedProps.description || "N/A";
+
+            alert(
+
+                "Event : " + title +
+
+                "\nDate : " + date +
+
+                "\nVenue : " + venue
+
+            );
+
+        }
+
+    });
+
+    calendar.render();
+
+});
+
+</script>
+
+{% endblock %}

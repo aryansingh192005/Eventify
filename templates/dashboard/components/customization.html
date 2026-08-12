@@ -1,0 +1,484 @@
+<!-- ==========================================
+     EVENTIFY CUSTOMIZATION PANEL
+========================================== -->
+
+<div
+    class="customization-overlay"
+    id="customizationOverlay">
+</div>
+
+
+<aside
+    class="customization-panel"
+    id="customizationPanel">
+
+
+    <!-- Header -->
+
+    <div class="customization-header">
+
+        <div>
+
+            <h5>
+                Appearance
+            </h5>
+
+            <small>
+                Customize your Eventify experience
+            </small>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="customization-close"
+            id="customizationClose">
+
+            <i class="bi bi-x-lg"></i>
+
+        </button>
+
+    </div>
+
+
+
+    <!-- Content -->
+
+    <div class="customization-body">
+
+
+        <!-- ==============================
+             THEME
+        =============================== -->
+
+        <section class="customization-section">
+
+            <div class="customization-section-title">
+
+                <i class="bi bi-circle-half"></i>
+
+                <span>
+                    Theme
+                </span>
+
+            </div>
+
+
+            <div class="theme-options">
+
+
+                <button
+                    type="button"
+                    class="theme-option"
+                    data-theme="light">
+
+                    <i class="bi bi-sun-fill"></i>
+
+                    <span>
+                        Light
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="theme-option"
+                    data-theme="dark">
+
+                    <i class="bi bi-moon-fill"></i>
+
+                    <span>
+                        Dark
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="theme-option"
+                    data-theme="system">
+
+                    <i class="bi bi-display"></i>
+
+                    <span>
+                        System
+                    </span>
+
+                </button>
+
+
+            </div>
+
+        </section>
+
+        <!-- ==============================
+     THEME PRESETS
+=============================== -->
+
+<section class="customization-section">
+
+    <div class="customization-section-title">
+
+        <i class="bi bi-stars"></i>
+
+        <span>
+            Theme Preset
+        </span>
+
+    </div>
+
+
+    <div class="preset-options">
+
+
+        <button
+            type="button"
+            class="preset-option"
+            data-preset="default">
+
+            <span
+                class="preset-preview preset-default">
+            </span>
+
+            <span>
+                Default
+            </span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="preset-option"
+            data-preset="ocean">
+
+            <span
+                class="preset-preview preset-ocean">
+            </span>
+
+            <span>
+                Ocean
+            </span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="preset-option"
+            data-preset="emerald">
+
+            <span
+                class="preset-preview preset-emerald">
+            </span>
+
+            <span>
+                Emerald
+            </span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="preset-option"
+            data-preset="sunset">
+
+            <span
+                class="preset-preview preset-sunset">
+            </span>
+
+            <span>
+                Sunset
+            </span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="preset-option"
+            data-preset="rose">
+
+            <span
+                class="preset-preview preset-rose">
+            </span>
+
+            <span>
+                Rose
+            </span>
+
+        </button>
+
+
+    </div>
+
+</section>
+
+        <!-- ==============================
+             ACCENT COLOR
+        =============================== -->
+
+        <section class="customization-section">
+
+            <div class="customization-section-title">
+
+                <i class="bi bi-palette-fill"></i>
+
+                <span>
+                    Accent Color
+                </span>
+
+            </div>
+
+
+            <div class="color-options">
+
+
+                <button
+                    type="button"
+                    class="color-option"
+                    data-color="indigo"
+                    style="--option-color:#4f46e5"
+                    title="Indigo">
+                </button>
+
+
+                <button
+                    type="button"
+                    class="color-option"
+                    data-color="blue"
+                    style="--option-color:#2563eb"
+                    title="Blue">
+                </button>
+
+
+                <button
+                    type="button"
+                    class="color-option"
+                    data-color="purple"
+                    style="--option-color:#7c3aed"
+                    title="Purple">
+                </button>
+
+
+                <button
+                    type="button"
+                    class="color-option"
+                    data-color="green"
+                    style="--option-color:#16a34a"
+                    title="Green">
+                </button>
+
+
+                <button
+                    type="button"
+                    class="color-option"
+                    data-color="orange"
+                    style="--option-color:#ea580c"
+                    title="Orange">
+                </button>
+
+
+                <button
+                    type="button"
+                    class="color-option"
+                    data-color="red"
+                    style="--option-color:#dc2626"
+                    title="Red">
+                </button>
+
+
+                <button
+                    type="button"
+                    class="color-option"
+                    data-color="pink"
+                    style="--option-color:#db2777"
+                    title="Pink">
+                </button>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==============================
+             SIDEBAR
+        =============================== -->
+
+        <section class="customization-section">
+
+            <div class="customization-section-title">
+
+                <i class="bi bi-layout-sidebar"></i>
+
+                <span>
+                    Sidebar
+                </span>
+
+            </div>
+
+
+            <div class="customization-choice">
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="sidebarMode"
+                        value="expanded"
+                        checked>
+
+                    <span>
+                        Expanded
+                    </span>
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="sidebarMode"
+                        value="compact">
+
+                    <span>
+                        Compact
+                    </span>
+
+                </label>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==============================
+             DENSITY
+        =============================== -->
+
+        <section class="customization-section">
+
+            <div class="customization-section-title">
+
+                <i class="bi bi-arrows-collapse"></i>
+
+                <span>
+                    Interface Density
+                </span>
+
+            </div>
+
+
+            <div class="customization-choice">
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="density"
+                        value="comfortable"
+                        checked>
+
+                    <span>
+                        Comfortable
+                    </span>
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="density"
+                        value="compact">
+
+                    <span>
+                        Compact
+                    </span>
+
+                </label>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==============================
+             FONT
+        =============================== -->
+
+        <section class="customization-section">
+
+            <div class="customization-section-title">
+
+                <i class="bi bi-fonts"></i>
+
+                <span>
+                    Font
+                </span>
+
+            </div>
+
+
+            <select
+                id="fontSelector"
+                class="form-select">
+
+                <option value="Poppins">
+                    Poppins
+                </option>
+
+                <option value="Inter">
+                    Inter
+                </option>
+
+                <option value="Roboto">
+                    Roboto
+                </option>
+
+                <option value="system">
+                    System Default
+                </option>
+
+            </select>
+
+        </section>
+
+
+    </div>
+
+
+
+    <!-- Footer -->
+
+    <div class="customization-footer">
+
+        <button
+            type="button"
+            class="btn btn-outline-danger w-100"
+            id="resetCustomization">
+
+            <i class="bi bi-arrow-counterclockwise me-2"></i>
+
+            Reset to Default
+
+        </button>
+
+    </div>
+
+
+</aside>

@@ -1,0 +1,115 @@
+<div class="card shadow-sm border-0 rounded-4 mb-4">
+
+    <div class="card-header bg-white border-0">
+
+        <h5 class="mb-0">
+
+            <i class="bi bi-lightning-charge-fill text-warning me-2"></i>
+
+            Quick Actions
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row g-3">
+
+            {% if dashboard_role == "ADMIN" %}
+
+                <div class="col-md-4">
+
+                    <a href="{% url 'event_create' %}" class="btn btn-primary w-100">
+
+                        <i class="bi bi-plus-circle me-2"></i>
+
+                        Create Event
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <a href="{% url 'category_create' %}" class="btn btn-outline-primary w-100">
+
+                        <i class="bi bi-tags me-2"></i>
+
+                        Category
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <a href="{% url 'reports_dashboard' %}" class="btn btn-outline-success w-100">
+
+                        <i class="bi bi-bar-chart me-2"></i>
+
+                        Reports
+
+                    </a>
+
+                </div>
+
+            {% elif dashboard_role == "ORGANIZER" %}
+
+                <div class="col-md-6">
+
+                    <a href="{% url 'event_create' %}" class="btn btn-primary w-100">
+
+                        <i class="bi bi-plus-circle me-2"></i>
+
+                        Create Event
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <a href="{% url 'my_events' %}" class="btn btn-outline-success w-100">
+
+                        <i class="bi bi-kanban me-2"></i>
+
+                        My Events
+
+                    </a>
+
+                </div>
+
+            {% else %}
+
+                <div class="col-md-6">
+
+                    <a href="{% url 'event_list' %}" class="btn btn-primary w-100">
+
+                        <i class="bi bi-search me-2"></i>
+
+                        Browse Events
+
+                    </a>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <a href="{% url 'my_registrations' %}" class="btn btn-outline-success w-100">
+
+                        <i class="bi bi-ticket-perforated me-2"></i>
+
+                        My Registrations
+
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>

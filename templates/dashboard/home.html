@@ -1,0 +1,29 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block dashboard_content %}
+
+{% if dashboard_type == "admin" %}
+
+    {% include "dashboard/partials/admin/admin_dashboard.html" %}
+
+{% elif dashboard_type == "organizer" %}
+
+    {% include "dashboard/partials/organizer_dashboard.html" %}
+
+{% elif dashboard_type == "attendee" %}
+
+    {% include "dashboard/partials/attendee_dashboard.html" %}
+
+{% else %}
+
+<div class="alert alert-danger">
+    Invalid dashboard type.
+</div>
+
+{% endif %}
+
+{% endblock %}

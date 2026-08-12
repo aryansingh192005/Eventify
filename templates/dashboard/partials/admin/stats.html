@@ -1,0 +1,208 @@
+<!-- ==========================
+     ADMIN STATISTICS CARDS
+========================== -->
+
+
+<div class="row g-4 mb-4">
+
+
+
+
+
+
+<!-- USERS -->
+
+<div class="col-xl-3 col-md-6">
+
+
+<div class="stat-card">
+
+
+
+<div class="stat-icon bg-primary-subtle text-primary">
+
+
+    <i class="bi bi-people-fill"></i>
+
+
+</div>
+
+
+
+
+<h2>
+
+    {{ total_users|default:0 }}
+
+</h2>
+
+
+
+<p>
+
+    Total Users
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ORGANIZERS -->
+
+<div class="col-xl-3 col-md-6">
+
+
+<div class="stat-card">
+
+
+
+<div class="stat-icon bg-success-subtle text-success">
+
+
+    <i class="bi bi-person-badge-fill"></i>
+
+
+</div>
+
+
+
+
+<h2>
+
+    {{ total_organizers|default:0 }}
+
+</h2>
+
+
+
+<p>
+
+    Organizers
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- EVENTS -->
+
+<div class="col-xl-3 col-md-6">
+
+
+<div class="stat-card">
+
+
+
+<div class="stat-icon bg-warning-subtle text-warning">
+
+
+    <i class="bi bi-calendar-event-fill"></i>
+
+
+</div>
+
+
+
+
+<h2>
+
+    {{ total_events|default:0 }}
+
+</h2>
+
+
+
+<p>
+
+    Total Events
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- REGISTRATIONS -->
+
+<div class="col-xl-3 col-md-6">
+
+
+<div class="stat-card">
+
+
+
+<div class="stat-icon bg-danger-subtle text-danger">
+
+
+    <i class="bi bi-ticket-perforated-fill"></i>
+
+
+</div>
+
+
+
+
+<h2>
+
+    {{ total_registrations|default:0 }}
+
+</h2>
+
+
+
+<p>
+
+    Registrations
+
+</p>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+</div>

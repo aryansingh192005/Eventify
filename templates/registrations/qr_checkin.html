@@ -1,0 +1,1325 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block title %}
+QR Check-In | Eventify
+{% endblock %}
+
+
+{% block css %}
+
+<style>
+
+/* ==========================================================
+   QR CHECK-IN PAGE
+========================================================== */
+
+.checkin-page {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+
+/* Hero */
+
+.checkin-hero {
+    background: linear-gradient(
+        135deg,
+        var(--primary, #4f46e5),
+        var(--primary-dark, #4338ca)
+    );
+
+    color: #ffffff;
+
+    border-radius: 24px;
+
+    padding: 32px;
+
+    margin-bottom: 24px;
+
+    box-shadow:
+        0 18px 45px
+        rgba(79, 70, 229, .18);
+}
+
+
+.checkin-hero h2 {
+    font-size: 1.65rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+
+.checkin-hero p {
+    margin: 0;
+    opacity: .9;
+}
+
+
+.event-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    background: rgba(255,255,255,.15);
+
+    padding: 8px 13px;
+
+    border-radius: 999px;
+
+    font-size: .8rem;
+
+    margin-bottom: 14px;
+}
+
+
+/* Scanner card */
+
+.scanner-card {
+    background: var(--surface, #ffffff);
+
+    border: 1px solid var(--border, #e5e7eb);
+
+    border-radius: 22px;
+
+    padding: 28px;
+
+    box-shadow:
+        0 10px 30px
+        rgba(15,23,42,.07);
+}
+
+
+/* Scanner */
+
+.scanner-container {
+    position: relative;
+
+    width: 100%;
+
+    max-width: 520px;
+
+    aspect-ratio: 1 / 1;
+
+    margin: 0 auto 22px;
+
+    background: #0f172a;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+
+#qr-reader {
+    width: 100%;
+    height: 100%;
+}
+
+
+#qr-reader video {
+    width: 100% !important;
+    height: 100% !important;
+
+    object-fit: cover;
+}
+
+
+/* Scanner corners */
+
+.scanner-frame {
+    position: absolute;
+
+    inset: 16%;
+
+    border: 3px solid
+        rgba(255,255,255,.9);
+
+    border-radius: 18px;
+
+    pointer-events: none;
+
+    z-index: 5;
+}
+
+
+.scanner-frame::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 8%;
+
+    right: 8%;
+
+    top: 50%;
+
+    height: 2px;
+
+    background: var(
+        --primary,
+        #4f46e5
+    );
+
+    box-shadow:
+        0 0 12px
+        var(--primary, #4f46e5);
+
+    animation:
+        scan-line 2s
+        ease-in-out infinite;
+}
+
+
+@keyframes scan-line {
+
+    0% {
+        top: 15%;
+    }
+
+    50% {
+        top: 85%;
+    }
+
+    100% {
+        top: 15%;
+    }
+
+}
+
+
+/* Camera state */
+
+.camera-placeholder {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #94a3b8;
+
+    text-align: center;
+
+    padding: 30px;
+
+    pointer-events: none;
+
+    z-index: 2;
+}
+
+
+.camera-placeholder i {
+    font-size: 3rem;
+
+    margin-bottom: 14px;
+
+    color: #64748b;
+}
+
+
+.camera-placeholder strong {
+    color: #e2e8f0;
+}
+
+
+/* Controls */
+
+.checkin-controls {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-bottom: 24px;
+}
+
+
+.checkin-controls .btn {
+
+    min-width: 150px;
+
+    border-radius: 12px;
+
+    min-height: 46px;
+
+    font-weight: 600;
+}
+
+
+/* Divider */
+
+.scanner-divider {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    color: var(--muted, #6b7280);
+
+    font-size: .8rem;
+
+    margin: 10px auto 20px;
+
+    max-width: 520px;
+}
+
+
+.scanner-divider::before,
+.scanner-divider::after {
+
+    content: "";
+
+    height: 1px;
+
+    flex: 1;
+
+    background:
+        var(--border, #e5e7eb);
+
+}
+
+
+/* Upload */
+
+.upload-box {
+
+    max-width: 520px;
+
+    margin: 0 auto;
+
+    padding: 20px;
+
+    border: 2px dashed
+        var(--border, #e5e7eb);
+
+    border-radius: 16px;
+
+    text-align: center;
+
+    transition: .2s ease;
+}
+
+
+.upload-box:hover {
+
+    border-color:
+        var(--primary, #4f46e5);
+
+    background:
+        color-mix(
+            in srgb,
+            var(--primary, #4f46e5) 4%,
+            transparent
+        );
+
+}
+
+
+.upload-box i {
+
+    font-size: 1.8rem;
+
+    color:
+        var(--primary, #4f46e5);
+
+}
+
+
+.upload-box p {
+
+    margin: 8px 0 14px;
+
+    color:
+        var(--muted, #6b7280);
+
+    font-size: .85rem;
+}
+
+
+/* Result */
+
+.checkin-result {
+
+    display: none;
+
+    max-width: 620px;
+
+    margin: 24px auto 0;
+
+    padding: 24px;
+
+    border-radius: 18px;
+
+    text-align: center;
+}
+
+
+.checkin-result.success {
+
+    display: block;
+
+    background: #ecfdf5;
+
+    border: 1px solid #a7f3d0;
+
+    color: #065f46;
+}
+
+
+.checkin-result.error {
+
+    display: block;
+
+    background: #fef2f2;
+
+    border: 1px solid #fecaca;
+
+    color: #991b1b;
+}
+
+
+.checkin-result-icon {
+
+    width: 58px;
+
+    height: 58px;
+
+    margin: 0 auto 12px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 1.5rem;
+}
+
+
+.success
+.checkin-result-icon {
+
+    background: #d1fae5;
+
+    color: #059669;
+}
+
+
+.error
+.checkin-result-icon {
+
+    background: #fee2e2;
+
+    color: #dc2626;
+}
+
+
+.result-name {
+
+    font-size: 1.15rem;
+
+    font-weight: 700;
+
+    margin-bottom: 5px;
+}
+
+
+.result-details {
+
+    font-size: .85rem;
+
+    opacity: .85;
+}
+
+
+/* Instructions */
+
+.checkin-instructions {
+
+    margin-top: 24px;
+
+    padding: 20px;
+
+    border-radius: 16px;
+
+    background:
+        var(--bg, #f8fafc);
+
+    border:
+        1px solid
+        var(--border, #e5e7eb);
+}
+
+
+.checkin-instructions h6 {
+
+    font-weight: 700;
+
+    margin-bottom: 12px;
+}
+
+
+.checkin-instructions ol {
+
+    margin: 0;
+
+    padding-left: 20px;
+
+    color:
+        var(--muted, #6b7280);
+
+    font-size: .85rem;
+}
+
+
+.checkin-instructions li {
+
+    margin-bottom: 6px;
+
+}
+
+
+/* Mobile */
+
+@media (max-width: 576px) {
+
+    .checkin-hero {
+
+        padding: 24px;
+
+        border-radius: 18px;
+
+    }
+
+
+    .scanner-card {
+
+        padding: 18px;
+
+        border-radius: 18px;
+
+    }
+
+
+    .checkin-controls {
+
+        flex-direction: column;
+
+    }
+
+
+    .checkin-controls .btn {
+
+        width: 100%;
+
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+
+{% block dashboard_content %}
+
+<div class="checkin-page">
+
+
+    <!-- HERO -->
+
+    <div class="checkin-hero">
+
+        <div class="event-badge">
+
+            <i class="bi bi-calendar-event"></i>
+
+            Event Check-In
+
+        </div>
+
+
+        <h2>
+
+            Scan Attendee QR
+
+        </h2>
+
+
+        <p>
+
+            Verify registration and mark the attendee as checked in.
+
+        </p>
+
+
+        <div class="mt-3">
+
+            <strong>
+
+                {{ event.title }}
+
+            </strong>
+
+            <span class="mx-2 opacity-50">
+                •
+            </span>
+
+            {{ event.event_date }}
+
+        </div>
+
+    </div>
+
+
+
+    <!-- SCANNER -->
+
+    <div class="scanner-card">
+
+
+        <div class="scanner-container">
+
+            <div id="qr-reader"></div>
+
+
+            <div class="scanner-frame"></div>
+
+
+            <div
+                class="camera-placeholder"
+                id="cameraPlaceholder">
+
+                <i class="bi bi-camera"></i>
+
+                <strong>
+                    Camera Scanner
+                </strong>
+
+                <span class="small mt-1">
+                    Click "Start Camera" below
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- CONTROLS -->
+
+        <div class="checkin-controls">
+
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                id="startCamera">
+
+                <i class="bi bi-camera-fill me-2"></i>
+
+                Start Camera
+
+            </button>
+
+
+            <button
+                type="button"
+                class="btn btn-outline-secondary"
+                id="stopCamera"
+                disabled>
+
+                <i class="bi bi-stop-circle me-2"></i>
+
+                Stop Camera
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- DIVIDER -->
+
+        <div class="scanner-divider">
+
+            OR
+
+        </div>
+
+
+
+        <!-- UPLOAD -->
+
+        <div class="upload-box">
+
+            <i class="bi bi-image"></i>
+
+
+            <p>
+
+                Have a QR code saved as an image?
+
+            </p>
+
+
+            <label
+                for="qrUpload"
+                class="btn btn-outline-primary">
+
+                <i class="bi bi-upload me-2"></i>
+
+                Upload QR Image
+
+            </label>
+
+
+            <input
+                type="file"
+                id="qrUpload"
+                accept="image/*"
+                hidden>
+
+        </div>
+
+
+
+        <!-- RESULT -->
+
+        <div
+            id="checkinResult"
+            class="checkin-result">
+
+        </div>
+
+
+
+        <!-- INSTRUCTIONS -->
+
+        <div class="checkin-instructions">
+
+            <h6>
+
+                <i class="bi bi-info-circle me-2"></i>
+
+                How check-in works
+
+            </h6>
+
+
+            <ol>
+
+                <li>
+                    Ask the attendee to show their Eventify QR ticket.
+                </li>
+
+                <li>
+                    Scan the QR using the camera or upload its image.
+                </li>
+
+                <li>
+                    Eventify verifies the ticket against the registration.
+                </li>
+
+                <li>
+                    A valid ticket is marked as checked in.
+                </li>
+
+            </ol>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+
+{% block js %}
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        const eventSlug =
+            "{{ event.slug|escapejs }}";
+
+
+        const verifyUrl =
+            "{% url 'verify_qr_checkin' slug=event.slug %}";
+
+
+        const csrfToken =
+            "{{ csrf_token }}";
+
+
+        const startButton =
+            document.getElementById(
+                "startCamera"
+            );
+
+
+        const stopButton =
+            document.getElementById(
+                "stopCamera"
+            );
+
+
+        const uploadInput =
+            document.getElementById(
+                "qrUpload"
+            );
+
+
+        const result =
+            document.getElementById(
+                "checkinResult"
+            );
+
+
+        const placeholder =
+            document.getElementById(
+                "cameraPlaceholder"
+            );
+
+
+        let scanner = null;
+
+        let scanning = false;
+
+        let processing = false;
+
+
+
+        /* ==================================================
+           SHOW RESULT
+        ================================================== */
+
+        function showResult(
+            type,
+            data
+        ) {
+
+            result.className =
+                "checkin-result " +
+                type;
+
+
+            if (data.success) {
+
+                result.innerHTML = `
+
+                    <div class="checkin-result-icon">
+
+                        <i class="bi bi-check-lg"></i>
+
+                    </div>
+
+                    <div class="result-name">
+
+                        ${escapeHtml(data.attendee)}
+
+                    </div>
+
+                    <div class="result-details">
+
+                        ${escapeHtml(data.event)}
+
+                        <br>
+
+                        Ticket:
+                        <strong>
+                            ${escapeHtml(data.ticket_id)}
+                        </strong>
+
+                        <br>
+
+                        Checked in:
+                        ${escapeHtml(data.checked_in_at)}
+
+                    </div>
+
+                `;
+
+            } else {
+
+                const icon =
+                    data.already_checked_in
+                        ? "bi-exclamation-lg"
+                        : "bi-x-lg";
+
+
+                result.innerHTML = `
+
+                    <div class="checkin-result-icon">
+
+                        <i class="bi ${icon}"></i>
+
+                    </div>
+
+                    <div class="result-name">
+
+                        ${escapeHtml(
+                            data.message
+                        )}
+
+                    </div>
+
+                    ${
+                        data.attendee
+                        ? `
+                            <div class="result-details">
+
+                                ${escapeHtml(
+                                    data.attendee
+                                )}
+
+                                ${
+                                    data.checked_in_at
+                                    ? `
+                                        <br>
+                                        Checked in:
+                                        ${escapeHtml(
+                                            data.checked_in_at
+                                        )}
+                                      `
+                                    : ""
+                                }
+
+                            </div>
+                          `
+                        : ""
+                    }
+
+                `;
+
+            }
+
+        }
+
+
+
+        /* ==================================================
+           HTML ESCAPE
+        ================================================== */
+
+        function escapeHtml(value) {
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+            div.textContent =
+                value ?? "";
+
+            return div.innerHTML;
+
+        }
+
+
+
+        /* ==================================================
+           EXTRACT TICKET CODE
+        ================================================== */
+
+        function extractTicketCode(text) {
+
+            if (!text) {
+                return null;
+            }
+
+
+            /*
+             * Current Eventify QR format:
+             *
+             * Ticket ID:
+             * UUID
+             */
+
+            const match =
+                text.match(
+                    /Ticket ID:\s*([0-9a-fA-F-]{36})/i
+                );
+
+
+            if (match) {
+
+                return match[1];
+
+            }
+
+
+            /*
+             * Also allow a raw UUID.
+             */
+
+            const uuid =
+                text.match(
+                    /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}/
+                );
+
+
+            return uuid
+                ? uuid[0]
+                : null;
+
+        }
+
+
+
+        /* ==================================================
+           VERIFY QR
+        ================================================== */
+
+        async function verifyQR(text) {
+
+            if (processing) {
+                return;
+            }
+
+
+            processing = true;
+
+
+            const ticketCode =
+                extractTicketCode(text);
+
+
+            if (!ticketCode) {
+
+                showResult(
+                    "error",
+                    {
+                        success: false,
+                        message:
+                            "Invalid QR code. Eventify ticket information was not found."
+                    }
+                );
+
+
+                processing = false;
+
+                return;
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        verifyUrl,
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/x-www-form-urlencoded",
+
+                                "X-CSRFToken":
+                                    csrfToken,
+
+                            },
+
+                            body:
+                                new URLSearchParams({
+
+                                    ticket_code:
+                                        ticketCode
+
+                                })
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                showResult(
+                    data.success
+                        ? "success"
+                        : "error",
+                    data
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    error
+                );
+
+
+                showResult(
+                    "error",
+                    {
+                        success: false,
+                        message:
+                            "Unable to contact the server. Please try again."
+                    }
+                );
+
+            }
+
+
+            setTimeout(
+                function () {
+
+                    processing = false;
+
+                },
+                1500
+            );
+
+        }
+
+
+
+        /* ==================================================
+           CAMERA
+        ================================================== */
+
+        startButton.addEventListener(
+            "click",
+            async function () {
+
+
+                if (scanning) {
+                    return;
+                }
+
+
+                scanner =
+                    new Html5Qrcode(
+                        "qr-reader"
+                    );
+
+
+                try {
+
+                    await scanner.start(
+
+                        {
+                            facingMode:
+                                "environment"
+                        },
+
+                        {
+                            fps: 10,
+
+                            qrbox: {
+                                width: 250,
+                                height: 250
+                            }
+
+                        },
+
+                        function (decodedText) {
+
+                            verifyQR(
+                                decodedText
+                            );
+
+                        },
+
+                        function () {
+
+                            /*
+                             * Ignore normal
+                             * scanning failures.
+                             */
+
+                        }
+
+                    );
+
+
+                    scanning = true;
+
+                    startButton.disabled =
+                        true;
+
+                    stopButton.disabled =
+                        false;
+
+                    placeholder.style.display =
+                        "none";
+
+
+                } catch (error) {
+
+                    console.error(
+                        error
+                    );
+
+
+                    showResult(
+                        "error",
+                        {
+                            success: false,
+                            message:
+                                "Camera could not be started. Please allow camera access or upload the QR image."
+                        }
+                    );
+
+                }
+
+            }
+        );
+
+
+
+        /* ==================================================
+           STOP CAMERA
+        ================================================== */
+
+        stopButton.addEventListener(
+            "click",
+            async function () {
+
+                if (
+                    scanner &&
+                    scanning
+                ) {
+
+                    try {
+
+                        await scanner.stop();
+
+                    } catch (error) {
+
+                        console.error(
+                            error
+                        );
+
+                    }
+
+                }
+
+
+                scanning = false;
+
+                startButton.disabled =
+                    false;
+
+                stopButton.disabled =
+                    true;
+
+                placeholder.style.display =
+                    "flex";
+
+            }
+        );
+
+
+
+        /* ==================================================
+           UPLOAD QR
+        ================================================== */
+
+        uploadInput.addEventListener(
+            "change",
+            async function (event) {
+
+
+                const file =
+                    event.target.files[0];
+
+
+                if (!file) {
+                    return;
+                }
+
+
+                try {
+
+                    const imageScanner =
+                        new Html5Qrcode(
+                            "qr-reader"
+                        );
+
+
+                    const decodedText =
+                        await imageScanner.scanFile(
+                            file,
+                            true
+                        );
+
+
+                    await verifyQR(
+                        decodedText
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        error
+                    );
+
+
+                    showResult(
+                        "error",
+                        {
+                            success: false,
+                            message:
+                                "Could not read a QR code from this image."
+                        }
+                    );
+
+                }
+
+
+                uploadInput.value = "";
+
+            }
+        );
+
+
+    }
+
+);
+
+</script>
+
+{% endblock %}

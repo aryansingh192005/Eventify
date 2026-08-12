@@ -1,0 +1,325 @@
+<!-- ==========================
+     UPCOMING EVENTS
+========================== -->
+
+
+<div class="dashboard-card mb-4">
+
+
+
+
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+
+<h5 class="mb-0">
+
+
+<i class="bi bi-calendar-check-fill text-primary me-2"></i>
+
+
+Upcoming Events
+
+
+</h5>
+
+
+
+
+<a href="{% url 'event_list' %}"
+   class="btn btn-sm btn-outline-primary">
+
+
+View All
+
+
+</a>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="table-responsive">
+
+
+
+<table class="table align-middle dashboard-table">
+
+
+
+<thead>
+
+
+<tr>
+
+
+<th>
+
+Event
+
+</th>
+
+
+<th>
+
+Date
+
+</th>
+
+
+<th>
+
+Available Seats
+
+</th>
+
+
+<th>
+
+Status
+
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+
+
+<tbody>
+
+
+
+
+
+{% for event in upcoming_event_list %}
+
+
+
+<tr>
+
+
+
+<td>
+
+
+
+<div class="d-flex align-items-center gap-3">
+
+
+
+<div class="event-table-icon">
+
+
+<i class="bi bi-calendar-event"></i>
+
+
+</div>
+
+
+
+
+<div>
+
+
+<strong>
+
+
+{{ event.title }}
+
+
+</strong>
+
+
+
+<small class="d-block text-muted">
+
+
+Upcoming Event
+
+
+</small>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+</td>
+
+
+
+
+
+
+
+<td>
+
+
+<i class="bi bi-clock me-1 text-muted"></i>
+
+
+{{ event.event_date }}
+
+
+</td>
+
+
+
+
+
+
+
+<td>
+
+
+
+<span class="badge bg-info-subtle text-info">
+
+
+{{ event.available_seats }}
+
+Seats
+
+
+</span>
+
+
+
+</td>
+
+
+
+
+
+
+
+<td>
+
+
+
+{% if event.available_seats > 0 %}
+
+
+
+<span class="badge bg-success-subtle text-success">
+
+
+Open
+
+
+</span>
+
+
+
+{% else %}
+
+
+
+<span class="badge bg-danger-subtle text-danger">
+
+
+Full
+
+
+</span>
+
+
+
+{% endif %}
+
+
+
+</td>
+
+
+
+
+
+
+</tr>
+
+
+
+
+
+
+
+{% empty %}
+
+
+
+
+<tr>
+
+
+<td colspan="4">
+
+
+
+<div class="empty-state py-4">
+
+
+<i class="bi bi-calendar-x"></i>
+
+
+
+<p class="text-muted mb-0">
+
+
+No upcoming events available.
+
+
+</p>
+
+
+</div>
+
+
+
+</td>
+
+
+</tr>
+
+
+
+
+
+
+{% endfor %}
+
+
+
+
+
+</tbody>
+
+
+
+</table>
+
+
+
+</div>
+
+
+
+
+</div>
