@@ -287,17 +287,11 @@ BASIC INFORMATION
 
                         <div class="text-center">
 
-                            <div
-                                class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center"
-                                style="width:90px;height:90px;">
+                            <div class="event-preview-icon">
 
-                                <i
-                                    class="bi bi-calendar2-event text-primary"
-                                    style="font-size:45px;">
+    <i class="bi bi-calendar2-event"></i>
 
-                                </i>
-
-                            </div>
+</div>
 
                         </div>
 
@@ -1649,6 +1643,278 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const eventDate = document.getElementById("id_event_date");
+    const startTime = document.getElementById("id_start_time");
+    const endTime = document.getElementById("id_end_time");
+    const deadline = document.getElementById(
+        "id_registration_deadline"
+    );
+
+
+    // =====================================================
+    // CURRENT DATE / TIME
+    // =====================================================
+
+    function getLocalDate() {
+
+        const now = new Date();
+
+        const year = now.getFullYear();
+
+        const month = String(
+            now.getMonth() + 1
+        ).padStart(2, "0");
+
+        const day = String(
+            now.getDate()
+        ).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+    }
+
+
+    function getLocalDateTime() {
+
+        const now = new Date();
+
+        const year = now.getFullYear();
+
+        const month = String(
+            now.getMonth() + 1
+        ).padStart(2, "0");
+
+        const day = String(
+            now.getDate()
+        ).padStart(2, "0");
+
+        const hours = String(
+            now.getHours()
+        ).padStart(2, "0");
+
+        const minutes = String(
+            now.getMinutes()
+        ).padStart(2, "0");
+
+        return (
+            `${year}-${month}-${day}` +
+            `T${hours}:${minutes}`
+        );
+    }
+
+
+    // =====================================================
+    // EVENT DATE
+    // =====================================================
+
+    if (eventDate) {
+
+        eventDate.min = getLocalDate();
+
+    }
+
+
+    // =====================================================
+    // UPDATE TIME LIMITS
+    // =====================================================
+
+    function updateTimeLimits() {
+
+        if (!eventDate) {
+            return;
+        }
+
+        const today = getLocalDate();
+
+        const selectedDate =
+            eventDate.value;
+
+
+        // ---------------------------------------------
+        // FUTURE DATE
+        // ---------------------------------------------
+
+        if (selectedDate > today) {
+
+            if (startTime) {
+                startTime.removeAttribute("min");
+            }
+
+            if (endTime) {
+                endTime.removeAttribute("min");
+            }
+
+            return;
+        }
+
+
+        // ---------------------------------------------
+        // TODAY
+        // ---------------------------------------------
+
+        if (selectedDate === today) {
+
+            const now = new Date();
+
+            const hours = String(
+                now.getHours()
+            ).padStart(2, "0");
+
+            const minutes = String(
+                now.getMinutes()
+            ).padStart(2, "0");
+
+            const currentTime =
+                `${hours}:${minutes}`;
+
+
+            if (startTime) {
+
+                startTime.min =
+                    currentTime;
+
+            }
+
+
+            if (
+                startTime &&
+                startTime.value
+            ) {
+
+                if (
+                    startTime.value >
+                    currentTime
+                ) {
+
+                    if (endTime) {
+
+                        endTime.min =
+                            startTime.value;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    // =====================================================
+    // EVENT DATE CHANGE
+    // =====================================================
+
+    if (eventDate) {
+
+        eventDate.addEventListener(
+            "change",
+            function () {
+
+                updateTimeLimits();
+
+                updateDeadlineLimits();
+
+            }
+        );
+
+    }
+
+
+    // =====================================================
+    // START TIME CHANGE
+    // =====================================================
+
+    if (startTime) {
+
+        startTime.addEventListener(
+            "change",
+            function () {
+
+                if (
+                    endTime &&
+                    startTime.value
+                ) {
+
+                    endTime.min =
+                        startTime.value;
+
+                }
+
+            }
+        );
+
+    }
+
+
+    // =====================================================
+    // REGISTRATION DEADLINE
+    // =====================================================
+
+    function updateDeadlineLimits() {
+
+        if (!deadline) {
+            return;
+        }
+
+
+        // ---------------------------------------------
+        // DEADLINE CANNOT BE IN THE PAST
+        // ---------------------------------------------
+
+        deadline.min =
+            getLocalDateTime();
+
+
+        // ---------------------------------------------
+        // DEADLINE MUST BE BEFORE EVENT START
+        // ---------------------------------------------
+
+        if (
+            eventDate &&
+            startTime &&
+            eventDate.value &&
+            startTime.value
+        ) {
+
+            deadline.max =
+                `${eventDate.value}T${startTime.value}`;
+
+        }
+
+    }
+
+
+    if (deadline) {
+
+        deadline.addEventListener(
+            "focus",
+            updateDeadlineLimits
+        );
+
+    }
+
+
+    if (startTime) {
+
+        startTime.addEventListener(
+            "change",
+            updateDeadlineLimits
+        );
+
+    }
+
+
+    updateTimeLimits();
+
+    updateDeadlineLimits();
+
+});
+</script>
+
 {% endblock %}
 
 <style>
@@ -1730,6 +1996,47 @@ document.addEventListener("DOMContentLoaded", function () {
 textarea{
 
     min-height:150px;
+
+}
+
+/* ==========================================================
+   CREATE EVENT - LIVE PREVIEW ICON
+========================================================== */
+
+.event-preview-icon {
+
+    width: 72px;
+    height: 72px;
+
+    margin: 0 auto 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+    border: 1px solid
+        color-mix(
+            in srgb,
+            var(--primary) 15%,
+            transparent
+        );
+
+}
+
+
+.event-preview-icon i {
+
+    font-size: 30px;
+
+    line-height: 1;
+
+    color: var(--primary);
 
 }
 

@@ -816,47 +816,70 @@ REGISTRATION LIST
 
             <!-- Buttons -->
 
-            <div class="d-grid gap-2">
+<div class="d-grid gap-2">
 
-                <a href="{% url 'event_detail' registration.event.slug %}"
-                   class="btn btn-primary">
+    <!-- View Event -->
 
-                    <i class="bi bi-eye-fill me-2"></i>
+    <a href="{% url 'event_detail' registration.event.slug %}"
+       class="btn btn-primary">
 
-                    View Event
+        <i class="bi bi-eye-fill me-2"></i>
 
-                </a>
+        View Event
 
-                {% if registration.ticket_qr %}
+    </a>
 
-                <a href="{{ registration.ticket_qr.url }}"
-                   download
-                   class="btn btn-outline-success">
 
-                    <i class="bi bi-download me-2"></i>
+    <!-- View Ticket -->
 
-                    Download QR Ticket
+    {% if registration.status != "CANCELLED" %}
 
-                </a>
+    <a href="{% url 'ticket_detail' registration.id %}"
+       class="btn btn-outline-primary">
 
-                {% endif %}
+        <i class="bi bi-ticket-perforated-fill me-2"></i>
 
-                {% if registration.status == "REGISTERED" %}
+        View Ticket & QR
 
-                <a href="{% url 'cancel_registration' registration.id %}"
-                   class="btn btn-outline-danger"
-                   onclick="return confirm('Cancel this registration?');">
+    </a>
 
-                    <i class="bi bi-x-circle me-2"></i>
+    {% endif %}
 
-                    Cancel Registration
 
-                </a>
+    <!-- Download QR -->
 
-                {% endif %}
+    {% if registration.ticket_qr %}
 
-            </div>
+    <a href="{{ registration.ticket_qr.url }}"
+       download
+       class="btn btn-outline-success">
 
+        <i class="bi bi-download me-2"></i>
+
+        Download QR Ticket
+
+    </a>
+
+    {% endif %}
+
+
+    <!-- Cancel Registration -->
+
+    {% if registration.status == "REGISTERED" %}
+
+    <a href="{% url 'cancel_registration' registration.id %}"
+       class="btn btn-outline-danger"
+       onclick="return confirm('Cancel this registration?');">
+
+        <i class="bi bi-x-circle me-2"></i>
+
+        Cancel Registration
+
+    </a>
+
+    {% endif %}
+
+</div>
         </div>
 
     </div>

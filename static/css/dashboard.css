@@ -2112,32 +2112,64 @@ padding:16px;
    EVENTIFY UI SYSTEM v2
 ========================================================== */
 
-:root{
+:root {
 
-    --primary:#4f46e5;
-    --primary-dark:#4338ca;
-    --success:#16a34a;
-    --danger:#dc2626;
-    --warning:#f59e0b;
-    --info:#0ea5e9;
+    /* ==========================================
+       EVENTIFY BRAND COLORS
+    ========================================== */
 
-    --bg:#f5f7fb;
-    --card:#ffffff;
+    --primary: #4f46e5;
+    --primary-dark: #4338ca;
+    --primary-light: #eef2ff;
 
-    --text:#111827;
-    --text-light:#6b7280;
+    --theme-gradient-start: #4f46e5;
+    --theme-gradient-end: #6366f1;
 
-    --border:#e5e7eb;
+    --theme-shadow: rgba(79, 70, 229, .25);
 
-    --radius-sm:10px;
-    --radius:18px;
-    --radius-lg:24px;
 
-    --shadow-sm:0 4px 12px rgba(15,23,42,.06);
-    --shadow:0 10px 30px rgba(15,23,42,.08);
-    --shadow-lg:0 18px 45px rgba(15,23,42,.12);
+    /* ==========================================
+       SEMANTIC COLORS
+       These DO NOT change with presets
+    ========================================== */
 
-    --transition:.28s ease;
+    --success: #16a34a;
+    --danger: #dc2626;
+    --warning: #f59e0b;
+    --info: #0ea5e9;
+
+
+    /* ==========================================
+       SURFACE COLORS
+    ========================================== */
+
+    --bg: #f5f7fb;
+    --card: #ffffff;
+
+    --text: #111827;
+    --text-light: #6b7280;
+
+    --border: #e5e7eb;
+
+
+    /* ==========================================
+       DESIGN
+    ========================================== */
+
+    --radius-sm: 10px;
+    --radius: 18px;
+    --radius-lg: 24px;
+
+    --shadow-sm:
+        0 4px 12px rgba(15, 23, 42, .06);
+
+    --shadow:
+        0 10px 30px rgba(15, 23, 42, .08);
+
+    --shadow-lg:
+        0 18px 45px rgba(15, 23, 42, .12);
+
+    --transition: .28s ease;
 
 }
 
@@ -2540,21 +2572,27 @@ SCROLLBAR
 
 }
 
-.sidebar-menu a:hover{
+.sidebar-menu a:hover {
 
-    background:#eef2ff;
+    background: var(--primary-light);
 
-    transform:translateX(6px);
+    color: var(--primary);
 
 }
 
-.sidebar-menu a.active{
+.sidebar-menu a.active {
 
-    background:linear-gradient(135deg,#4f46e5,#6366f1);
+    background:
+        linear-gradient(
+            135deg,
+            var(--theme-gradient-start),
+            var(--theme-gradient-end)
+        );
 
-    color:white;
+    color: white;
 
-    box-shadow:0 10px 30px rgba(79,70,229,.25);
+    box-shadow:
+        0 10px 30px var(--theme-shadow);
 
 }
 
@@ -2676,12 +2714,11 @@ SCROLLBAR
 
 }
 
-.stats-primary{
+.stats-primary {
 
-    background:#4f46e5;
+    background: var(--primary);
 
 }
-
 .stats-success{
 
     background:#16a34a;
@@ -2855,9 +2892,27 @@ SCROLLBAR
 
 .hero-banner,
 .dashboard-hero,
-.admin-hero{
+.admin-hero {
 
-    padding:28px;
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    padding: 42px;
+
+    position: relative;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--theme-gradient-start),
+            var(--theme-gradient-end)
+        );
+
+    color: white;
+
+    box-shadow:
+        0 20px 60px var(--theme-shadow);
 
 }
 
@@ -4508,5 +4563,2332 @@ html.compact-density .card-body {
     .preset-options {
         grid-template-columns: 1fr;
     }
+
+}
+
+
+/* ==========================================================
+   EVENTIFY GLOBAL THEME ENGINE
+   FINAL OVERRIDE LAYER
+========================================================== */
+
+
+/* ==========================================================
+   LIGHT THEME
+========================================================== */
+
+html.light-theme {
+
+    --bg: #f5f7fb;
+    --surface: #ffffff;
+    --card: #ffffff;
+
+    --text: #111827;
+    --text-light: #6b7280;
+    --muted: #6b7280;
+
+    --border: #e5e7eb;
+
+    --page-bg: #f5f7fb;
+    --navbar-bg: #ffffff;
+
+}
+
+
+/* ==========================================================
+   DARK THEME
+========================================================== */
+
+html.dark-theme {
+
+    --bg: #0f172a;
+    --surface: #111827;
+    --card: #111827;
+
+    --text: #f8fafc;
+    --text-light: #cbd5e1;
+    --muted: #94a3b8;
+
+    --border: #263244;
+
+    --page-bg: #0f172a;
+    --navbar-bg: #111827;
+
+    --secondary-surface: #1e293b;
+    --hover-surface: #263244;
+
+}
+
+
+/* ==========================================================
+   ENTIRE PAGE
+========================================================== */
+
+html,
+body {
+
+    background: var(--bg) !important;
+
+    color: var(--text) !important;
+
+}
+
+
+body {
+
+    min-height: 100vh;
+
+}
+
+
+.dashboard-layout {
+
+    background: var(--bg) !important;
+
+}
+
+
+.dashboard-main {
+
+    background: var(--bg) !important;
+
+}
+
+
+.dashboard-content {
+
+    background: var(--bg) !important;
+
+    color: var(--text) !important;
+
+}
+
+
+/* ==========================================================
+   NAVBAR
+========================================================== */
+
+.dashboard-navbar,
+.navbar {
+
+    background: var(--navbar-bg) !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+.page-title {
+
+    color: var(--text) !important;
+
+}
+
+
+.navbar-brand h4,
+.navbar-brand {
+
+    color: var(--text) !important;
+
+}
+
+
+.navbar-brand small {
+
+    color: var(--muted) !important;
+
+}
+
+
+.nav-link {
+
+    color: var(--text) !important;
+
+}
+
+
+.nav-link:hover {
+
+    background: var(--primary-light) !important;
+
+    color: var(--primary) !important;
+
+}
+
+
+.search-box {
+
+    background: var(--surface) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+.search-box input {
+
+    color: var(--text) !important;
+
+}
+
+
+.search-box input::placeholder {
+
+    color: var(--muted) !important;
+
+}
+
+
+.nav-icon {
+
+    background: var(--surface) !important;
+
+    color: var(--text) !important;
+
+}
+
+
+/* ==========================================================
+   CARDS
+========================================================== */
+
+.card,
+.dashboard-card,
+.stat-card,
+.stats-card,
+.dashboard-widget {
+
+    background: var(--surface) !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+.card-body,
+.card-header,
+.card-footer {
+
+    background: var(--surface) !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+.card h1,
+.card h2,
+.card h3,
+.card h4,
+.card h5,
+.card h6,
+
+.dashboard-card h1,
+.dashboard-card h2,
+.dashboard-card h3,
+.dashboard-card h4,
+.dashboard-card h5,
+.dashboard-card h6,
+
+.stat-card h1,
+.stat-card h2,
+.stat-card h3,
+.stat-card h4,
+.stat-card h5,
+.stat-card h6 {
+
+    color: var(--text) !important;
+
+}
+
+
+.card p,
+.dashboard-card p,
+.stat-card p,
+.stats-card p {
+
+    color: var(--text-light);
+
+}
+
+
+/* ==========================================================
+   DASHBOARD HEADERS
+========================================================== */
+
+.dashboard-header,
+.page-header-modern {
+
+    background: var(--surface) !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+.page-title,
+.page-header-modern .page-title {
+
+    color: var(--text) !important;
+
+}
+
+
+.page-subtitle {
+
+    color: var(--muted) !important;
+
+}
+
+
+/* ==========================================================
+   ACTIVITY
+========================================================== */
+
+.activity-item {
+
+    background: var(--secondary-surface, #f8fafc) !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+html.dark-theme .activity-item:hover {
+
+    background: var(--hover-surface) !important;
+
+}
+
+
+/* ==========================================================
+   CONTROL BOXES
+========================================================== */
+
+.control-box {
+
+    background: var(--surface) !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+.control-box span {
+
+    color: var(--text) !important;
+
+}
+
+
+.control-box:hover {
+
+    background: var(--primary) !important;
+
+    color: #ffffff !important;
+
+}
+
+
+.control-box:hover span,
+.control-box:hover i {
+
+    color: #ffffff !important;
+
+}
+
+
+/* ==========================================================
+   TABLES
+========================================================== */
+
+.table {
+
+    --bs-table-bg: var(--surface);
+
+    --bs-table-color: var(--text);
+
+    --bs-table-border-color: var(--border);
+
+    color: var(--text) !important;
+
+}
+
+
+.table thead,
+.table thead th {
+
+    background: var(--secondary-surface, #f8fafc) !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+.table tbody tr {
+
+    background: var(--surface) !important;
+
+    color: var(--text) !important;
+
+}
+
+
+.table tbody td {
+
+    color: var(--text) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+.table tbody tr:hover {
+
+    background: var(--primary-light) !important;
+
+}
+
+
+/* ==========================================================
+   FORMS
+========================================================== */
+
+.form-control,
+.form-select,
+.input-group-text {
+
+    background-color: var(--surface) !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+.form-control::placeholder {
+
+    color: var(--muted) !important;
+
+}
+
+
+.form-control:focus,
+.form-select:focus {
+
+    background-color: var(--surface) !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--primary) !important;
+
+}
+
+
+.form-label {
+
+    color: var(--text) !important;
+
+}
+
+
+/* ==========================================================
+   DROPDOWNS
+========================================================== */
+
+.dropdown-menu {
+
+    background: var(--surface) !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+.dropdown-item {
+
+    color: var(--text) !important;
+
+}
+
+
+.dropdown-item:hover {
+
+    background: var(--primary-light) !important;
+
+    color: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   MODALS
+========================================================== */
+
+.modal-content {
+
+    background: var(--surface) !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+.modal-header,
+.modal-footer {
+
+    border-color: var(--border) !important;
+
+}
+
+
+.modal-title {
+
+    color: var(--text) !important;
+
+}
+
+
+/* ==========================================================
+   BREADCRUMBS
+========================================================== */
+
+.breadcrumb {
+
+    background: var(--surface) !important;
+
+    color: var(--text) !important;
+
+}
+
+
+.breadcrumb-item {
+
+    color: var(--muted);
+
+}
+
+
+.breadcrumb-item.active {
+
+    color: var(--text);
+
+}
+
+
+/* ==========================================================
+   PAGINATION
+========================================================== */
+
+.page-link {
+
+    background: var(--surface) !important;
+
+    color: var(--primary) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+.page-item.active .page-link {
+
+    background: var(--primary) !important;
+
+    color: #ffffff !important;
+
+    border-color: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   FOOTER
+========================================================== */
+
+.dashboard-footer {
+
+    background: var(--surface) !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+/* ==========================================================
+   EMPTY STATES
+========================================================== */
+
+.empty-state {
+
+    color: var(--text);
+
+}
+
+
+.empty-state h4 {
+
+    color: var(--text) !important;
+
+}
+
+
+.empty-state p {
+
+    color: var(--muted) !important;
+
+}
+
+
+/* ==========================================================
+   ALERTS
+========================================================== */
+
+.alert {
+
+    color: var(--text);
+
+}
+
+
+/* ==========================================================
+   TEXT UTILITIES
+========================================================== */
+
+html.dark-theme .text-dark {
+
+    color: var(--text) !important;
+
+}
+
+
+html.dark-theme .text-secondary {
+
+    color: var(--text-light) !important;
+
+}
+
+
+html.dark-theme .text-body {
+
+    color: var(--text) !important;
+
+}
+
+
+/* ==========================================================
+   LIGHT BACKGROUND UTILITIES
+========================================================== */
+
+html.dark-theme .bg-white {
+
+    background: var(--surface) !important;
+
+}
+
+
+html.dark-theme .bg-light {
+
+    background: var(--secondary-surface) !important;
+
+}
+
+
+/* ==========================================================
+   BORDER UTILITIES
+========================================================== */
+
+html.dark-theme .border,
+html.dark-theme .border-top,
+html.dark-theme .border-bottom,
+html.dark-theme .border-start,
+html.dark-theme .border-end {
+
+    border-color: var(--border) !important;
+
+}
+
+
+/* ==========================================================
+   SIDEBAR
+========================================================== */
+
+.sidebar {
+
+    background:
+        linear-gradient(
+            180deg,
+            #111827,
+            #1e293b
+        ) !important;
+
+}
+
+
+/* Keep sidebar readable in both modes */
+
+.sidebar,
+.sidebar h4,
+.sidebar small,
+.sidebar a {
+
+    color: #ffffff;
+
+}
+
+
+/* ==========================================================
+   APPEARANCE PANEL
+========================================================== */
+
+.customization-panel {
+
+    background: var(--surface) !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+.customization-header,
+.customization-section,
+.customization-footer {
+
+    border-color: var(--border) !important;
+
+}
+
+
+.customization-header h5,
+.customization-section-title,
+.customization-choice label {
+
+    color: var(--text) !important;
+
+}
+
+
+.customization-header small {
+
+    color: var(--muted) !important;
+
+}
+
+
+.customization-close {
+
+    background: var(--bg) !important;
+
+    color: var(--muted) !important;
+
+}
+
+
+.theme-option,
+.preset-option {
+
+    background: var(--surface) !important;
+
+    color: var(--text) !important;
+
+    border-color: var(--border) !important;
+
+}
+
+
+.customization-section .form-select {
+
+    background-color: var(--surface) !important;
+
+    color: var(--text) !important;
+
+}
+
+
+/* ==========================================================
+   CHATBOT
+========================================================== */
+
+html.dark-theme .chatbot-container,
+html.dark-theme .chatbot-window,
+html.dark-theme .chatbot-panel {
+
+    background: var(--surface);
+
+    color: var(--text);
+
+}
+
+
+/* ==========================================================
+   SCROLLBAR
+========================================================== */
+
+html.dark-theme ::-webkit-scrollbar-track {
+
+    background: #0f172a;
+
+}
+
+
+html.dark-theme ::-webkit-scrollbar-thumb {
+
+    background: #475569;
+
+}
+
+
+html.dark-theme ::-webkit-scrollbar-thumb:hover {
+
+    background: #64748b;
+
+}
+
+
+/* ==========================================================
+   DARK THEME HERO
+========================================================== */
+
+html.dark-theme .hero-banner,
+html.dark-theme .dashboard-hero,
+html.dark-theme .admin-hero {
+
+    color: #ffffff;
+
+}
+
+
+/* ==========================================================
+   DARK THEME ICON CIRCLES
+========================================================== */
+
+html.dark-theme .icon-circle {
+
+    background: var(--primary-light);
+
+    color: var(--primary);
+
+}
+
+
+/* ==========================================================
+   DARK THEME GLASS
+========================================================== */
+
+html.dark-theme .glass {
+
+    background: rgba(17, 24, 39, .75);
+
+    border-color: rgba(148, 163, 184, .15);
+
+}
+
+
+/* ==========================================================
+   DARK THEME SHADOWS
+========================================================== */
+
+html.dark-theme .card,
+html.dark-theme .dashboard-card,
+html.dark-theme .stat-card,
+html.dark-theme .stats-card {
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, .25);
+
+}
+
+
+/* ==========================================================
+   DARK THEME SELECTION
+========================================================== */
+
+html.dark-theme ::selection {
+
+    background: var(--primary);
+
+    color: #ffffff;
+
+}
+
+
+/* ==========================================================
+   SYSTEM THEME
+========================================================== */
+
+@media (prefers-color-scheme: dark) {
+
+    html[data-theme="dark"] {
+        color-scheme: dark;
+    }
+
+}
+
+
+/* ==========================================================
+   FORM COLOR SCHEME
+========================================================== */
+
+html.dark-theme {
+
+    color-scheme: dark;
+
+}
+
+
+html.light-theme {
+
+    color-scheme: light;
+
+}
+
+/* ==========================================================
+   EVENTIFY COMPLETE PRESET THEME
+   FINAL OVERRIDE LAYER
+========================================================== */
+
+
+/* ==========================================================
+   GLOBAL PRIMARY ELEMENTS
+========================================================== */
+
+.btn-primary {
+
+    background: var(--primary) !important;
+
+    border-color: var(--primary) !important;
+
+}
+
+.btn-primary:hover {
+
+    background: var(--primary-dark) !important;
+
+    border-color: var(--primary-dark) !important;
+
+}
+
+
+/* ==========================================================
+   ACTIVE NAVIGATION
+========================================================== */
+
+.navbar-nav .nav-link.active {
+
+    background: var(--primary) !important;
+
+    color: #ffffff !important;
+
+}
+
+
+.nav-link.active {
+
+    color: var(--primary) !important;
+
+    background: var(--primary-light) !important;
+
+}
+
+
+/* ==========================================================
+   SIDEBAR ACTIVE ITEM
+========================================================== */
+
+.sidebar-menu a.active {
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--theme-gradient-start, var(--primary)),
+            var(--theme-gradient-end, var(--primary-dark))
+        ) !important;
+
+    color: #ffffff !important;
+
+    box-shadow:
+        0 10px 30px var(--theme-shadow);
+
+}
+
+
+/* ==========================================================
+   SIDEBAR HOVER
+========================================================== */
+
+.sidebar-menu a:hover {
+
+    background: var(--primary-light) !important;
+
+    color: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   HERO
+========================================================== */
+
+.dashboard-hero,
+.admin-hero,
+.hero-banner {
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--theme-gradient-start, var(--primary)),
+            var(--theme-gradient-end, var(--primary-dark))
+        ) !important;
+
+    box-shadow:
+        0 20px 60px var(--theme-shadow) !important;
+
+}
+
+
+/* ==========================================================
+   HERO BUTTONS
+========================================================== */
+
+.dashboard-hero .btn-primary,
+.admin-hero .btn-primary,
+.hero-banner .btn-primary {
+
+    background: #ffffff !important;
+
+    color: var(--primary) !important;
+
+    border-color: #ffffff !important;
+
+}
+
+
+.dashboard-hero .btn-outline-light:hover,
+.admin-hero .btn-outline-light:hover,
+.hero-banner .btn-outline-light:hover {
+
+    background: #ffffff !important;
+
+    color: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   BRAND ICON
+========================================================== */
+
+.brand-icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--theme-gradient-start, var(--primary)),
+            var(--theme-gradient-end, var(--primary-dark))
+        ) !important;
+
+}
+
+
+/* ==========================================================
+   USER AVATAR
+========================================================== */
+
+.avatar,
+.profile-avatar,
+.user-avatar {
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--theme-gradient-start, var(--primary)),
+            var(--theme-gradient-end, var(--primary-dark))
+        ) !important;
+
+}
+
+
+/* ==========================================================
+   NAVBAR BRAND ICON
+========================================================== */
+
+.navbar-brand i {
+
+    color: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   ICON CIRCLES
+========================================================== */
+
+.icon-circle {
+
+    background: var(--primary-light) !important;
+
+    color: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   CONTROL BOX
+========================================================== */
+
+.control-box i {
+
+    color: var(--primary) !important;
+
+}
+
+
+.control-box:hover {
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--theme-gradient-start, var(--primary)),
+            var(--theme-gradient-end, var(--primary-dark))
+        ) !important;
+
+    color: #ffffff !important;
+
+}
+
+
+/* ==========================================================
+   PAGINATION
+========================================================== */
+
+.pagination .page-link {
+
+    color: var(--primary) !important;
+
+}
+
+
+.pagination .page-item.active .page-link {
+
+    background: var(--primary) !important;
+
+    border-color: var(--primary) !important;
+
+    color: #ffffff !important;
+
+}
+
+
+/* ==========================================================
+   FORM FOCUS
+========================================================== */
+
+.form-control:focus,
+.form-select:focus {
+
+    border-color: var(--primary) !important;
+
+    box-shadow:
+        0 0 0 .18rem
+        color-mix(
+            in srgb,
+            var(--primary) 15%,
+            transparent
+        ) !important;
+
+}
+
+
+/* ==========================================================
+   FORM HOVER
+========================================================== */
+
+.form-control:hover,
+.form-select:hover {
+
+    border-color: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   LINKS
+========================================================== */
+
+a.text-primary,
+.text-primary {
+
+    color: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   TABLE HOVER
+========================================================== */
+
+.table tbody tr:hover {
+
+    background: var(--primary-light) !important;
+
+}
+
+
+/* ==========================================================
+   DROPDOWN HOVER
+========================================================== */
+
+.dropdown-item:hover {
+
+    background: var(--primary-light) !important;
+
+    color: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   APPEARANCE PANEL
+========================================================== */
+
+.customization-section-title i {
+
+    background: var(--primary-light) !important;
+
+    color: var(--primary) !important;
+
+}
+
+
+.theme-option:hover,
+.preset-option:hover {
+
+    border-color: var(--primary) !important;
+
+    color: var(--primary) !important;
+
+}
+
+
+.theme-option.active,
+.preset-option.active {
+
+    border-color: var(--primary) !important;
+
+    background: var(--primary-light) !important;
+
+    color: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   RADIO BUTTONS
+========================================================== */
+
+.customization-choice input {
+
+    accent-color: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   SELECTION
+========================================================== */
+
+::selection {
+
+    background: var(--primary) !important;
+
+    color: #ffffff !important;
+
+}
+
+
+/* ==========================================================
+   SCROLL TO TOP
+========================================================== */
+
+.scroll-top {
+
+    background: var(--primary) !important;
+
+    border-color: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   BADGE PRIMARY
+========================================================== */
+
+.badge.bg-primary {
+
+    background: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   PROGRESS
+========================================================== */
+
+.progress-bar {
+
+    background: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   CHECKBOX
+========================================================== */
+
+.form-check-input:checked {
+
+    background-color: var(--primary) !important;
+
+    border-color: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   DASHBOARD STAT PRIMARY ICON
+========================================================== */
+
+.stats-primary {
+
+    background: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   PRIMARY ICONS
+========================================================== */
+
+.text-primary {
+
+    color: var(--primary) !important;
+
+}
+
+
+.bg-primary {
+
+    background-color: var(--primary) !important;
+
+}
+
+
+/* ==========================================================
+   PRIMARY OUTLINE BUTTON
+========================================================== */
+
+.btn-outline-primary {
+
+    color: var(--primary) !important;
+
+    border-color: var(--primary) !important;
+
+}
+
+
+.btn-outline-primary:hover {
+
+    background: var(--primary) !important;
+
+    border-color: var(--primary) !important;
+
+    color: #ffffff !important;
+
+}
+/* ==========================================================
+   EVENTIFY THEME ENGINE - FINAL CORRECTED OVERRIDE
+   Purpose: make Light/Dark + Accent + Presets affect the
+   complete dashboard without rewriting existing components.
+========================================================== */
+
+:root {
+    --theme-gradient-start: var(--primary);
+    --theme-gradient-end: var(--primary-dark, var(--primary));
+    --theme-shadow: color-mix(in srgb, var(--primary) 25%, transparent);
+    --primary-light: color-mix(in srgb, var(--primary) 10%, transparent);
+    --secondary-surface: #f8fafc;
+    --hover-surface: #f1f5f9;
+}
+
+/* ==========================================================
+   GLOBAL THEME COLORS
+========================================================== */
+
+html,
+body {
+    background: var(--bg) !important;
+    color: var(--text) !important;
+}
+
+body,
+.dashboard-layout,
+.dashboard-main,
+.dashboard-content {
+    background-color: var(--bg) !important;
+    color: var(--text) !important;
+}
+
+/* ==========================================================
+   NAVBAR / HEADER
+========================================================== */
+
+.dashboard-navbar,
+.navbar {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.dashboard-navbar .page-title,
+.navbar-brand,
+.navbar-brand h4,
+.navbar-brand span,
+.navbar-brand i,
+.nav-link,
+.navbar-nav .nav-link {
+    color: var(--text) !important;
+}
+
+.navbar-brand i,
+.navbar-nav .nav-link.active,
+.nav-link.active {
+    color: var(--primary) !important;
+}
+
+.nav-link:hover,
+.navbar-nav .nav-link:hover {
+    background: var(--primary-light) !important;
+    color: var(--primary) !important;
+}
+
+.navbar-nav .nav-link.active {
+    background: var(--primary) !important;
+    color: #fff !important;
+}
+
+.search-box,
+.nav-icon,
+.sidebar-toggle {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.search-box input {
+    color: var(--text) !important;
+}
+
+.search-box input::placeholder {
+    color: var(--muted) !important;
+}
+
+.sidebar-toggle:hover,
+.nav-icon:hover {
+    background: var(--primary-light) !important;
+    color: var(--primary) !important;
+}
+
+/* ==========================================================
+   SIDEBAR
+   Sidebar remains dark for visual hierarchy, while all
+   theme-sensitive accents follow the selected preset.
+========================================================== */
+
+.sidebar {
+    background: linear-gradient(180deg, #111827, #1e293b) !important;
+    color: #fff !important;
+}
+
+.sidebar-menu a.active {
+    background: linear-gradient(
+        135deg,
+        var(--theme-gradient-start),
+        var(--theme-gradient-end)
+    ) !important;
+    color: #fff !important;
+    box-shadow: 0 10px 30px var(--theme-shadow) !important;
+}
+
+.sidebar-menu a:hover {
+    background: color-mix(in srgb, var(--primary) 18%, #1e293b) !important;
+    color: #fff !important;
+}
+
+.brand-icon,
+.avatar,
+.profile-avatar,
+.user-avatar {
+    background: linear-gradient(
+        135deg,
+        var(--theme-gradient-start),
+        var(--theme-gradient-end)
+    ) !important;
+}
+
+/* ==========================================================
+   HERO / BANNERS
+========================================================== */
+
+.hero-banner,
+.dashboard-hero,
+.admin-hero {
+    background: linear-gradient(
+        135deg,
+        var(--theme-gradient-start),
+        var(--theme-gradient-end)
+    ) !important;
+    color: #fff !important;
+    box-shadow: 0 20px 60px var(--theme-shadow) !important;
+}
+
+.hero-banner h1,
+.hero-banner h2,
+.hero-banner h3,
+.hero-banner h4,
+.hero-banner h5,
+.hero-banner h6,
+.dashboard-hero h1,
+.dashboard-hero h2,
+.dashboard-hero h3,
+.dashboard-hero h4,
+.dashboard-hero h5,
+.dashboard-hero h6,
+.admin-hero h1,
+.admin-hero h2,
+.admin-hero h3,
+.admin-hero h4,
+.admin-hero h5,
+.admin-hero h6,
+.hero-banner p,
+.dashboard-hero p,
+.admin-hero p {
+    color: #fff !important;
+}
+
+.hero-banner .btn-primary,
+.dashboard-hero .btn-primary,
+.admin-hero .btn-primary {
+    background: #fff !important;
+    color: var(--primary) !important;
+    border-color: #fff !important;
+}
+
+.hero-banner .btn-outline-light:hover,
+.dashboard-hero .btn-outline-light:hover,
+.admin-hero .btn-outline-light:hover {
+    background: #fff !important;
+    color: var(--primary) !important;
+}
+
+/* ==========================================================
+   CARDS / SURFACES
+========================================================== */
+
+.card,
+.dashboard-card,
+.stat-card,
+.stats-card,
+.dashboard-widget,
+.dashboard-header,
+.page-header-modern {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.card-body,
+.card-header,
+.card-footer {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.card h1,
+.card h2,
+.card h3,
+.card h4,
+.card h5,
+.card h6,
+.dashboard-card h1,
+.dashboard-card h2,
+.dashboard-card h3,
+.dashboard-card h4,
+.dashboard-card h5,
+.dashboard-card h6,
+.stat-card h1,
+.stat-card h2,
+.stat-card h3,
+.stat-card h4,
+.stat-card h5,
+.stat-card h6,
+.stats-card h1,
+.stats-card h2,
+.stats-card h3,
+.stats-card h4,
+.stats-card h5,
+.stats-card h6,
+.page-title,
+.page-header-modern .page-title {
+    color: var(--text) !important;
+}
+
+.card p,
+.dashboard-card p,
+.stat-card p,
+.stats-card p,
+.page-subtitle,
+.page-header p {
+    color: var(--text-light, var(--muted)) !important;
+}
+
+/* ==========================================================
+   STATS / PRIMARY ACCENTS
+========================================================== */
+
+.stats-primary,
+.stat-icon,
+.icon-primary {
+    background: var(--primary) !important;
+    color: #fff !important;
+}
+
+.stats-number {
+    color: var(--text) !important;
+}
+
+.stats-title,
+.stats-footer {
+    color: var(--muted) !important;
+}
+
+.stats-card:hover,
+.stat-card:hover,
+.dashboard-card:hover,
+.card:hover {
+    border-color: color-mix(in srgb, var(--primary) 35%, var(--border)) !important;
+}
+
+.icon-circle,
+.icon-box.icon-primary {
+    background: var(--primary-light) !important;
+    color: var(--primary) !important;
+}
+
+/* ==========================================================
+   CONTROL CENTER
+========================================================== */
+
+.control-box {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.control-box i {
+    color: var(--primary) !important;
+}
+
+.control-box span {
+    color: var(--text) !important;
+}
+
+.control-box:hover {
+    background: linear-gradient(
+        135deg,
+        var(--theme-gradient-start),
+        var(--theme-gradient-end)
+    ) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+}
+
+.control-box:hover i,
+.control-box:hover span {
+    color: #fff !important;
+}
+
+/* ==========================================================
+   ACTIVITY / LISTS
+========================================================== */
+
+.activity-item {
+    background: var(--secondary-surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.activity-item:hover {
+    background: var(--primary-light) !important;
+}
+
+/* ==========================================================
+   TABLES
+========================================================== */
+
+.table {
+    --bs-table-bg: var(--surface);
+    --bs-table-color: var(--text);
+    --bs-table-border-color: var(--border);
+    color: var(--text) !important;
+}
+
+.table thead,
+.table thead th {
+    background: var(--secondary-surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.table tbody tr,
+.table tbody td {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.table tbody tr:hover {
+    background: var(--primary-light) !important;
+}
+
+/* ==========================================================
+   FORMS
+========================================================== */
+
+.form-control,
+.form-select,
+.input-group-text {
+    background-color: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.form-control::placeholder,
+.form-select::placeholder {
+    color: var(--muted) !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 .18rem color-mix(
+        in srgb,
+        var(--primary) 15%,
+        transparent
+    ) !important;
+}
+
+.form-control:hover,
+.form-select:hover {
+    border-color: color-mix(in srgb, var(--primary) 45%, var(--border)) !important;
+}
+
+.form-label {
+    color: var(--text) !important;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+/* ==========================================================
+   BUTTONS / LINKS / PRIMARY UTILITIES
+========================================================== */
+
+.btn-primary,
+.bg-primary,
+.badge.bg-primary,
+.progress-bar {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
+}
+
+.btn-outline-primary {
+    color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: #fff !important;
+}
+
+.text-primary,
+a.text-primary {
+    color: var(--primary) !important;
+}
+
+/* ==========================================================
+   DROPDOWNS / MODALS / BREADCRUMBS / PAGINATION
+========================================================== */
+
+.dropdown-menu,
+.modal-content,
+.breadcrumb {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.dropdown-item {
+    color: var(--text) !important;
+}
+
+.dropdown-item:hover {
+    background: var(--primary-light) !important;
+    color: var(--primary) !important;
+}
+
+.modal-header,
+.modal-footer {
+    border-color: var(--border) !important;
+}
+
+.modal-title,
+.breadcrumb-item.active {
+    color: var(--text) !important;
+}
+
+.breadcrumb-item {
+    color: var(--muted) !important;
+}
+
+.pagination .page-link,
+.page-link {
+    background: var(--surface) !important;
+    color: var(--primary) !important;
+    border-color: var(--border) !important;
+}
+
+.pagination .page-item.active .page-link,
+.page-item.active .page-link {
+    background: var(--primary) !important;
+    color: #fff !important;
+    border-color: var(--primary) !important;
+}
+
+/* ==========================================================
+   FOOTER / EMPTY STATES
+========================================================== */
+
+.dashboard-footer {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.empty-state,
+.empty-state h4 {
+    color: var(--text) !important;
+}
+
+.empty-state p {
+    color: var(--muted) !important;
+}
+
+/* ==========================================================
+   APPEARANCE PANEL
+========================================================== */
+
+.customization-panel {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.customization-header,
+.customization-section,
+.customization-footer {
+    border-color: var(--border) !important;
+}
+
+.customization-header h5,
+.customization-section-title,
+.customization-choice label {
+    color: var(--text) !important;
+}
+
+.customization-header small {
+    color: var(--muted) !important;
+}
+
+.customization-close {
+    background: var(--bg) !important;
+    color: var(--muted) !important;
+}
+
+.customization-section-title i {
+    background: var(--primary-light) !important;
+    color: var(--primary) !important;
+}
+
+.theme-option,
+.preset-option,
+.customization-section .form-select {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+.theme-option:hover,
+.preset-option:hover,
+.theme-option.active,
+.preset-option.active {
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+}
+
+.theme-option.active,
+.preset-option.active {
+    background: var(--primary-light) !important;
+}
+
+.customization-choice input {
+    accent-color: var(--primary) !important;
+}
+
+/* ==========================================================
+   ICONS / AVATARS / SMALL PRIMARY ELEMENTS
+========================================================== */
+
+.navbar-brand i,
+.icon-circle,
+.control-box i,
+.icon-box.icon-primary {
+    color: var(--primary) !important;
+}
+
+.icon-circle,
+.icon-box.icon-primary {
+    background: var(--primary-light) !important;
+}
+
+/* ==========================================================
+   DARK THEME
+========================================================== */
+
+html.dark-theme {
+    --bg: #0b1120;
+    --surface: #111827;
+    --card: #111827;
+    --text: #f8fafc;
+    --text-light: #cbd5e1;
+    --muted: #94a3b8;
+    --border: #263244;
+    --page-bg: #0b1120;
+    --navbar-bg: #111827;
+    --secondary-surface: #1e293b;
+    --hover-surface: #263244;
+}
+
+html.dark-theme,
+html.dark-theme body,
+html.dark-theme .dashboard-layout,
+html.dark-theme .dashboard-main,
+html.dark-theme .dashboard-content {
+    background: var(--bg) !important;
+    color: var(--text) !important;
+}
+
+html.dark-theme .dashboard-navbar,
+html.dark-theme .navbar,
+html.dark-theme .card,
+html.dark-theme .dashboard-card,
+html.dark-theme .stat-card,
+html.dark-theme .stats-card,
+html.dark-theme .dashboard-widget,
+html.dark-theme .dashboard-header,
+html.dark-theme .page-header-modern,
+html.dark-theme .card-body,
+html.dark-theme .card-header,
+html.dark-theme .card-footer,
+html.dark-theme .control-box,
+html.dark-theme .activity-item,
+html.dark-theme .dropdown-menu,
+html.dark-theme .modal-content,
+html.dark-theme .breadcrumb,
+html.dark-theme .customization-panel,
+html.dark-theme .theme-option,
+html.dark-theme .preset-option,
+html.dark-theme .search-box,
+html.dark-theme .nav-icon {
+    background-color: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+html.dark-theme .table,
+html.dark-theme .table tbody tr,
+html.dark-theme .table tbody td {
+    --bs-table-bg: var(--surface);
+    --bs-table-color: var(--text);
+    --bs-table-border-color: var(--border);
+    background: var(--surface) !important;
+    color: var(--text) !important;
+}
+
+html.dark-theme .table thead,
+html.dark-theme .table thead th {
+    background: var(--secondary-surface) !important;
+    color: var(--text) !important;
+}
+
+html.dark-theme .table tbody tr:hover,
+html.dark-theme .activity-item:hover {
+    background: var(--hover-surface) !important;
+}
+
+html.dark-theme .form-control,
+html.dark-theme .form-select,
+html.dark-theme .input-group-text {
+    background: #0f172a !important;
+    color: var(--text) !important;
+    border-color: #334155 !important;
+}
+
+html.dark-theme .form-control::placeholder,
+html.dark-theme .search-box input::placeholder {
+    color: #64748b !important;
+}
+
+html.dark-theme .dropdown-item,
+html.dark-theme .breadcrumb-item,
+html.dark-theme .page-link {
+    color: var(--text) !important;
+}
+
+html.dark-theme .dropdown-item:hover {
+    background: var(--hover-surface) !important;
+    color: var(--primary) !important;
+}
+
+html.dark-theme .bg-white {
+    background: var(--surface) !important;
+}
+
+html.dark-theme .bg-light {
+    background: var(--secondary-surface) !important;
+    color: var(--text) !important;
+}
+
+html.dark-theme .text-dark,
+html.dark-theme .text-body {
+    color: var(--text) !important;
+}
+
+html.dark-theme .text-secondary,
+html.dark-theme .text-muted {
+    color: var(--muted) !important;
+}
+
+html.dark-theme hr,
+html.dark-theme .border,
+html.dark-theme .border-top,
+html.dark-theme .border-bottom,
+html.dark-theme .border-start,
+html.dark-theme .border-end {
+    border-color: var(--border) !important;
+}
+
+html.dark-theme .card,
+html.dark-theme .dashboard-card,
+html.dark-theme .stat-card,
+html.dark-theme .stats-card {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .25) !important;
+}
+
+html.dark-theme .glass {
+    background: rgba(17, 24, 39, .75) !important;
+    border-color: rgba(148, 163, 184, .15) !important;
+}
+
+html.dark-theme ::selection {
+    background: var(--primary) !important;
+    color: #fff !important;
+}
+
+html.dark-theme {
+    color-scheme: dark;
+}
+
+html.light-theme {
+    color-scheme: light;
+}
+
+/* ==========================================================
+   CHATBOT COMPATIBILITY
+========================================================== */
+
+html.dark-theme .chatbot-container,
+html.dark-theme .chatbot-window,
+html.dark-theme .chatbot-panel {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+}
+
+/* ==========================================================
+   SCROLLBAR
+========================================================== */
+
+html.dark-theme ::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+html.dark-theme ::-webkit-scrollbar-thumb {
+    background: #475569;
+}
+
+html.dark-theme ::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* ==========================================================
+   SELECTION
+========================================================== */
+
+::selection {
+    background: var(--primary) !important;
+    color: #fff !important;
+}
+
+/* ==========================================================
+   COMPACT DENSITY
+========================================================== */
+
+html.compact-density .dashboard-content {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+html.compact-density .dashboard-widget {
+    padding: 20px;
+}
+
+html.compact-density .stat-card,
+html.compact-density .stats-card {
+    padding: 18px;
+}
+
+html.compact-density .sidebar-menu a {
+    padding-top: 9px;
+    padding-bottom: 9px;
+}
+
+html.compact-density .dashboard-navbar {
+    min-height: 64px;
+}
+
+html.compact-density .card-body {
+    padding: 20px;
+}
+
+/* ==========================================================
+   SIDEBAR COLLAPSE
+========================================================== */
+
+.dashboard-layout {
+    --sidebar-open: 270px;
+    --sidebar-close: 88px;
+}
+
+.dashboard-layout .sidebar {
+    width: var(--sidebar-open);
+    transition: width .35s ease, transform .35s ease;
+}
+
+.dashboard-layout .dashboard-main {
+    margin-left: var(--sidebar-open);
+    width: calc(100% - var(--sidebar-open));
+    transition: margin-left .35s ease, width .35s ease;
+}
+
+.dashboard-layout.sidebar-collapsed .sidebar {
+    width: var(--sidebar-close);
+}
+
+.dashboard-layout.sidebar-collapsed .dashboard-main {
+    margin-left: var(--sidebar-close);
+    width: calc(100% - var(--sidebar-close));
+}
+
+.dashboard-layout.sidebar-collapsed .sidebar h4,
+.dashboard-layout.sidebar-collapsed .sidebar small,
+.dashboard-layout.sidebar-collapsed .sidebar .menu-title,
+.dashboard-layout.sidebar-collapsed .sidebar span {
+    display: none;
+}
+
+.dashboard-layout.sidebar-collapsed .sidebar-brand,
+.dashboard-layout.sidebar-collapsed .sidebar-user,
+.dashboard-layout.sidebar-collapsed .sidebar-menu a {
+    justify-content: center;
+}
+
+.dashboard-layout.sidebar-collapsed .sidebar-menu a {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 992px) {
+    .dashboard-layout .sidebar {
+        transform: translateX(-100%);
+        width: var(--sidebar-open);
+    }
+
+    .dashboard-layout .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .dashboard-layout .dashboard-main,
+    .dashboard-layout.sidebar-collapsed .dashboard-main {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .dashboard-content {
+        padding: 24px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-content {
+        padding: 20px !important;
+    }
+
+    .hero-banner,
+    .dashboard-hero,
+    .admin-hero {
+        padding: 30px !important;
+    }
+
+    .hero-content {
+        flex-direction: column;
+        gap: 25px;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-content {
+        padding: 15px !important;
+    }
+
+    .customization-panel {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .preset-options {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================
+   CREATE CATEGORY - LIVE ICON PREVIEW
+========================================================== */
+
+.category-icon-preview,
+.icon-preview,
+#iconPreview {
+
+    width: 64px !important;
+    height: 64px !important;
+
+    min-width: 64px !important;
+    min-height: 64px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 16px !important;
+
+    background: var(--primary-light) !important;
+
+    color: var(--primary) !important;
+
+    border: 1px solid
+        color-mix(
+            in srgb,
+            var(--primary) 18%,
+            transparent
+        ) !important;
+
+    box-shadow: none !important;
+
+    font-size: 1.5rem !important;
+
+    overflow: hidden !important;
+
+}
+
+
+/* Actual Bootstrap Icon */
+
+.category-icon-preview i,
+.icon-preview i,
+#iconPreview i {
+
+    font-size: 1.6rem !important;
+
+    line-height: 1 !important;
+
+    color: var(--primary) !important;
+
+    background: transparent !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    border-radius: 0 !important;
+
+    box-shadow: none !important;
+
+    display: inline-block !important;
 
 }

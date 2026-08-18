@@ -1,6 +1,11 @@
 from pathlib import Path
+import os
+
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / ".env")
 
 SECRET_KEY = "django-insecure-event-management-system"
 
@@ -25,6 +30,7 @@ INSTALLED_APPS = [
     "registrations",
     "dashboard",
     "notifications",
+    "chatbot",
 
     # Django Apps
     "django.contrib.admin",
@@ -206,3 +212,9 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# --------------------------------------------------
+# Gemini AI
+# --------------------------------------------------
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")

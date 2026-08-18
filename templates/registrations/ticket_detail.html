@@ -1,0 +1,411 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block title %}
+{{ event.title }} Ticket | Eventify
+{% endblock %}
+
+
+{% block dashboard_content %}
+
+<div class="container-fluid py-4">
+
+    <!-- ================================================
+         HEADER
+    ================================================= -->
+
+    <div class="d-flex flex-wrap justify-content-between
+                align-items-center gap-3 mb-4">
+
+        <div>
+
+            <a
+                href="{% url 'my_registrations' %}"
+                class="text-decoration-none text-muted"
+            >
+                <i class="bi bi-arrow-left me-1"></i>
+                My Registrations
+            </a>
+
+            <h2 class="fw-bold mt-2 mb-1">
+                My Event Ticket
+            </h2>
+
+            <p class="text-muted mb-0">
+                Present this QR ticket during event check-in.
+            </p>
+
+        </div>
+
+        <span class="badge rounded-pill
+            {% if registration.status == 'REGISTERED' %}
+                bg-success
+            {% elif registration.status == 'ATTENDED' %}
+                bg-primary
+            {% else %}
+                bg-danger
+            {% endif %}
+            px-3 py-2">
+
+            {{ registration.get_status_display }}
+
+        </span>
+
+    </div>
+
+
+    <!-- ================================================
+         TICKET
+    ================================================= -->
+
+    <div class="row justify-content-center">
+
+        <div class="col-xl-9 col-lg-10">
+
+            <div
+                class="card border-0 shadow-lg overflow-hidden"
+                id="eventTicket"
+            >
+
+                <div class="row g-0">
+
+
+                    <!-- ==================================
+                         EVENT INFORMATION
+                    =================================== -->
+
+                    <div class="col-lg-7">
+
+                        {% if event.image %}
+
+                        <img
+                            src="{{ event.image.url }}"
+                            alt="{{ event.title }}"
+                            class="w-100"
+                            style="
+                                height: 260px;
+                                object-fit: cover;
+                            "
+                        >
+
+                        {% endif %}
+
+
+                        <div class="card-body p-4 p-lg-5">
+
+                            <div class="mb-3">
+
+                                <span class="badge bg-primary-subtle
+                                             text-primary">
+
+                                    {{ event.category.name }}
+
+                                </span>
+
+                            </div>
+
+
+                            <h2 class="fw-bold mb-4">
+
+                                {{ event.title }}
+
+                            </h2>
+
+
+                            <div class="row g-4">
+
+
+                                <!-- DATE -->
+
+                                <div class="col-md-6">
+
+                                    <div class="d-flex gap-3">
+
+                                        <div class="text-primary fs-4">
+
+                                            <i class="bi bi-calendar-event"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <small class="text-muted d-block">
+                                                Event Date
+                                            </small>
+
+                                            <strong>
+                                                {{ event.event_date|date:"d M Y" }}
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- TIME -->
+
+                                <div class="col-md-6">
+
+                                    <div class="d-flex gap-3">
+
+                                        <div class="text-primary fs-4">
+
+                                            <i class="bi bi-clock"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <small class="text-muted d-block">
+                                                Time
+                                            </small>
+
+                                            <strong>
+
+                                                {{ event.start_time|time:"g:i A" }}
+                                                -
+                                                {{ event.end_time|time:"g:i A" }}
+
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- VENUE -->
+
+                                <div class="col-md-6">
+
+                                    <div class="d-flex gap-3">
+
+                                        <div class="text-primary fs-4">
+
+                                            <i class="bi bi-geo-alt"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <small class="text-muted d-block">
+                                                Venue
+                                            </small>
+
+                                            <strong>
+                                                {{ event.venue }}
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ORGANIZER -->
+
+                                <div class="col-md-6">
+
+                                    <div class="d-flex gap-3">
+
+                                        <div class="text-primary fs-4">
+
+                                            <i class="bi bi-person-badge"></i>
+
+                                        </div>
+
+                                        <div>
+
+                                            <small class="text-muted d-block">
+                                                Organizer
+                                            </small>
+
+                                            <strong>
+
+                                                {{ event.organizer.get_full_name|default:event.organizer.username }}
+
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <hr class="my-4">
+
+
+                            <!-- ATTENDEE -->
+
+                            <div class="row g-4">
+
+                                <div class="col-md-6">
+
+                                    <small class="text-muted d-block">
+                                        Attendee
+                                    </small>
+
+                                    <strong>
+
+                                        {{ registration.attendee.get_full_name|default:registration.attendee.username }}
+
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="col-md-6">
+
+                                    <small class="text-muted d-block">
+                                        Ticket ID
+                                    </small>
+
+                                    <strong class="font-monospace">
+
+                                        {{ registration.ticket_id }}
+
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ==================================
+                         QR SECTION
+                    =================================== -->
+
+                    <div class="col-lg-5 bg-light">
+
+                        <div
+                            class="h-100 d-flex flex-column
+                                   justify-content-center
+                                   align-items-center
+                                   text-center p-5"
+                        >
+
+                            <div class="mb-3">
+
+                                <i class="bi bi-qr-code
+                                          display-5
+                                          text-primary"></i>
+
+                            </div>
+
+
+                            <h4 class="fw-bold">
+                                Entry QR Code
+                            </h4>
+
+
+                            <p class="text-muted small mb-4">
+
+                                Show this QR code at the event
+                                entrance for verification.
+
+                            </p>
+
+
+                            {% if registration.ticket_qr %}
+
+                            <div
+                                class="bg-white rounded-4 shadow-sm p-3 mb-4"
+                            >
+
+                                <img
+                                    src="{{ registration.ticket_qr.url }}"
+                                    alt="Event Ticket QR"
+                                    class="img-fluid"
+                                    style="
+                                        width: 230px;
+                                        height: 230px;
+                                        object-fit: contain;
+                                    "
+                                >
+
+                            </div>
+
+
+                            <a
+                                href="{{ registration.ticket_qr.url }}"
+                                download
+                                class="btn btn-primary"
+                            >
+
+                                <i class="bi bi-download me-2"></i>
+
+                                Download QR
+
+                            </a>
+
+                            {% else %}
+
+                            <div
+                                class="alert alert-warning"
+                            >
+
+                                <i class="bi bi-exclamation-triangle me-2"></i>
+
+                                QR ticket is not available.
+
+                            </div>
+
+                            {% endif %}
+
+
+                            <div class="mt-4">
+
+                                {% if registration.checked_in %}
+
+                                <span
+                                    class="badge bg-success px-3 py-2"
+                                >
+
+                                    <i class="bi bi-check-circle-fill me-1"></i>
+
+                                    Checked In
+
+                                </span>
+
+                                {% else %}
+
+                                <span
+                                    class="badge bg-secondary px-3 py-2"
+                                >
+
+                                    <i class="bi bi-hourglass me-1"></i>
+
+                                    Not Checked In
+
+                                </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

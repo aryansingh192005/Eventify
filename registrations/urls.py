@@ -23,9 +23,9 @@ urlpatterns = [
         name="cancel_registration",
     ),
 
-    # ==========================================
-    # QR CHECK-IN
-    # ==========================================
+    # =========================================
+    # EVENT QR CHECK-IN
+    # =========================================
 
     path(
         "events/<slug:slug>/check-in/",
@@ -37,6 +37,16 @@ urlpatterns = [
         "events/<slug:slug>/check-in/verify/",
         views.verify_qr_checkin,
         name="verify_qr_checkin",
+    ),
+
+    # =========================================
+    # ATTENDEE TICKET
+    # =========================================
+
+    path(
+        "my-registrations/<int:registration_id>/ticket/",
+        views.ticket_detail,
+        name="ticket_detail",
     ),
 
 ]

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
@@ -140,12 +142,66 @@ class Event(models.Model):
 
     @property
     def is_registration_open(self):
+
+        now = timezone.now()
+
         return (
-            self.status == self.Status.PUBLISHED
-            and timezone.now() <= self.registration_deadline
-            and self.available_seats > 0
+        self.status == self.Status.PUBLISHED
+        and now < self.registration_deadline
+        and now < self.start_datetime
+        and self.available_seats > 0
+    )
+
+    @property
+    def start_datetime(self):
+        """
+        Return the event start as a timezone-aware datetime.
+        """
+        return timezone.make_aware(
+            datetime.combine(
+                self.event_date,
+                self.start_time,
+            ),
+            timezone.get_current_timezone(),
         )
 
+    @property
+    def end_datetime(self):
+        """
+        Return the event end as a timezone-aware datetime.
+        """
+        return timezone.make_aware(
+            datetime.combine(
+                self.event_date,
+                self.end_time,
+            ),
+            timezone.get_current_timezone(),
+        )
+
+    @property
+    def is_started(self):
+        """
+        Whether the event has started.
+        """
+        return timezone.now() >= self.start_datetime
+
+    @property
+    def is_ongoing(self):
+        """
+        Whether the event is currently taking place.
+        """
+        now = timezone.now()
+
+        return (
+            self.start_datetime <= now < self.end_datetime
+        )
+
+    @property
+    def is_completed(self):
+        """
+        Whether the event has ended.
+        """
+        return timezone.now() >= self.end_datetime
     @property
     def seats_filled(self):
         return self.max_capacity - self.available_seats

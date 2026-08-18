@@ -462,7 +462,7 @@ def event_create(request):
 
             event.organizer = request.user
 
-            event.available_seats = event.max_capacity
+            
 
             event.save()
 
@@ -490,6 +490,8 @@ def event_create(request):
     "dashboard_type": get_dashboard_type(request.user),
 },
     )
+
+    
 
 # ==========================================================
 # UPDATE EVENT

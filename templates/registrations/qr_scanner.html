@@ -1,0 +1,678 @@
+{% extends "dashboard/base_dashboard.html" %}
+
+{% block title %}
+QR Check-In | Eventify
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="container-fluid py-4">
+
+    <!-- ================================================
+         HEADER
+    ================================================= -->
+
+    <div class="mb-4">
+
+        <span class="badge bg-primary-subtle text-primary px-3 py-2">
+
+            <i class="bi bi-qr-code-scan me-2"></i>
+
+            Event Check-In
+
+        </span>
+
+        <h2 class="fw-bold mt-3 mb-2">
+
+            QR Ticket Scanner
+
+        </h2>
+
+        <p class="text-muted mb-0">
+
+            Scan an attendee's QR ticket to verify their
+            registration and check them into the event.
+
+        </p>
+
+    </div>
+
+
+    <div class="row g-4">
+
+
+        <!-- ============================================
+             CAMERA SCANNER
+        ============================================= -->
+
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-header bg-white py-3">
+
+                    <h5 class="mb-1">
+
+                        <i class="bi bi-camera-fill text-primary me-2"></i>
+
+                        Scan QR Code
+
+                    </h5>
+
+                    <small class="text-muted">
+
+                        Allow camera access and point it at
+                        the attendee's QR ticket.
+
+                    </small>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    <div
+                        id="qr-reader"
+                        style="
+                            width: 100%;
+                            max-width: 600px;
+                            margin: auto;
+                        "
+                    ></div>
+
+
+                    <div
+                        id="scanner-status"
+                        class="alert alert-secondary mt-3 mb-0"
+                    >
+
+                        <i class="bi bi-camera me-2"></i>
+
+                        Scanner ready.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ============================================
+             UPLOAD QR
+        ============================================= -->
+
+        <div class="col-lg-5">
+
+            <div class="card border-0 shadow-sm mb-4">
+
+                <div class="card-header bg-white py-3">
+
+                    <h5 class="mb-1">
+
+                        <i class="bi bi-upload text-success me-2"></i>
+
+                        Upload QR Image
+
+                    </h5>
+
+                    <small class="text-muted">
+
+                        Don't have camera access?
+                        Upload a QR screenshot instead.
+
+                    </small>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    <label
+                        for="qrImage"
+                        class="form-label fw-semibold"
+                    >
+
+                        Select QR image
+
+                    </label>
+
+
+                    <input
+                        type="file"
+                        id="qrImage"
+                        class="form-control"
+                        accept="image/*"
+                    >
+
+
+                    <button
+                        type="button"
+                        id="scanUploadButton"
+                        class="btn btn-success w-100 mt-3"
+                    >
+
+                        <i class="bi bi-qr-code-scan me-2"></i>
+
+                        Scan Uploaded QR
+
+                    </button>
+
+
+                    <div
+                        id="upload-status"
+                        class="mt-3"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================================
+                 RESULT
+            ========================================= -->
+
+            <div
+                id="scan-result"
+                class="card border-0 shadow-sm d-none"
+            >
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold mb-3">
+
+                        <i class="bi bi-person-check-fill
+                                  text-success me-2"></i>
+
+                        Verification Result
+
+                    </h5>
+
+
+                    <div id="result-content"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ====================================================
+     HTML5 QR CODE LIBRARY
+===================================================== -->
+
+<script src="https://unpkg.com/html5-qrcode"
+        type="text/javascript">
+</script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const scannerStatus =
+            document.getElementById(
+                "scanner-status"
+            );
+
+
+        const resultBox =
+            document.getElementById(
+                "scan-result"
+            );
+
+
+        const resultContent =
+            document.getElementById(
+                "result-content"
+            );
+
+
+        const uploadStatus =
+            document.getElementById(
+                "upload-status"
+            );
+
+
+        const uploadInput =
+            document.getElementById(
+                "qrImage"
+            );
+
+
+        const uploadButton =
+            document.getElementById(
+                "scanUploadButton"
+            );
+
+
+        /* ================================================
+           DISPLAY RESULT
+        ================================================ */
+
+        function showResult(data) {
+
+            resultBox.classList.remove(
+                "d-none"
+            );
+
+
+            if (data.success) {
+
+                resultContent.innerHTML = `
+
+                    <div class="alert alert-success">
+
+                        <h6 class="fw-bold">
+
+                            <i class="bi bi-check-circle-fill me-2"></i>
+
+                            ${data.message}
+
+                        </h6>
+
+                    </div>
+
+                    <div class="small">
+
+                        <div class="mb-2">
+                            <strong>Attendee:</strong>
+                            ${data.attendee || "-"}
+                        </div>
+
+                        <div class="mb-2">
+                            <strong>Event:</strong>
+                            ${data.event || "-"}
+                        </div>
+
+                        <div class="mb-2">
+                            <strong>Ticket ID:</strong>
+                            ${data.ticket_id || "-"}
+                        </div>
+
+                        <div>
+                            <strong>Status:</strong>
+                            ${data.status || "-"}
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+
+            else {
+
+                resultContent.innerHTML = `
+
+                    <div class="alert alert-danger">
+
+                        <i class="bi bi-x-circle-fill me-2"></i>
+
+                        ${data.message}
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+        /* ================================================
+           PROCESS QR DATA
+        ================================================ */
+
+        async function processQRCode(
+            qrData
+        ) {
+
+            scannerStatus.className =
+                "alert alert-info mt-3 mb-0";
+
+            scannerStatus.innerHTML =
+                '<i class="bi bi-hourglass-split me-2"></i>' +
+                "Verifying ticket...";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "{% url 'verify_qr_ticket' %}",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json",
+
+                                "X-CSRFToken":
+                                    getCookie(
+                                        "csrftoken"
+                                    ),
+
+                            },
+
+                            body: JSON.stringify({
+
+                                qr_data: qrData
+
+                            }),
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                showResult(
+                    data
+                );
+
+
+                if (data.success) {
+
+                    scannerStatus.className =
+                        "alert alert-success mt-3 mb-0";
+
+                    scannerStatus.innerHTML =
+                        '<i class="bi bi-check-circle-fill me-2"></i>' +
+                        "Ticket verified successfully.";
+
+                }
+
+                else {
+
+                    scannerStatus.className =
+                        "alert alert-danger mt-3 mb-0";
+
+                    scannerStatus.innerHTML =
+                        '<i class="bi bi-x-circle-fill me-2"></i>' +
+                        "Ticket verification failed.";
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    error
+                );
+
+
+                scannerStatus.className =
+                    "alert alert-danger mt-3 mb-0";
+
+                scannerStatus.innerHTML =
+                    '<i class="bi bi-exclamation-triangle me-2"></i>' +
+                    "Unable to verify the ticket.";
+
+            }
+
+        }
+
+
+        /* ================================================
+           CAMERA SCANNER
+        ================================================ */
+
+        const html5QrCode =
+            new Html5Qrcode(
+                "qr-reader"
+            );
+
+
+        const config = {
+
+            fps: 10,
+
+            qrbox: {
+                width: 250,
+                height: 250
+            }
+
+        };
+
+
+        Html5Qrcode.getCameras()
+            .then(
+                function (cameras) {
+
+                    if (
+                        cameras &&
+                        cameras.length
+                    ) {
+
+                        html5QrCode.start(
+
+                            cameras[0].id,
+
+                            config,
+
+                            function (
+                                decodedText
+                            ) {
+
+                                html5QrCode.stop();
+
+                                processQRCode(
+                                    decodedText
+                                );
+
+                            },
+
+                            function () {
+
+                                // Ignore scanning errors.
+
+                            }
+
+                        );
+
+                    }
+
+                    else {
+
+                        scannerStatus.className =
+                            "alert alert-warning mt-3 mb-0";
+
+                        scannerStatus.innerHTML =
+                            '<i class="bi bi-camera-video-off me-2"></i>' +
+                            "No camera was found.";
+
+                    }
+
+                }
+            )
+            .catch(
+                function (error) {
+
+                    console.error(
+                        error
+                    );
+
+                    scannerStatus.className =
+                        "alert alert-danger mt-3 mb-0";
+
+                    scannerStatus.innerHTML =
+                        '<i class="bi bi-camera-video-off me-2"></i>' +
+                        "Camera access was denied or unavailable.";
+
+                }
+            );
+
+
+        /* ================================================
+           UPLOAD QR IMAGE
+        ================================================ */
+
+        uploadButton.addEventListener(
+            "click",
+            function () {
+
+                const file =
+                    uploadInput.files[0];
+
+
+                if (!file) {
+
+                    uploadStatus.innerHTML = `
+
+                        <div class="alert alert-warning">
+
+                            Please select a QR image first.
+
+                        </div>
+
+                    `;
+
+                    return;
+
+                }
+
+
+                uploadStatus.innerHTML = `
+
+                    <div class="alert alert-info">
+
+                        <i class="bi bi-hourglass-split me-2"></i>
+
+                        Reading QR code...
+
+                    </div>
+
+                `;
+
+
+                const uploadScanner =
+                    new Html5Qrcode(
+                        "qr-reader"
+                    );
+
+
+                uploadScanner.scanFile(
+                    file,
+                    true
+                )
+                .then(
+                    function (decodedText) {
+
+                        uploadScanner.clear();
+
+                        processQRCode(
+                            decodedText
+                        );
+
+                    }
+                )
+                .catch(
+                    function (error) {
+
+                        console.error(
+                            error
+                        );
+
+
+                        uploadStatus.innerHTML = `
+
+                            <div class="alert alert-danger">
+
+                                <i class="bi bi-x-circle me-2"></i>
+
+                                Could not find a valid QR code
+                                in the uploaded image.
+
+                            </div>
+
+                        `;
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* ================================================
+           CSRF
+        ================================================ */
+
+        function getCookie(
+            name
+        ) {
+
+            let cookieValue =
+                null;
+
+
+            if (
+                document.cookie &&
+                document.cookie !== ""
+            ) {
+
+                const cookies =
+                    document.cookie.split(
+                        ";"
+                    );
+
+
+                for (
+                    let i = 0;
+                    i < cookies.length;
+                    i++
+                ) {
+
+                    const cookie =
+                        cookies[i].trim();
+
+
+                    if (
+                        cookie.substring(
+                            0,
+                            name.length + 1
+                        ) ===
+                        name + "="
+                    ) {
+
+                        cookieValue =
+                            decodeURIComponent(
+                                cookie.substring(
+                                    name.length + 1
+                                )
+                            );
+
+                        break;
+
+                    }
+
+                }
+
+            }
+
+
+            return cookieValue;
+
+        }
+
+    }
+);
+
+</script>
+
+{% endblock %}

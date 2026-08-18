@@ -16,7 +16,9 @@
 <meta name="description"
       content="Eventify - Professional Event Management System">
 
-
+<link
+    rel="stylesheet"
+    href="{% static 'css/chatbot.css' %}">
 
 <title>
 
@@ -212,7 +214,11 @@ data-bs-dismiss="alert">
 
 {% endblock %}
 
+{% include "chatbot/widget.html" %}
 
+<script
+    src="{% static 'js/chatbot.js' %}">
+</script>
 
 </body>
 
